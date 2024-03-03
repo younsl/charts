@@ -1,0 +1,68 @@
+{{- if .Values.backupUtils.enabled }}
+apiVersion: batch/v1
+kind: CronJob
+metadata:
+  name: github-backup-utils
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "github-backup-utils.labels" . | nindent 4 }}
+spec:
+  schedule: "{{ .Values.backupUtils.schedule }}"
+  jobTemplate:
+    spec:
+      template:
+        spec:
+          containers:
+          - name: github-backup-utils
+            image: "{{ .Values.backupUtils.image.repository }}:{{ .Values.backupUtils.image.tag  | default (cat "v" .Chart.AppVersion | replace " " "") }}"
+            imagePullPolicy: {{ .Values.backupUtils.image.pullPolicy }}
+            command: ["/bin/bash","-c", /backup-utils/backup-script]
+            volumeMounts:
+            - name: backup-script
+              mountPath: /backup-utils/backup-script
+              subPath: backup-script
+            - name: data
+              mountPath: /data
+            - name: known-hosts
+              mountPath: /ghe-ssh/known_hosts
+              subPath: known_hosts
+              readOnly: true
+            - name: backup-config
+              mountPath: /backup-utils/backup.config
+              subPath: backup.config
+              readOnly: true
+            - name: ssh-private-key
+              mountPath: /ghe-ssh/id_ed25519
+              subPath: id_ed25519
+              readOnly: true
+            resources:
+              {{- toYaml .Values.backupUtils.resources | nindent 14 }}
+          restartPolicy: OnFailure
+          volumes:
+          - name: backup-script
+            configMap:
+              name: github-backup-utils-script
+              items:
+              - key: backup-script
+                path: backup-script
+              defaultMode: 0775
+          - name: data
+            persistentVolumeClaim:
+              claimName: github-backup-utils-pvc
+          - name: known-hosts
+            configMap:
+              name: github-backup-utils-config
+              items:
+              - key: known_hosts
+                path: known_hosts			
+          - name: backup-config
+            configMap:
+              name: github-backup-utils-config
+              items:
+              - key: backup.config
+                path: backup.config
+          - name: ssh-private-key
+            secret:
+              secretName: github-backup-utils-ssh-private-key
+              defaultMode: 0400
+{{- end }}

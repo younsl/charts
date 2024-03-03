@@ -1,0 +1,23 @@
+{{- if .Values.backupUtils.enabled }}
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: github-backup-utils-pvc
+  namespace: {{ .Release.Namespace }}
+  labels:
+    {{- include "github-backup-utils.labels" . | nindent 4 }}
+    {{- if .Values.backupUtils.persistentVolume.labels }}
+    {{- toYaml .Values.backupUtils.persistentVolume.labels | nindent 4 }}
+    {{- end }}
+spec:
+  {{- if .Values.backupUtils.persistentVolume.storageClass }}
+  storageClassName: "{{ .Values.backupUtils.persistentVolume.storageClass }}"
+  {{- end }}
+  accessModes:
+  {{- range .Values.backupUtils.persistentVolume.accessModes }}
+    - {{ . | quote }}
+  {{- end }}
+  resources:
+    requests:
+      storage: {{ .Values.backupUtils.persistentVolume.size | quote }}
+{{- end }}
