@@ -25,5 +25,3 @@ helm upgrade \
 ```bash
 helm uninstall -n actions-runner actions-runner
 ```
-
-## 참고자료
