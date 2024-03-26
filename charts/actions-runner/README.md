@@ -9,7 +9,7 @@ Tested in EKS v1.29 based AL2 amd64 environment.
 ### Install
 
 > **Prerequisite**:
-> ARC<sup>actions runner controller</sup> must first be installed in your kubernetes cluster.
+> [ARC](https://github.com/actions/actions-runner-controller)<sup>actions runner controller</sup> must first be installed in your kubernetes cluster.
 
 ```bash
 helm upgrade \
