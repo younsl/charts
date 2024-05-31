@@ -1,0 +1,230 @@
+# Default values for github-actions-runners.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# nameOverride: "actions-runner-test"
+# fullnameOverride: "actions-runner-test"
+
+runnerDeployments:
+  # =====================================
+  # 빌드 전용 러너
+  # =====================================
+  - runnerName: doge-basic-runner
+    enterprise: "doge-company"
+    group: ""
+    # -- podAnnotations
+    # Annotations to be added to the pod
+    # This can be used to add metadata to pods, such as for configuration or tool integrations
+    podAnnotations: {}
+      # linkerd.io/inject: enabled
+      # config.linkerd.io/proxy-await: enabled
+    labels:
+      - DOGE-EKS-CLUSTER
+      - m6i.xlarge
+      - ubuntu-22.04
+      - v2.311.0
+      - build
+    securityContext:
+      fsGroup: 1001
+    dockerVolumeMounts:
+      - mountPath: /tmp
+        name: tmp
+    volumeMounts:
+      - mountPath: /tmp
+        name: tmp
+    volumes:
+      - name: tmp
+        emptyDir: {}
+    resources:
+      limits:
+        cpu: "1.5"
+        memory: "6Gi"
+      requests:
+        cpu: "0.5"
+        memory: "1Gi"
+    nodeSelector:
+      node.kubernetes.io/name: basic
+    autoscaling:
+      enabled: true
+      scaleDownDelaySecondsAfterScaleOut: 300
+      minReplicas: 2
+      maxReplicas: 16
+      scheduledOverrides:
+      # minReplicas 값을 토요일 오전 0시(KST)부터 월요일 오전 0시(KST)까지 1로 지정
+      - startTime: "2023-07-15T00:00:00+09:00"
+        endTime: "2023-07-17T00:00:00+09:00"
+        recurrenceRule:
+          frequency: Weekly
+        minReplicas: 1
+      metrics:
+      - type: PercentageRunnersBusy
+        # 러너 중 사용 중인 비율이 75%보다 크면 러너 수를 증가시키고, 25%보다 작으면 러너 수를 감소
+        scaleUpThreshold: '0.75'
+        scaleDownThreshold: '0.25'
+        # 증가시킬 때는 현재 러너 수의 2배만큼 증가시키고, 감소시킬 때는 현재 러너 수의 절반만큼 감소
+        scaleUpFactor: '2'
+        scaleDownFactor: '0.5'
+    automountServiceAccountToken: true
+    serviceAccount:
+      create: true
+      annotations:
+        eks.amazonaws.com/role-arn: arn:aws:iam::111122223333:role/doge-eks-cluster-actions-build-runner-s3-access-irsa-role
+
+  # =====================================
+  # 배포 전용 러너
+  # =====================================
+  - runnerName: doge-cd-runner
+    replicaCount: 1
+    enterprise: "doge-company"
+    group: ""
+    # -- podAnnotations
+    # Annotations to be added to the pod
+    # This can be used to add metadata to pods, such as for configuration or tool integrations
+    podAnnotations: {}
+      # linkerd.io/inject: enabled
+      # config.linkerd.io/proxy-await: enabled
+    labels:
+      - DOGE-EKS-CLUSTER
+      - m6i.xlarge
+      - ubuntu-22.04
+      - v2.311.0
+      - deploy
+    resources:
+      limits:
+        cpu: "1.5"
+        memory: "6Gi"
+      requests:
+        cpu: "0.5"
+        memory: "1Gi"
+    env:
+      - name: deploy_token_secret
+        valueFrom:
+          secretKeyRef:
+            name: deploy-token
+            key: deploy_token_secret
+    nodeSelector:
+      node.kubernetes.io/name: basic
+    autoscaling:
+      enabled: false
+    serviceAccount:
+      create: false
+
+  # =====================================
+  # Android 전용 러너 #1
+  # =====================================
+  - runnerName: doge-android-runner-1
+    enterprise: "doge-company"
+    group: ""
+    # -- podAnnotations
+    # Annotations to be added to the pod
+    # This can be used to add metadata to pods, such as for configuration or tool integrations
+    podAnnotations: {}
+      # linkerd.io/inject: enabled
+      # config.linkerd.io/proxy-await: enabled
+    labels:
+      - DOGE-EKS-CLUSTER
+      - m6i.4xlarge
+      - ubuntu-22.04
+      - v2.311.0
+      - android
+    securityContext:
+      fsGroup: 1001
+    dockerVolumeMounts:
+      - mountPath: /tmp
+        name: tmp
+    volumeMounts:
+      - mountPath: /tmp
+        name: tmp
+      - mountPath: /home/runner/.gradle
+        name: persistent-runner-storage
+    volumes:
+      - name: tmp
+        emptyDir: {}
+      - name: persistent-runner-storage
+        persistentVolumeClaim:
+          claimName: ops-mgmt-android-runner-01
+    resources: {}
+    nodeSelector:
+      node.kubernetes.io/name: android-runner
+    autoscaling:
+      enabled: true
+      scaleDownDelaySecondsAfterScaleOut: 300
+      minReplicas: 1
+      maxReplicas: 1
+      scheduledOverrides:
+      # minReplicas 값을 토요일 오전 0시(KST)부터 월요일 오전 0시(KST)까지 0로 지정
+      - startTime: "2023-07-15T00:00:00+09:00"
+        endTime: "2023-07-17T00:00:00+09:00"
+        recurrenceRule:
+          frequency: Weekly
+        minReplicas: 0
+      - startTime: "2024-02-05T00:00:00+09:00"
+        endTime: "2024-02-05T08:00:00+09:00"
+        recurrenceRule:
+          frequency: Daily
+        minReplicas: 0
+    automountServiceAccountToken: true
+    serviceAccount:
+      create: true
+      annotations:
+        eks.amazonaws.com/role-arn: arn:aws:iam::111122223333:role/doge-eks-cluster-actions-aos-runner-s3-access-irsa-role
+
+  # =====================================
+  # Android 전용 러너 #2
+  # =====================================
+  - runnerName: doge-android-runner-2
+    enterprise: "doge-company"
+    group: ""
+    # -- podAnnotations
+    # Annotations to be added to the pod
+    # This can be used to add metadata to pods, such as for configuration or tool integrations
+    podAnnotations: {}
+      # linkerd.io/inject: enabled
+      # config.linkerd.io/proxy-await: enabled
+    labels:
+      - DOGE-EKS-CLUSTER
+      - m6i.4xlarge
+      - ubuntu-22.04
+      - v2.311.0
+      - android
+    securityContext:
+      fsGroup: 1001
+    dockerVolumeMounts:
+      - mountPath: /tmp
+        name: tmp
+    volumeMounts:
+      - mountPath: /tmp
+        name: tmp
+      - mountPath: /home/runner/.gradle
+        name: persistent-runner-storage
+    volumes:
+      - name: tmp
+        emptyDir: {}
+      - name: persistent-runner-storage
+        persistentVolumeClaim:
+          claimName: ops-mgmt-android-runner-02
+    resources: {}
+    nodeSelector:
+      node.kubernetes.io/name: android-runner
+    autoscaling:
+      enabled: true
+      scaleDownDelaySecondsAfterScaleOut: 300
+      minReplicas: 1
+      maxReplicas: 1
+      scheduledOverrides:
+      # minReplicas 값을 토요일 오전 0시(KST)부터 월요일 오전 0시(KST)까지 0로 지정
+      - startTime: "2023-07-15T00:00:00+09:00"
+        endTime: "2023-07-17T00:00:00+09:00"
+        recurrenceRule:
+          frequency: Weekly
+        minReplicas: 0
+      - startTime: "2024-02-05T00:00:00+09:00"
+        endTime: "2024-02-05T08:00:00+09:00"
+        recurrenceRule:
+          frequency: Daily
+        minReplicas: 0
+    automountServiceAccountToken: true
+    serviceAccount:
+      create: true
+      annotations:
+        eks.amazonaws.com/role-arn: arn:aws:iam::111122223333:role/doge-eks-cluster-actions-aos-runner-s3-access-irsa-role

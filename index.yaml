@@ -1,0 +1,96 @@
+apiVersion: v1
+entries:
+  actions-runner:
+  - apiVersion: v2
+    created: "2024-05-31T10:22:50.356401+09:00"
+    description: A Helm chart for Kubernetes to deploy GitHub Actions runners include
+      horizontalRunnerAutoscaler and serviceAccount
+    digest: 1a57ef5e68ce9c685ff61404da391e39ef04f3e774103f287ccf61ae8383641a
+    maintainers:
+    - email: cysl@kakao.com
+      name: younsl
+      url: younsl.github.io
+    name: actions-runner
+    sources:
+    - https://github.com/younsl/charts/
+    urls:
+    - charts/actions-runner-0.1.0.tgz
+    version: 0.1.0
+  argocd-apps:
+  - annotations:
+      artifacthub.io/changes: |
+        - kind: fixed
+          description: move ignoreApplicationDifferences block up a level to fix render
+      artifacthub.io/signKey: |
+        fingerprint: 2B8F22F57260EFA67BE1C5824B11F800CD9D2252
+        url: https://argoproj.github.io/argo-helm/pgp_keys.asc
+    apiVersion: v2
+    created: "2024-05-31T10:22:50.357965+09:00"
+    description: A Helm chart for managing additional Argo CD Applications and Projects
+    digest: a562e8a1bee7f93ee7900acca295be27c34f9b8f7077abbe4a6df3a1d48d63da
+    home: https://github.com/argoproj/argo-helm
+    icon: https://argo-cd.readthedocs.io/en/stable/assets/logo.png
+    keywords:
+    - argoproj
+    - argocd
+    - gitops
+    maintainers:
+    - name: argoproj
+      url: https://argoproj.github.io/
+    name: argocd-apps
+    type: application
+    urls:
+    - charts/argocd-apps-1.6.1.tgz
+    version: 1.6.1
+  github-backup-utils:
+  - annotations:
+      artifacthub.io/links: |-
+        - name: Chart Source
+          url: https://github.com/younsl/github-backup-utils
+    apiVersion: v2
+    appVersion: 3.10.0
+    created: "2024-05-31T10:22:50.361597+09:00"
+    description: GitHub Enterprise Backup Utilities
+    digest: af39b60f3ca876d46446f5d2b32fe467849ff87a5c19938a240d7f1be96ea9da
+    home: https://github.com/github/backup-utils
+    keywords:
+    - github-enterprise-server
+    - github-enterprise
+    - backup-utils
+    - disaster-recovery
+    maintainers:
+    - email: cysl@kakao.com
+      name: younsl
+      url: https://github.com/younsl
+    name: github-backup-utils
+    sources:
+    - https://github.com/github/backup-utils
+    type: application
+    urls:
+    - charts/github-backup-utils-0.2.0.tgz
+    version: 0.2.0
+  karpenter-nodepool:
+  - apiVersion: v2
+    appVersion: 0.1.0
+    created: "2024-05-31T10:22:50.362516+09:00"
+    description: A Helm chart for Karpenter nodepool, it will create the nodepool
+      and the ec2nodeclass.
+    digest: 50d2db2b94f201ae050284fbaa7912a65d94d0c9e52ed745f372edd3f2baa641
+    home: https://github.com/younsl/charts
+    keywords:
+    - cluster
+    - node
+    - autoscaling
+    - karpenter
+    - karpenter-crd
+    - nodepool
+    - ec2nodeclass
+    name: karpenter-nodepool
+    sources:
+    - https://github.com/aws/karpenter-provider-aws/tree/main/charts
+    - https://github.com/younsl/charts
+    type: application
+    urls:
+    - charts/karpenter-nodepool-0.1.0.tgz
+    version: 0.1.0
+generated: "2024-05-31T10:22:50.355038+09:00"
