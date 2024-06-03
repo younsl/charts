@@ -8,7 +8,7 @@ Helm charts in production
 
 Adding my helm chart repository
 
-```bash
+```console
 $ helm repo add younsl https://raw.githubusercontent.com/younsl/charts/main
 "younsl" has been added to your repositories
 $ helm repo update
@@ -16,7 +16,7 @@ $ helm repo update
 
 Browse all helm charts in repository
 
-```bash
+```console
 $ helm search repo younsl
 NAME                       CHART VERSION  APP VERSION  DESCRIPTION
 younsl/actions-runner      0.1.0                       A Helm chart for Kubernetes to deploy GitHub Ac...
