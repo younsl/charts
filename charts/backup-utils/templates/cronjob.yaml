@@ -79,7 +79,13 @@ spec:
             secret:
               secretName: github-backup-utils-ssh-private-key
               defaultMode: 0400
+          {{- if .nodeSelector }}
           nodeSelector:
             {{- toYaml .nodeSelector | nindent 12 }}
+          {{- end }}
+          {{- if .affinity }}
+          affinity:
+            {{- toYaml .affinity | nindent 12 }}
+          {{- end }}
   {{- end }}
 {{- end }}
