@@ -27,7 +27,7 @@ spec:
           containers:
           - name: backup-utils
             {{- with .image }}
-            image: "{{ .repository }}:{{ .tag  | default (printf "v%s" $.Chart.AppVersion) }}"
+            image: "{{ .repository }}:{{ .tag | default (printf "v%s" $.Chart.AppVersion) }}"
             imagePullPolicy: {{ .pullPolicy }}
             {{- end }}
             command: ["/bin/bash","-c", /backup-utils/backup-script]
