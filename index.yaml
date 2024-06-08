@@ -14,7 +14,7 @@ entries:
     sources:
     - https://github.com/younsl/charts/
     urls:
-    - actions-runner-0.1.0.tgz
+    - charts/actions-runner-0.1.0.tgz
     version: 0.1.0
   argocd-apps:
   - annotations:
@@ -40,7 +40,7 @@ entries:
     name: argocd-apps
     type: application
     urls:
-    - argocd-apps-1.6.1.tgz
+    - charts/argocd-apps-1.6.1.tgz
     version: 1.6.1
   github-backup-utils:
   - annotations:
@@ -67,7 +67,7 @@ entries:
     - https://github.com/github/backup-utils
     type: application
     urls:
-    - github-backup-utils-0.3.0.tgz
+    - charts/github-backup-utils-0.3.0.tgz
     version: 0.3.0
   - annotations:
       artifacthub.io/links: |-
@@ -93,7 +93,7 @@ entries:
     - https://github.com/github/backup-utils
     type: application
     urls:
-    - github-backup-utils-0.2.0.tgz
+    - charts/github-backup-utils-0.2.0.tgz
     version: 0.2.0
   karpenter-nodepool:
   - apiVersion: v2
@@ -117,6 +117,6 @@ entries:
     - https://github.com/younsl/charts
     type: application
     urls:
-    - karpenter-nodepool-0.1.0.tgz
+    - charts/karpenter-nodepool-0.1.0.tgz
     version: 0.1.0
 generated: "2024-06-08T19:02:54.442979+09:00"
