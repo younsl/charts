@@ -8,18 +8,20 @@
 
 CronJob 기반의 Github Enterprise 백업 서버 헬름 차트.
 
-> Note:  
-> backup-utils-chart is tested only in EKS `v1.26` ~ `v1.27` based on `linux/amd64`.
+> [!TIP]  
+> backup-utils-chart is tested only in EKS `v1.26` ~ `v1.30` based on `linux/amd64`.
 
 This helm chart is inspired by [mail2sandeppd/github-backup-utils-kubernetes](https://github.com/mail2sandeepd/github-backup-utils-kubernetes).
 
 &nbsp;
 
-## Architecture
+## Kubernetes Architecture
 
 All components of backup-utils run on k8s native resources.
 
 ![backup-utils architecture 1](./docs/1.png)
+
+backup-utils pod connects to Github Enterprise Server and then stores backup data in a PersistentVolume, such as an EBS volume.
 
 ![backup-utils architecture 2](./docs/2.png)
 
@@ -40,7 +42,7 @@ ssh-keygen \
 
 When you execute this command, the `ssh-keygen` utility will generate two key files in the current user's home directory:
 
-```bash
+```console
 $ ls -lh ~/.ssh/
 total 16
 -rw-------@ 1 doge  staff   411B  6 29 07:28 id_ed25519
@@ -93,7 +95,7 @@ docker push 111122223333.dkr.ecr.ap-northeast-2.amazonaws.com/github-backup-util
 
 ### helm
 
-> **Note**:  
+> [!TIP]
 > For the CronJob-created Pods to back up data to PersistentVolumes, the Kubernetes cluster must have the "gp3" StorageClass installed already.
 
 #### Helm install
