@@ -65,9 +65,10 @@ backupUtils:
     extraCommandOptions: "-i /ghe-ssh/id_ed25519 -o UserKnownHostsFile=/ghe-ssh/known_hosts"
 
   image:
-    repository: 111122223333.dkr.ecr.ap-northeast-2.amazonaws.com/<YOUR_ECR_REPOSITRY_NAME>
-    tag: v3.10.0
+    repository: ghcr.io/younsl/backup-utils
+    tag: v3.11.4
 
+    # -- pullPolicy
     # Image pull policy (Always, Never, IfNotPresent)
     pullPolicy: IfNotPresent
 
@@ -124,10 +125,27 @@ backupUtils:
   # -- nodeSelector
   # Node selector to specify on which nodes the job should run
   # If not declared, the job can run on any node
-  nodeSelector:
-    node.kubernetes.io/name: basic
-    # Example for nodeSelector
-    # This will schedule the job on nodes labeled with `disktype: ssd`
-    # disktype: ssd
-    # ref: 
-    # topology.ebs.csi.aws.com/zone: ap-northeast-2c
+  nodeSelector: {}
+    # node.kubernetes.io/name: basic
+    #   ## This will ensure the job runs only on nodes with the label 'node.kubernetes.io/name: basic'.
+    # topology.ebs.csi.aws.com/zone: ap-northeast-2c    
+    #   ## This can be used to ensure the job runs on nodes within a specific availability zone.
+
+  # -- affinity
+  # Affinity rules to specify on which nodes the job should run
+  # Node affinity allows for more complex node selection criteria than nodeSelector
+  affinity: {}
+    # nodeAffinity:
+    #   requiredDuringSchedulingIgnoredDuringExecution:
+    #     nodeSelectorTerms:
+    #     - matchExpressions:
+    #       - key: node.kubernetes.io/name
+    #         operator: In
+    #         values:
+    #         - basic
+    #         ## This rule ensures the job runs only on nodes with the label 'node.kubernetes.io/name: basic'.
+    #       - key: topology.ebs.csi.aws.com/zone
+    #         operator: In
+    #         values:
+    #         - ap-northeast-2c
+    #         ## This rule ensures the job runs only on nodes within the specified availability zone.
