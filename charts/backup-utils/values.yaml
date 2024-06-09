@@ -134,7 +134,19 @@ backupUtils:
   # -- affinity
   # Affinity rules to specify on which nodes the job should run
   # Node affinity allows for more complex node selection criteria than nodeSelector
-  affinity: {}
+  affinity:
+    nodeAffinity:
+      requiredDuringSchedulingIgnoredDuringExecution:
+        nodeSelectorTerms:
+        - matchExpressions:
+          - key: kubernetes.io/arch
+            operator: In
+            values:
+            - amd64
+          - key: kubernetes.io/os
+            operator: In
+            values:
+            - linux
     # nodeAffinity:
     #   requiredDuringSchedulingIgnoredDuringExecution:
     #     nodeSelectorTerms:
