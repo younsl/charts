@@ -27,4 +27,4 @@ younsl/karpenter-nodepool  0.1.0          0.1.0        A Helm chart for Karpente
 
 ## License
 
-[MIT License](https://github.com/younsl/charts/blob/main/LICENSE).
+charts repository is available under the [MIT License](https://github.com/younsl/charts/blob/main/LICENSE).
