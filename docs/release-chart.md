@@ -36,6 +36,7 @@ helm package charts/actions-runner --destination charts/
 helm package charts/backup-utils --destination charts/
 helm package charts/argocd-apps --destination charts/
 helm package charts/karpenter-nodepool --destination charts/
+helm package charts/rbac --destination charts/
 ```
 
 For example, you can use the following `helm package` command to package the `backup-utils` chart as a `.tgz` file.
