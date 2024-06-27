@@ -196,4 +196,4 @@ If you have any suggestions or improvements for this chart, feel free to open an
 
 ## License
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+This project is licensed under the Apache License - see the [LICENSE](LICENSE) file for details.
