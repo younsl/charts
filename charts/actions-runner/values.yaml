@@ -18,7 +18,7 @@ runnerDeployments:
     podAnnotations: {}
       # linkerd.io/inject: enabled
       # config.linkerd.io/proxy-await: enabled
-    labels:
+    podLabels:
       - DOGE-EKS-CLUSTER
       - m6i.xlarge
       - ubuntu-22.04
@@ -83,7 +83,7 @@ runnerDeployments:
     podAnnotations: {}
       # linkerd.io/inject: enabled
       # config.linkerd.io/proxy-await: enabled
-    labels:
+    podLabels:
       - DOGE-EKS-CLUSTER
       - m6i.xlarge
       - ubuntu-22.04
@@ -121,7 +121,7 @@ runnerDeployments:
     podAnnotations: {}
       # linkerd.io/inject: enabled
       # config.linkerd.io/proxy-await: enabled
-    labels:
+    podLabels:
       - DOGE-EKS-CLUSTER
       - m6i.4xlarge
       - ubuntu-22.04
@@ -168,6 +168,14 @@ runnerDeployments:
       create: true
       annotations:
         eks.amazonaws.com/role-arn: arn:aws:iam::111122223333:role/doge-eks-cluster-actions-aos-runner-s3-access-irsa-role
+    persistenceClaims:
+      maven: 
+        create: true
+        name: maven-volume
+        size: 25Gi
+        storageClass: gp3
+        finalizers:
+        - kubernetes.io/pvc-protection
 
   # =====================================
   # Android 전용 러너 #2
@@ -181,7 +189,7 @@ runnerDeployments:
     podAnnotations: {}
       # linkerd.io/inject: enabled
       # config.linkerd.io/proxy-await: enabled
-    labels:
+    podLabels:
       - DOGE-EKS-CLUSTER
       - m6i.4xlarge
       - ubuntu-22.04
