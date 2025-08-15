@@ -16,7 +16,39 @@ jobs:
       pull-requests: write
     steps:
       - name: PR Title Checker
+        id: check
         uses: thehanimo/pr-title-checker@v1.4.3
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           configuration_path: .github/configs/pr-title-checker-config.json
+      
+      - name: Add comment to fix PR title
+        uses: marocchino/sticky-pull-request-comment@v2
+        if: ${{ steps.check.outputs.success == 'false' }}
+        with:
+          message: |
+            ## ❌ PR Title Format Error
+            
+            Your PR title does not follow the required format. Please update your PR title to start with `[charts/<CHART_NAME>]`.
+            
+            **Current title:** `${{ github.event.pull_request.title }}`
+            
+            **Required format:** `[charts/<chart-name>] Your description here`
+            
+            **Examples:**
+            - `[charts/actions-runner] Add new feature`
+            - `[charts/argocd-apps] Fix bug in template`
+            - `[charts/backup-utils] Update documentation`
+            
+            Please update your PR title and the check will run automatically.
+
+      - name: Add comment that PR title is fixed
+        uses: marocchino/sticky-pull-request-comment@v2
+        if: ${{ steps.check.outputs.success == 'true' }}
+        with:
+          header: 'PR Title Check'
+          recreate: true
+          message: |
+            ### ✅ PR Title Formatted Correctly
+
+            The title of this PR has been updated to match the correct format. Thank you!
