@@ -1,0 +1,15 @@
+{
+  "LABEL": {
+    "name": "title-needs-formatting",
+    "color": "FFFF00"
+  },
+  "CHECKS": {
+    "prefixes": ["[charts/"],
+    "regexes": ["^\\[charts\\/[a-z0-9-]+\\]"]
+  },
+  "MESSAGES": {
+    "success": "All good!",
+    "failure": "PR title must start with [charts/<CHART_NAME>] format",
+    "notice": ""
+  }
+}
