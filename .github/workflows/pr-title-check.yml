@@ -36,9 +36,9 @@ jobs:
             **Required format:** `[charts/<chart-name>] Your description here`
             
             **Examples:**
-            - `[charts/actions-runner] Add new feature`
-            - `[charts/argocd-apps] Fix bug in template`
-            - `[charts/backup-utils] Update documentation`
+            - `[charts/actions-runner] feat: Add new feature`
+            - `[charts/argocd-apps] fix: Wrong typo in template`
+            - `[charts/backup-utils] docs: Update documentation`
             
             Please update your PR title and the check will run automatically.
 
@@ -51,4 +51,4 @@ jobs:
           message: |
             ### ✅ PR Title Formatted Correctly
 
-            The title of this PR has been updated to match the correct format. Thank you!
+            This PR title has been updated to match the correct format. Fixed the naming convention violation.
