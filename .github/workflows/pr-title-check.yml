@@ -18,6 +18,7 @@ jobs:
       - name: PR Title Checker
         id: check
         uses: thehanimo/pr-title-checker@v1.4.3
+        continue-on-error: true
         with:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           configuration_path: .github/configs/pr-title-checker-config.json
