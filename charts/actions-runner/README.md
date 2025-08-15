@@ -4,13 +4,17 @@
 
 A Helm chart for Kubernetes to deploy GitHub Actions runners include horizontalRunnerAutoscaler and serviceAccount
 
+⚠️ DEPRECATION NOTICE: This chart covers the legacy mode of ARC (resources in the actions.summerwind.net namespace).
+If you're looking for documentation on the newer autoscaling runner scale sets, it is available in GitHub Docs:
+https://docs.github.com/en/actions/hosting-your-own-runners/managing-self-hosted-runners-with-actions-runner-controller/quickstart-for-actions-runner-controller
+
+To understand why these resources are considered legacy (and the benefits of using the newer autoscaling runner scale sets),
+read this discussion: https://github.com/actions/actions-runner-controller/discussions/2775
+
+The gha-runner-scale-set-controller chart provides better integration with GitHub Actions and more features for managing
+self-hosted runners on Kubernetes.
+
 > **:exclamation: This Helm Chart is deprecated!**
-
-## Deprecation Notice
-
-⚠️ actions-runner chart covers the legacy mode of ARC (resources in the `actions.summerwind.net` namespace). If you're looking for documentation on the newer autoscaling runner scale sets, it is available in [GitHub Docs](https://docs.github.com/en/actions/hosting-your-own-runners/managing-self-hosted-runners-with-actions-runner-controller/quickstart-for-actions-runner-controller). To understand why these resources are considered legacy (and the benefits of using the newer autoscaling runner scale sets), read [this discussion (#2775)](https://github.com/actions/actions-runner-controller/discussions/2775).
-
-[gha-runner-scale-set-controller](https://github.com/actions/actions-runner-controller/tree/master/charts) chart provides better integration with GitHub Actions and more features for managing self-hosted runners on Kubernetes.
 
 **Homepage:** <https://github.com/actions/actions-runner-controller>
 

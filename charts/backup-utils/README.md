@@ -4,6 +4,12 @@
 
 GitHub Enterprise Backup Utilities
 
+⚠️ DEPRECATION NOTICE: GitHub Enterprise Server 3.17 introduced a Built-in Backup Service as a Preview Feature.
+
+The Built-in Backup Service is recommended over backup-utils. Note that backup-utils may be deprecated in future releases.
+
+See: https://docs.github.com/en/enterprise-server@latest/admin/backing-up-and-restoring-your-instance/backup-service-for-github-enterprise-server/about-the-backup-service-for-github-enterprise-server
+
 > **:exclamation: This Helm Chart is deprecated!**
 
 **Homepage:** <https://github.com/github/backup-utils>

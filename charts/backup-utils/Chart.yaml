@@ -1,6 +1,13 @@
 apiVersion: v2
 name: backup-utils
-description: GitHub Enterprise Backup Utilities
+description: |
+  GitHub Enterprise Backup Utilities
+  
+  ⚠️ DEPRECATION NOTICE: GitHub Enterprise Server 3.17 introduced a Built-in Backup Service as a Preview Feature.
+  
+  The Built-in Backup Service is recommended over backup-utils. Note that backup-utils may be deprecated in future releases.
+  
+  See: https://docs.github.com/en/enterprise-server@latest/admin/backing-up-and-restoring-your-instance/backup-service-for-github-enterprise-server/about-the-backup-service-for-github-enterprise-server
 deprecated: true
 keywords:
   - github-enterprise-server
