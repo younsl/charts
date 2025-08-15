@@ -398,6 +398,11 @@ podDisruptionBudget:
   # maxUnavailable: 1
   # A resource-specific annotations for PodDisruptionBudget
   annotations: {}
+  # unhealthyPodEvictionPolicy controls when unhealthy pods are evicted
+  # Valid values: IfHealthyBudget (default), AlwaysAllow
+  # IfHealthyBudget: Unhealthy pods can be disrupted only if minimum available pods are met
+  # AlwaysAllow: Always allow eviction of unhealthy pods (best effort availability)
+  unhealthyPodEvictionPolicy: IfHealthyBudget
 
 # Squid Exporter for Prometheus metrics
 # See: https://github.com/boynux/squid-exporter

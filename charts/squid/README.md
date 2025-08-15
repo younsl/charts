@@ -1,6 +1,6 @@
 # squid
 
-![Version: 0.3.0](https://img.shields.io/badge/Version-0.3.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 6.10](https://img.shields.io/badge/AppVersion-6.10-informational?style=flat-square)
+![Version: 0.4.0](https://img.shields.io/badge/Version-0.4.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 6.10](https://img.shields.io/badge/AppVersion-6.10-informational?style=flat-square)
 
 A Helm chart for Squid caching proxy
 
@@ -36,7 +36,7 @@ helm install squid younsl/squid -f values.yaml
 Install a specific version:
 
 ```console
-helm install squid younsl/squid --version 0.3.0
+helm install squid younsl/squid --version 0.4.0
 ```
 
 ### Install from local chart
@@ -44,7 +44,7 @@ helm install squid younsl/squid --version 0.3.0
 Download squid chart and install from local directory:
 
 ```console
-helm pull younsl/squid --untar --version 0.3.0
+helm pull younsl/squid --untar --version 0.4.0
 helm install squid ./squid
 ```
 
@@ -127,6 +127,7 @@ The following table lists the configurable parameters and their default values.
 | podDisruptionBudget.annotations | object | `{}` |  |
 | podDisruptionBudget.enabled | bool | `true` |  |
 | podDisruptionBudget.minAvailable | int | `1` |  |
+| podDisruptionBudget.unhealthyPodEvictionPolicy | string | `"IfHealthyBudget"` |  |
 | podSecurityContext.fsGroup | int | `13` |  |
 | readinessProbe.enabled | bool | `true` |  |
 | readinessProbe.failureThreshold | int | `3` |  |
