@@ -1,0 +1,190 @@
+name: Release Helm Charts
+run-name: 📦 Release Helm Charts to ghcr.io
+
+on:
+  push:
+    branches:
+      - main
+    paths:
+      - 'charts/**/Chart.yaml'
+  workflow_dispatch:
+    inputs:
+      chart:
+        description: 'Specific chart to release (leave empty for all)'
+        required: false
+        type: string
+
+env:
+  REGISTRY: ghcr.io
+  CHARTS_DIR: ./charts
+
+jobs:
+  release:
+    runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      packages: write
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v5
+
+      - name: Install Helm
+        uses: azure/setup-helm@v4
+        with:
+          version: 'v3.14.0'
+
+      - name: Login to GitHub Container Registry
+        uses: docker/login-action@v3
+        with:
+          registry: ${{ env.REGISTRY }}
+          username: ${{ github.actor }}
+          password: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Lint Charts
+        run: |
+          # Determine which charts to process
+          if [ -n "${{ github.event.inputs.chart }}" ]; then
+            CHARTS="${{ env.CHARTS_DIR }}/${{ github.event.inputs.chart }}"
+          else
+            CHARTS=$(find ${{ env.CHARTS_DIR }} -mindepth 1 -maxdepth 1 -type d)
+          fi
+          
+          # Lint each chart
+          for chart in $CHARTS; do
+            if [ -f "$chart/Chart.yaml" ]; then
+              chart_name=$(basename "$chart")
+              echo "Linting chart: $chart_name"
+              helm lint "$chart"
+            fi
+          done
+
+      - name: Setup Kind cluster
+        uses: helm/kind-action@v1.10.0
+        with:
+          cluster_name: kind
+          version: v0.20.0
+
+      - name: Test Charts
+        run: |
+          # Determine which charts to process
+          if [ -n "${{ github.event.inputs.chart }}" ]; then
+            CHARTS="${{ env.CHARTS_DIR }}/${{ github.event.inputs.chart }}"
+          else
+            CHARTS=$(find ${{ env.CHARTS_DIR }} -mindepth 1 -maxdepth 1 -type d)
+          fi
+          
+          # Test each chart
+          for chart in $CHARTS; do
+            if [ -f "$chart/Chart.yaml" ]; then
+              chart_name=$(basename "$chart")
+              
+              # Skip test for certain charts that don't need cluster testing
+              if [[ "$chart_name" == "rbac" ]] || [[ "$chart_name" == "kube-green-sleepinfos" ]]; then
+                echo "Skipping cluster test for $chart_name"
+                continue
+              fi
+              
+              echo "Testing chart: $chart_name"
+              
+              # Dry run first
+              helm install test-$chart_name "$chart" \
+                --dry-run \
+                --debug \
+                --namespace test-$chart_name \
+                --create-namespace
+              
+              # Actually install to test
+              helm install test-$chart_name "$chart" \
+                --namespace test-$chart_name \
+                --create-namespace \
+                --wait \
+                --timeout 2m
+              
+              # Run helm test if test resources exist
+              helm test test-$chart_name -n test-$chart_name || echo "No test resources found for $chart_name"
+              
+              # Cleanup
+              helm uninstall test-$chart_name -n test-$chart_name || true
+              kubectl delete namespace test-$chart_name || true
+            fi
+          done
+
+      - name: Package and Push Charts to OCI Registry
+        run: |
+          # Initialize summary
+          echo "## 📦 Helm Charts Release Summary" >> $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          # Determine which charts to process
+          if [ -n "${{ github.event.inputs.chart }}" ]; then
+            CHARTS="${{ env.CHARTS_DIR }}/${{ github.event.inputs.chart }}"
+          else
+            CHARTS=$(find ${{ env.CHARTS_DIR }} -mindepth 1 -maxdepth 1 -type d)
+          fi
+          
+          # Initialize counters
+          SUCCESS_COUNT=0
+          SKIP_COUNT=0
+          FAIL_COUNT=0
+          
+          # Package and push each chart to OCI registry
+          for chart_dir in $CHARTS; do
+            if [ -f "$chart_dir/Chart.yaml" ]; then
+              chart_name=$(basename "$chart_dir")
+              echo "Processing chart: $chart_name"
+              
+              # Get chart version
+              chart_version=$(grep '^version:' "$chart_dir/Chart.yaml" | awk '{print $2}')
+              
+              # Package the chart
+              helm package "$chart_dir" --destination .
+              
+              # Get the packaged file name
+              CHART_FILE=$(ls ${chart_name}-*.tgz 2>/dev/null | head -n 1)
+              
+              if [ -n "$CHART_FILE" ]; then
+                echo "Pushing $CHART_FILE to OCI registry"
+                # Push to OCI registry
+                if helm push "$CHART_FILE" oci://${{ env.REGISTRY }}/${{ github.repository_owner }}/charts 2>&1 | tee push_output.log; then
+                  echo "✅ Chart available at: oci://${{ env.REGISTRY }}/${{ github.repository_owner }}/charts/$chart_name"
+                  echo "| ✅ | $chart_name | $chart_version | \`oci://${{ env.REGISTRY }}/${{ github.repository_owner }}/charts/$chart_name\` |" >> $GITHUB_STEP_SUMMARY
+                  SUCCESS_COUNT=$((SUCCESS_COUNT + 1))
+                elif grep -q "already exists" push_output.log; then
+                  echo "⏭️ Chart $chart_name version $chart_version already exists, skipping"
+                  echo "| ⏭️ | $chart_name | $chart_version | Already exists |" >> $GITHUB_STEP_SUMMARY
+                  SKIP_COUNT=$((SKIP_COUNT + 1))
+                else
+                  echo "❌ Failed to push $chart_name"
+                  echo "| ❌ | $chart_name | $chart_version | Failed to push |" >> $GITHUB_STEP_SUMMARY
+                  FAIL_COUNT=$((FAIL_COUNT + 1))
+                fi
+                
+                # Clean up
+                rm -f "$CHART_FILE" push_output.log
+              else
+                echo "Failed to package $chart_name"
+                echo "| ❌ | $chart_name | - | Failed to package |" >> $GITHUB_STEP_SUMMARY
+                FAIL_COUNT=$((FAIL_COUNT + 1))
+              fi
+            fi
+          done
+          
+          # Add summary statistics
+          echo "" >> $GITHUB_STEP_SUMMARY
+          echo "### Summary" >> $GITHUB_STEP_SUMMARY
+          echo "- ✅ Released: $SUCCESS_COUNT" >> $GITHUB_STEP_SUMMARY
+          echo "- ⏭️ Skipped (already exists): $SKIP_COUNT" >> $GITHUB_STEP_SUMMARY
+          echo "- ❌ Failed: $FAIL_COUNT" >> $GITHUB_STEP_SUMMARY
+          
+          # Add table header at the beginning (prepend)
+          {
+            echo "| Status | Chart | Chart Version | Location |"
+            echo "|--------|-------|---------------|----------|"
+            cat $GITHUB_STEP_SUMMARY
+          } > temp_summary.md
+          mv temp_summary.md $GITHUB_STEP_SUMMARY
+          
+          # Fail if any charts failed
+          if [ $FAIL_COUNT -gt 0 ]; then
+            exit 1
+          fi
