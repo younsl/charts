@@ -1,16 +1,10 @@
-# github-backup-utils
+# backup-utils
 
 ![Version: 0.4.2](https://img.shields.io/badge/Version-0.4.2-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 3.15.1](https://img.shields.io/badge/AppVersion-3.15.1-informational?style=flat-square)
 
 GitHub Enterprise Backup Utilities
 
 > **:exclamation: This Helm Chart is deprecated!**
-
-## Deprecation Notice
-
-⚠️ [GitHub Enterprise Server 3.17](https://docs.github.com/en/enterprise-server@latest/admin/all-releases) introduced [a Built-in Backup Service](https://docs.github.com/en/enterprise-server@latest/admin/backing-up-and-restoring-your-instance/backup-service-for-github-enterprise-server/about-the-backup-service-for-github-enterprise-server) as a Preview Feature.
-
-The Built-in Backup Service is recommended over backup-utils. Note that backup-utils may be deprecated in future releases.
 
 **Homepage:** <https://github.com/github/backup-utils>
 
@@ -25,31 +19,31 @@ helm repo update
 
 ### Install the chart
 
-Install the chart with the release name `github-backup-utils`:
+Install the chart with the release name `backup-utils`:
 
 ```console
-helm install github-backup-utils younsl/github-backup-utils
+helm install backup-utils younsl/backup-utils
 ```
 
 Install with custom values:
 
 ```console
-helm install github-backup-utils younsl/github-backup-utils -f values.yaml
+helm install backup-utils younsl/backup-utils -f values.yaml
 ```
 
 Install a specific version:
 
 ```console
-helm install github-backup-utils younsl/github-backup-utils --version 0.4.2
+helm install backup-utils younsl/backup-utils --version 0.4.2
 ```
 
 ### Install from local chart
 
-Download github-backup-utils chart and install from local directory:
+Download backup-utils chart and install from local directory:
 
 ```console
-helm pull younsl/github-backup-utils --untar --version 0.4.2
-helm install github-backup-utils ./github-backup-utils
+helm pull younsl/backup-utils --untar --version 0.4.2
+helm install backup-utils ./backup-utils
 ```
 
 The `--untar` option downloads and unpacks the chart files into a directory for easy viewing and editing.
@@ -57,13 +51,13 @@ The `--untar` option downloads and unpacks the chart files into a directory for 
 ## Upgrade
 
 ```console
-helm upgrade github-backup-utils younsl/github-backup-utils
+helm upgrade backup-utils younsl/backup-utils
 ```
 
 ## Uninstall
 
 ```console
-helm uninstall github-backup-utils
+helm uninstall backup-utils
 ```
 
 ## Configuration

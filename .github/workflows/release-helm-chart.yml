@@ -139,9 +139,12 @@ jobs:
 
       - name: Package and Push Charts to OCI Registry
         run: |
-          # Initialize summary
-          echo "## 📦 Helm Charts Release Summary" >> $GITHUB_STEP_SUMMARY
-          echo "" >> $GITHUB_STEP_SUMMARY
+          # Create temporary file for table content
+          TEMP_TABLE="$(mktemp)"
+          
+          # Write table header to temp file
+          echo "| Status | Chart | Chart Version | Location |" > "$TEMP_TABLE"
+          echo "|--------|-------|---------------|----------|" >> "$TEMP_TABLE"
           
           # Determine which charts to process
           if [ -n "${{ github.event.inputs.chart }}" ]; then
@@ -175,15 +178,15 @@ jobs:
                 # Push to OCI registry
                 if helm push "$CHART_FILE" oci://${{ env.REGISTRY }}/${{ github.repository_owner }}/charts 2>&1 | tee push_output.log; then
                   echo "✅ Chart available at: oci://${{ env.REGISTRY }}/${{ github.repository_owner }}/charts/$chart_name"
-                  echo "| ✅ | $chart_name | $chart_version | \`oci://${{ env.REGISTRY }}/${{ github.repository_owner }}/charts/$chart_name\` |" >> $GITHUB_STEP_SUMMARY
+                  echo "| ✅ Released | $chart_name | $chart_version | \`oci://${{ env.REGISTRY }}/${{ github.repository_owner }}/charts/$chart_name\` |" >> "$TEMP_TABLE"
                   SUCCESS_COUNT=$((SUCCESS_COUNT + 1))
                 elif grep -q "already exists" push_output.log; then
                   echo "⏭️ Chart $chart_name version $chart_version already exists, skipping"
-                  echo "| ⏭️ | $chart_name | $chart_version | Already exists |" >> $GITHUB_STEP_SUMMARY
+                  echo "| ⏭️ Skipped | $chart_name | $chart_version | Already exists |" >> "$TEMP_TABLE"
                   SKIP_COUNT=$((SKIP_COUNT + 1))
                 else
                   echo "❌ Failed to push $chart_name"
-                  echo "| ❌ | $chart_name | $chart_version | Failed to push |" >> $GITHUB_STEP_SUMMARY
+                  echo "| ❌ Failed | $chart_name | $chart_version | Failed to push |" >> "$TEMP_TABLE"
                   FAIL_COUNT=$((FAIL_COUNT + 1))
                 fi
                 
@@ -191,11 +194,18 @@ jobs:
                 rm -f "$CHART_FILE" push_output.log
               else
                 echo "Failed to package $chart_name"
-                echo "| ❌ | $chart_name | - | Failed to package |" >> $GITHUB_STEP_SUMMARY
+                echo "| ❌ Failed | $chart_name | - | Failed to package |" >> "$TEMP_TABLE"
                 FAIL_COUNT=$((FAIL_COUNT + 1))
               fi
             fi
           done
+          
+          # Write final summary to GITHUB_STEP_SUMMARY
+          echo "## 📦 Helm Charts Release Summary" > $GITHUB_STEP_SUMMARY
+          echo "" >> $GITHUB_STEP_SUMMARY
+          
+          # Add the table
+          cat "$TEMP_TABLE" >> $GITHUB_STEP_SUMMARY
           
           # Add summary statistics
           echo "" >> $GITHUB_STEP_SUMMARY
@@ -204,13 +214,8 @@ jobs:
           echo "- ⏭️ Skipped (already exists): $SKIP_COUNT" >> $GITHUB_STEP_SUMMARY
           echo "- ❌ Failed: $FAIL_COUNT" >> $GITHUB_STEP_SUMMARY
           
-          # Add table header at the beginning (prepend)
-          {
-            echo "| Status | Chart | Chart Version | Location |"
-            echo "|--------|-------|---------------|----------|"
-            cat $GITHUB_STEP_SUMMARY
-          } > temp_summary.md
-          mv temp_summary.md $GITHUB_STEP_SUMMARY
+          # Clean up temp file
+          rm -f "$TEMP_TABLE"
           
           # Fail if any charts failed
           if [ $FAIL_COUNT -gt 0 ]; then
