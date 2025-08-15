@@ -11,6 +11,9 @@ on:
 jobs:
   check-pr-title:
     runs-on: ubuntu-24.04
+    permissions:
+      contents: read
+      pull-requests: write
     steps:
       - name: PR Title Checker
         uses: thehanimo/pr-title-checker@v1.4.3
