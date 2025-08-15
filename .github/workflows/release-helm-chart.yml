@@ -58,26 +58,31 @@ jobs:
             fi
           done
 
+      - name: Create kind config
+        run: |
+          cat <<EOF > /tmp/kind-config.yaml
+          kind: Cluster
+          apiVersion: kind.x-k8s.io/v1alpha4
+          nodes:
+          - role: control-plane
+            kubeadmConfigPatches:
+            - |
+              kind: ClusterConfiguration
+              apiServer:
+                extraArgs:
+                  max-requests-inflight: "1000"
+                  max-mutating-requests-inflight: "500"
+          EOF
+
       - name: Setup Kind cluster
         uses: helm/kind-action@v1.10.0
         with:
           cluster_name: kind
           version: v0.20.0
+          config: /tmp/kind-config.yaml
           # Increase API server rate limits to prevent "client rate limiter Wait returned an error: context deadline exceeded"
           # This error occurs when Helm tries to create many Kubernetes resources simultaneously
           # Default limits (400/200) are too low for complex charts with many resources
-          config: |
-            kind: Cluster
-            apiVersion: kind.x-k8s.io/v1alpha4
-            nodes:
-            - role: control-plane
-              kubeadmConfigPatches:
-              - |
-                kind: ClusterConfiguration
-                apiServer:
-                  extraArgs:
-                    max-requests-inflight: "1000"        # Increase read request limit (default: 400)
-                    max-mutating-requests-inflight: "500" # Increase write request limit (default: 200)
 
       - name: Test Charts
         run: |
