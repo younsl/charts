@@ -32,6 +32,11 @@ jobs:
         uses: azure/setup-helm@v4
         with:
           version: 'v3.14.0'
+      
+      - name: Install yq
+        run: |
+          wget -qO /usr/local/bin/yq https://github.com/mikefarah/yq/releases/latest/download/yq_linux_amd64
+          chmod +x /usr/local/bin/yq
 
       - name: Login to GitHub Container Registry
         uses: docker/login-action@v3
@@ -98,9 +103,11 @@ jobs:
             if [ -f "$chart/Chart.yaml" ]; then
               chart_name=$(basename "$chart")
               
-              # Skip test for certain charts that don't need cluster testing
-              if [[ "$chart_name" == "rbac" ]] || [[ "$chart_name" == "kube-green-sleepinfos" ]]; then
-                echo "Skipping cluster test for $chart_name"
+              # Check if test should be skipped based on Chart.yaml annotations
+              skip_test=$(yq eval '.annotations."helm.sh/skip-test" // "false"' "$chart/Chart.yaml")
+              if [[ "$skip_test" == "true" ]]; then
+                skip_reason=$(yq eval '.annotations."helm.sh/skip-test-reason" // "No reason provided"' "$chart/Chart.yaml")
+                echo "⏭️ Skipping test for $chart_name: $skip_reason"
                 continue
               fi
               

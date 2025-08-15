@@ -20,3 +20,6 @@ sources:
   - https://github.com/kube-green/kube-green
   - https://github.com/younsl/younsl.github.io
   - https://younsl.github.io/charts/
+annotations:
+  "helm.sh/skip-test": "true"
+  "helm.sh/skip-test-reason": "Only CRD resources, requires kube-green operator to be installed"

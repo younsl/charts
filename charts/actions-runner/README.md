@@ -74,48 +74,48 @@ The following table lists the configurable parameters and their default values.
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| nameOverride | string | `nil` |  |
 | fullnameOverride | string | `nil` |  |
-| runnerDeployments[0].runnerName | string | `"doge-basic-runner"` |  |
+| nameOverride | string | `nil` |  |
+| runnerDeployments[0].automountServiceAccountToken | bool | `true` |  |
+| runnerDeployments[0].autoscaling.enabled | bool | `true` |  |
+| runnerDeployments[0].autoscaling.maxReplicas | int | `16` |  |
+| runnerDeployments[0].autoscaling.metrics[0].scaleDownFactor | string | `"0.5"` |  |
+| runnerDeployments[0].autoscaling.metrics[0].scaleDownThreshold | string | `"0.25"` |  |
+| runnerDeployments[0].autoscaling.metrics[0].scaleUpFactor | string | `"2"` |  |
+| runnerDeployments[0].autoscaling.metrics[0].scaleUpThreshold | string | `"0.75"` |  |
+| runnerDeployments[0].autoscaling.metrics[0].type | string | `"PercentageRunnersBusy"` |  |
+| runnerDeployments[0].autoscaling.minReplicas | int | `2` |  |
+| runnerDeployments[0].autoscaling.scaleDownDelaySecondsAfterScaleOut | int | `300` |  |
+| runnerDeployments[0].autoscaling.scheduledOverrides[0].endTime | string | `"2023-07-17T00:00:00+09:00"` |  |
+| runnerDeployments[0].autoscaling.scheduledOverrides[0].minReplicas | int | `1` |  |
+| runnerDeployments[0].autoscaling.scheduledOverrides[0].recurrenceRule.frequency | string | `"Weekly"` |  |
+| runnerDeployments[0].autoscaling.scheduledOverrides[0].startTime | string | `"2023-07-15T00:00:00+09:00"` |  |
+| runnerDeployments[0].dnsConfig | object | `{}` |  |
+| runnerDeployments[0].dockerVolumeMounts[0].mountPath | string | `"/tmp"` |  |
+| runnerDeployments[0].dockerVolumeMounts[0].name | string | `"tmp"` |  |
 | runnerDeployments[0].enterprise | string | `"doge-company"` |  |
 | runnerDeployments[0].group | string | `""` |  |
-| runnerDeployments[0].podLabels | object | `{}` |  |
-| runnerDeployments[0].podAnnotations | object | `{}` |  |
 | runnerDeployments[0].labels[0] | string | `"DOGE-EKS-CLUSTER"` |  |
 | runnerDeployments[0].labels[1] | string | `"m6i.xlarge"` |  |
 | runnerDeployments[0].labels[2] | string | `"ubuntu-22.04"` |  |
 | runnerDeployments[0].labels[3] | string | `"v2.311.0"` |  |
 | runnerDeployments[0].labels[4] | string | `"build"` |  |
-| runnerDeployments[0].dnsConfig | object | `{}` |  |
-| runnerDeployments[0].securityContext.fsGroup | int | `1001` |  |
-| runnerDeployments[0].dockerVolumeMounts[0].mountPath | string | `"/tmp"` |  |
-| runnerDeployments[0].dockerVolumeMounts[0].name | string | `"tmp"` |  |
-| runnerDeployments[0].volumeMounts[0].mountPath | string | `"/tmp"` |  |
-| runnerDeployments[0].volumeMounts[0].name | string | `"tmp"` |  |
-| runnerDeployments[0].volumes[0].name | string | `"tmp"` |  |
-| runnerDeployments[0].volumes[0].emptyDir | object | `{}` |  |
+| runnerDeployments[0].nodeSelector."node.kubernetes.io/name" | string | `"basic"` |  |
+| runnerDeployments[0].podAnnotations | object | `{}` |  |
+| runnerDeployments[0].podLabels | object | `{}` |  |
 | runnerDeployments[0].resources.limits.cpu | string | `"1.5"` |  |
 | runnerDeployments[0].resources.limits.memory | string | `"6Gi"` |  |
 | runnerDeployments[0].resources.requests.cpu | string | `"0.5"` |  |
 | runnerDeployments[0].resources.requests.memory | string | `"1Gi"` |  |
-| runnerDeployments[0].nodeSelector."node.kubernetes.io/name" | string | `"basic"` |  |
-| runnerDeployments[0].autoscaling.enabled | bool | `true` |  |
-| runnerDeployments[0].autoscaling.scaleDownDelaySecondsAfterScaleOut | int | `300` |  |
-| runnerDeployments[0].autoscaling.minReplicas | int | `2` |  |
-| runnerDeployments[0].autoscaling.maxReplicas | int | `16` |  |
-| runnerDeployments[0].autoscaling.scheduledOverrides[0].startTime | string | `"2023-07-15T00:00:00+09:00"` |  |
-| runnerDeployments[0].autoscaling.scheduledOverrides[0].endTime | string | `"2023-07-17T00:00:00+09:00"` |  |
-| runnerDeployments[0].autoscaling.scheduledOverrides[0].recurrenceRule.frequency | string | `"Weekly"` |  |
-| runnerDeployments[0].autoscaling.scheduledOverrides[0].minReplicas | int | `1` |  |
-| runnerDeployments[0].autoscaling.metrics[0].type | string | `"PercentageRunnersBusy"` |  |
-| runnerDeployments[0].autoscaling.metrics[0].scaleUpThreshold | string | `"0.75"` |  |
-| runnerDeployments[0].autoscaling.metrics[0].scaleDownThreshold | string | `"0.25"` |  |
-| runnerDeployments[0].autoscaling.metrics[0].scaleUpFactor | string | `"2"` |  |
-| runnerDeployments[0].autoscaling.metrics[0].scaleDownFactor | string | `"0.5"` |  |
-| runnerDeployments[0].automountServiceAccountToken | bool | `true` |  |
-| runnerDeployments[0].serviceAccount.create | bool | `true` |  |
+| runnerDeployments[0].runnerName | string | `"doge-basic-runner"` |  |
+| runnerDeployments[0].securityContext.fsGroup | int | `1001` |  |
 | runnerDeployments[0].serviceAccount.annotations."eks.amazonaws.com/role-arn" | string | `"arn:aws:iam::111122223333:role/doge-eks-cluster-actions-build-runner-s3-access-irsa-role"` |  |
+| runnerDeployments[0].serviceAccount.create | bool | `true` |  |
 | runnerDeployments[0].topologySpreadConstraints | object | `{}` |  |
+| runnerDeployments[0].volumeMounts[0].mountPath | string | `"/tmp"` |  |
+| runnerDeployments[0].volumeMounts[0].name | string | `"tmp"` |  |
+| runnerDeployments[0].volumes[0].emptyDir | object | `{}` |  |
+| runnerDeployments[0].volumes[0].name | string | `"tmp"` |  |
 
 ## Source Code
 

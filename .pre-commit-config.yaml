@@ -4,5 +4,5 @@ repos:
     hooks:
       - id: helm-docs
         args:
-          - --chart-search-root=charts/ghes-schedule-scanner
+          - --chart-search-root=charts
           - --template-files=ci/README.md.gotmpl

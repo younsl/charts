@@ -66,11 +66,11 @@ The following table lists the configurable parameters and their default values.
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| global.commonLabels | object | `{}` |  |
-| clusterRoles | object | `{}` |  |
 | clusterRoleBindings | object | `{}` |  |
-| roles | object | `{}` |  |
+| clusterRoles | object | `{}` |  |
+| global.commonLabels | object | `{}` |  |
 | roleBindings | object | `{}` |  |
+| roles | object | `{}` |  |
 
 ## Source Code
 

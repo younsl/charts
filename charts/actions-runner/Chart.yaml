@@ -16,3 +16,5 @@ annotations:
     This chart is deprecated. Please use the official Actions Runner Controller (ARC) instead:
     https://github.com/actions/actions-runner-controller
     ARC provides better integration with GitHub Actions and more features for managing self-hosted runners on Kubernetes.
+  "helm.sh/skip-test": "true"
+  "helm.sh/skip-test-reason": "Requires Actions Runner Controller CRDs to be installed"

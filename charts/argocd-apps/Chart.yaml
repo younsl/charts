@@ -20,3 +20,5 @@ annotations:
   artifacthub.io/changes: |
     - kind: fixed
       description: move ignoreApplicationDifferences block up a level to fix render
+  "helm.sh/skip-test": "true"
+  "helm.sh/skip-test-reason": "Requires ArgoCD to be installed"

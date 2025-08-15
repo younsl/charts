@@ -24,3 +24,5 @@ annotations:
   "artifacthub.io/links": |
     - name: Chart Source
       url: https://github.com/younsl/charts
+  "helm.sh/skip-test": "true"
+  "helm.sh/skip-test-reason": "Only RBAC rules, no runtime components to test"

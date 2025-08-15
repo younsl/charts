@@ -66,12 +66,12 @@ The following table lists the configurable parameters and their default values.
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| global | object | `[]` (See [values.yaml]) | Deploy Argo CD Applications within this helm release # Ref: https://github.com/argoproj/argo-cd/blob/master/docs/operator-manual/ |
 | applications | list | `[]` |  |
-| projects | list | `[]` (See [values.yaml]) | Deploy Argo CD Projects within this helm release # Ref: https://github.com/argoproj/argo-cd/blob/master/docs/operator-manual/ |
 | applicationsets | list | `[]` (See [values.yaml]) | Deploy Argo CD ApplicationSets within this helm release # Ref: https://argo-cd.readthedocs.io/en/stable/operator-manual/applicationset/ |
-| itemTemplates | list | `[]` (See [values.yaml]) | Deploy Argo CD Applications/ApplicationSets/Projects within this helm release # Ref: https://argo-cd.readthedocs.io/en/stable/operator-manual/applicationset/ |
 | extensions | list | `[]` (See [values.yaml]) | DEPRECATED - Please refer [Deprecation Notice](https://github.com/argoproj-labs/argocd-extensions?tab=readme-ov-file#deprecation-notice) for more info. # This function in tech preview stage, do expect unstability or breaking changes in newer versions. Bump image.tag if necessary. # Ref: https://github.com/argoproj-labs/argocd-extensions |
+| global | object | `[]` (See [values.yaml]) | Deploy Argo CD Applications within this helm release # Ref: https://github.com/argoproj/argo-cd/blob/master/docs/operator-manual/ |
+| itemTemplates | list | `[]` (See [values.yaml]) | Deploy Argo CD Applications/ApplicationSets/Projects within this helm release # Ref: https://argo-cd.readthedocs.io/en/stable/operator-manual/applicationset/ |
+| projects | list | `[]` (See [values.yaml]) | Deploy Argo CD Projects within this helm release # Ref: https://github.com/argoproj/argo-cd/blob/master/docs/operator-manual/ |
 
 ## Maintainers
 

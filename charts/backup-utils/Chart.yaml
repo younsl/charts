@@ -28,3 +28,5 @@ annotations:
   "artifacthub.io/links": |
     - name: Chart Source
       url: https://younsl.github.io/
+  "helm.sh/skip-test": "true"
+  "helm.sh/skip-test-reason": "CronJob with 500Gi PVC not suitable for Kind testing"

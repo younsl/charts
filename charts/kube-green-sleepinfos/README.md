@@ -66,10 +66,10 @@ The following table lists the configurable parameters and their default values.
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| nameOverride | string | chart name | String to partially override the chart name. |
-| fullnameOverride | string | release name | String to fully override the release name. |
-| commonLabels | list | `[]` | Common labels to add to all SleepInfo resources. |
 | commonAnnotations | list | `[]` | Common annotations to add to all SleepInfo resources. |
+| commonLabels | list | `[]` | Common labels to add to all SleepInfo resources. |
+| fullnameOverride | string | release name | String to fully override the release name. |
+| nameOverride | string | chart name | String to partially override the chart name. |
 | sleepInfos | object | `{}` | Map of namespaces to SleepInfo configurations. Each namespace can have multiple SleepInfo resources. |
 
 ## Source Code
