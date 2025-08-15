@@ -17,6 +17,9 @@ spec:
   {{- else }}
   {{- fail "Either podDisruptionBudget.minAvailable or podDisruptionBudget.maxUnavailable must be set when PDB is enabled." }}
   {{- end }}
+  {{- if .Values.podDisruptionBudget.unhealthyPodEvictionPolicy }}
+  unhealthyPodEvictionPolicy: {{ .Values.podDisruptionBudget.unhealthyPodEvictionPolicy }}
+  {{- end }}
   selector:
     matchLabels:
       {{- include "squid.selectorLabels" . | nindent 6 }}
