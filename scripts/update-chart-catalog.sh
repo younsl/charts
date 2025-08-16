@@ -23,14 +23,18 @@ helm install <release-name> oci://ghcr.io/younsl/charts/<chart-name> --version <
 
 ### Download chart locally
 
-You can download and extract charts to your local filesystem:
+First, query available versions using crane:
+
+```bash
+# List all available versions for a chart
+crane ls ghcr.io/younsl/charts/<chart-name>
+```
+
+Then download the desired version to local storage:
 
 ```bash
 # Download and extract the chart
 helm pull oci://ghcr.io/younsl/charts/<chart-name> --version <version> --untar
-
-# Download without extracting
-helm pull oci://ghcr.io/younsl/charts/<chart-name> --version <version>
 ```
 
 ## Available Charts
