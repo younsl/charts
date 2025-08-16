@@ -8,9 +8,9 @@ This is a Helm charts repository that distributes charts via OCI artifacts on Gi
 
 ## Available Charts
 
-- **actions-runner**: GitHub Actions self-hosted runner for Kubernetes
+- **actions-runner**: GitHub Actions self-hosted runner for Kubernetes (deprecated)
 - **argocd-apps**: Management of ArgoCD Applications and AppProjects via ApplicationSet
-- **backup-utils**: Kubernetes backup utilities with persistent state management
+- **backup-utils**: Kubernetes backup utilities with persistent state management (deprecated)
 - **karpenter-nodepool**: AWS Karpenter NodePool and EC2NodeClass resources for autoscaling
 - **kube-green-sleepinfos**: SleepInfo resources for kube-green to schedule resource hibernation
 - **rbac**: Kubernetes RBAC resources (ServiceAccount, ClusterRole, ClusterRoleBinding)
