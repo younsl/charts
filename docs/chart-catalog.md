@@ -28,15 +28,17 @@ helm pull oci://ghcr.io/younsl/charts/<chart-name> --version <version> --untar
 
 ## Available Charts
 
+This repository contains **7** Helm charts (5 active, 2 deprecated).
+
 | Chart Name | Version | App Version | Status | Description |
 |------------|---------|-------------|--------|-------------|
-| [actions-runner](https://github.com/younsl/charts/tree/main/charts/actions-runner) | 0.1.4 | - | ⚠️ Deprecated | A Helm chart for Kubernetes to deploy GitHub Actions runners include horizont... |
-| [argocd-apps](https://github.com/younsl/charts/tree/main/charts/argocd-apps) | 1.7.0 | - | ✅ Active | A Helm chart for managing additional Argo CD Applications and Projects |
-| [backup-utils](https://github.com/younsl/charts/tree/main/charts/backup-utils) | 0.4.2 | 3.15.1 | ⚠️ Deprecated | GitHub Enterprise Backup Utilities |
-| [karpenter-nodepool](https://github.com/younsl/charts/tree/main/charts/karpenter-nodepool) | 1.5.1 | 1.5.0 | ✅ Active | A Helm chart for Karpenter Node pool, it will create the NodePool and the Ec2... |
-| [kube-green-sleepinfos](https://github.com/younsl/charts/tree/main/charts/kube-green-sleepinfos) | 0.1.1 | 0.1.1 | ✅ Active | A Helm chart for managing kube-green SleepInfo resources. kube-green-sleepinf... |
-| [rbac](https://github.com/younsl/charts/tree/main/charts/rbac) | 0.2.1 | 0.2.1 | ✅ Active | Helm chart to define RBAC resources in the gitops way |
-| [squid](https://github.com/younsl/charts/tree/main/charts/squid) | 0.4.0 | 6.10 | ✅ Active | A Helm chart for Squid caching proxy |
+| [actions-runner](../charts/actions-runner) | 0.1.4 | - | ⚠️ Deprecated | A Helm chart for Kubernetes to deploy GitHub Actions runners include horizont... |
+| [argocd-apps](../charts/argocd-apps) | 1.7.0 | - | ✅ Active | A Helm chart for managing additional Argo CD Applications and Projects |
+| [backup-utils](../charts/backup-utils) | 0.4.2 | 3.15.1 | ⚠️ Deprecated | GitHub Enterprise Backup Utilities |
+| [karpenter-nodepool](../charts/karpenter-nodepool) | 1.5.1 | 1.5.0 | ✅ Active | A Helm chart for Karpenter Node pool, it will create the NodePool and the Ec2... |
+| [kube-green-sleepinfos](../charts/kube-green-sleepinfos) | 0.1.1 | 0.1.1 | ✅ Active | A Helm chart for managing kube-green SleepInfo resources. kube-green-sleepinf... |
+| [rbac](../charts/rbac) | 0.2.1 | 0.2.1 | ✅ Active | Helm chart to define RBAC resources in the gitops way |
+| [squid](../charts/squid) | 0.4.0 | 6.10 | ✅ Active | A Helm chart for Squid caching proxy |
 
 ## Chart Details
 
