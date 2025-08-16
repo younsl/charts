@@ -15,10 +15,22 @@ This catalog provides an overview of all Helm charts available in this repositor
 
 ## Installation
 
-All charts can be installed using:
+### Install directly from OCI registry
 
 ```bash
 helm install <release-name> oci://ghcr.io/younsl/charts/<chart-name> --version <version>
+```
+
+### Download chart locally
+
+You can download and extract charts to your local filesystem:
+
+```bash
+# Download and extract the chart
+helm pull oci://ghcr.io/younsl/charts/<chart-name> --version <version> --untar
+
+# Download without extracting
+helm pull oci://ghcr.io/younsl/charts/<chart-name> --version <version>
 ```
 
 ## Available Charts
