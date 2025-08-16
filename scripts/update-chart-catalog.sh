@@ -48,12 +48,12 @@ EOF
     
     for chart_yaml in "$CHARTS_DIR"/*/Chart.yaml; do
         if [ -f "$chart_yaml" ]; then
-            ((total_charts++))
+            total_charts=$((total_charts + 1))
             deprecated=$(yq eval '.deprecated // false' "$chart_yaml")
             if [ "$deprecated" = "true" ]; then
-                ((deprecated_charts++))
+                deprecated_charts=$((deprecated_charts + 1))
             else
-                ((active_charts++))
+                active_charts=$((active_charts + 1))
             fi
         fi
     done
