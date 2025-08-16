@@ -4,5 +4,6 @@ Collection of Helm charts maintained by [@younsl](https://github.com/younsl), di
 
 ## Documentation
 
+- [Chart Catalog](docs/chart-catalog.md) - Complete list of available Helm charts
 - [Installation](docs/installation.md) - Prerequisites and usage instructions
 - [OCI Background](docs/oci-background.md) - Why we use OCI for chart distribution
