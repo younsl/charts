@@ -64,7 +64,10 @@ EOF
             app_version=$(yq eval '.appVersion // ""' "$chart_yaml")
             deprecated=$(yq eval '.deprecated // false' "$chart_yaml")
             description=$(yq eval '.description' "$chart_yaml")
-            keywords=$(yq eval '.keywords | join(", ") // "-"' "$chart_yaml")
+            keywords=$(yq eval '.keywords // [] | join(", ")' "$chart_yaml")
+            if [ -z "$keywords" ] || [ "$keywords" = "null" ]; then
+                keywords="-"
+            fi
             deprecation_msg=$(yq eval '.annotations."helm.sh/deprecation-message" // ""' "$chart_yaml")
             
             if [ "$deprecated" = "true" ]; then
