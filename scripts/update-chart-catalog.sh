@@ -39,10 +39,30 @@ helm pull oci://ghcr.io/younsl/charts/<chart-name> --version <version> --untar
 
 ## Available Charts
 
-| Chart Name | Version | App Version | Status | Description |
-|------------|---------|-------------|--------|-------------|
 EOF
 
+    # Count total charts
+    total_charts=0
+    active_charts=0
+    deprecated_charts=0
+    
+    for chart_yaml in "$CHARTS_DIR"/*/Chart.yaml; do
+        if [ -f "$chart_yaml" ]; then
+            ((total_charts++))
+            deprecated=$(yq eval '.deprecated // false' "$chart_yaml")
+            if [ "$deprecated" = "true" ]; then
+                ((deprecated_charts++))
+            else
+                ((active_charts++))
+            fi
+        fi
+    done
+    
+    echo "This repository contains **$total_charts** Helm charts ($active_charts active, $deprecated_charts deprecated)."
+    echo ""
+    echo "| Chart Name | Version | App Version | Status | Description |"
+    echo "|------------|---------|-------------|--------|-------------|"
+    
     for chart_yaml in "$CHARTS_DIR"/*/Chart.yaml; do
         if [ -f "$chart_yaml" ]; then
             chart_dir=$(dirname "$chart_yaml")
@@ -64,7 +84,7 @@ EOF
                 description="${description:0:77}..."
             fi
             
-            echo "| [$name](https://github.com/younsl/charts/tree/main/charts/$chart_name) | $version | $app_version | $status | $description |"
+            echo "| [$name](../charts/$chart_name) | $version | $app_version | $status | $description |"
         fi
     done
 
