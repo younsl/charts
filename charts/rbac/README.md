@@ -8,31 +8,34 @@ Helm chart to define RBAC resources in the gitops way
 
 ## Installation
 
-### Add Helm repository
+### List available versions
+
+This chart is distributed via OCI registry, so you need to use `crane` instead of `helm search repo` to discover available versions:
 
 ```console
-helm repo add younsl https://younsl.github.io/
-helm repo update
+crane ls ghcr.io/younsl/charts/rbac
 ```
+
+If you don't have `crane` installed, you can install it with: `brew install crane`
 
 ### Install the chart
 
 Install the chart with the release name `rbac`:
 
 ```console
-helm install rbac younsl/rbac
+helm install rbac oci://ghcr.io/younsl/charts/rbac
 ```
 
 Install with custom values:
 
 ```console
-helm install rbac younsl/rbac -f values.yaml
+helm install rbac oci://ghcr.io/younsl/charts/rbac -f values.yaml
 ```
 
 Install a specific version:
 
 ```console
-helm install rbac younsl/rbac --version 0.3.0
+helm install rbac oci://ghcr.io/younsl/charts/rbac --version 0.3.0
 ```
 
 ### Install from local chart
@@ -40,7 +43,7 @@ helm install rbac younsl/rbac --version 0.3.0
 Download rbac chart and install from local directory:
 
 ```console
-helm pull younsl/rbac --untar --version 0.3.0
+helm pull oci://ghcr.io/younsl/charts/rbac --untar --version 0.3.0
 helm install rbac ./rbac
 ```
 
@@ -49,7 +52,7 @@ The `--untar` option downloads and unpacks the chart files into a directory for 
 ## Upgrade
 
 ```console
-helm upgrade rbac younsl/rbac
+helm upgrade rbac oci://ghcr.io/younsl/charts/rbac
 ```
 
 ## Uninstall

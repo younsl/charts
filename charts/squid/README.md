@@ -12,31 +12,34 @@ Kubernetes: `>=1.21.0-0`
 
 ## Installation
 
-### Add Helm repository
+### List available versions
+
+This chart is distributed via OCI registry, so you need to use `crane` instead of `helm search repo` to discover available versions:
 
 ```console
-helm repo add younsl https://younsl.github.io/
-helm repo update
+crane ls ghcr.io/younsl/charts/squid
 ```
+
+If you don't have `crane` installed, you can install it with: `brew install crane`
 
 ### Install the chart
 
 Install the chart with the release name `squid`:
 
 ```console
-helm install squid younsl/squid
+helm install squid oci://ghcr.io/younsl/charts/squid
 ```
 
 Install with custom values:
 
 ```console
-helm install squid younsl/squid -f values.yaml
+helm install squid oci://ghcr.io/younsl/charts/squid -f values.yaml
 ```
 
 Install a specific version:
 
 ```console
-helm install squid younsl/squid --version 0.4.0
+helm install squid oci://ghcr.io/younsl/charts/squid --version 0.4.0
 ```
 
 ### Install from local chart
@@ -44,7 +47,7 @@ helm install squid younsl/squid --version 0.4.0
 Download squid chart and install from local directory:
 
 ```console
-helm pull younsl/squid --untar --version 0.4.0
+helm pull oci://ghcr.io/younsl/charts/squid --untar --version 0.4.0
 helm install squid ./squid
 ```
 
@@ -53,7 +56,7 @@ The `--untar` option downloads and unpacks the chart files into a directory for 
 ## Upgrade
 
 ```console
-helm upgrade squid younsl/squid
+helm upgrade squid oci://ghcr.io/younsl/charts/squid
 ```
 
 ## Uninstall

@@ -16,31 +16,34 @@ See: https://docs.github.com/en/enterprise-server@latest/admin/backing-up-and-re
 
 ## Installation
 
-### Add Helm repository
+### List available versions
+
+This chart is distributed via OCI registry, so you need to use `crane` instead of `helm search repo` to discover available versions:
 
 ```console
-helm repo add younsl https://younsl.github.io/
-helm repo update
+crane ls ghcr.io/younsl/charts/backup-utils
 ```
+
+If you don't have `crane` installed, you can install it with: `brew install crane`
 
 ### Install the chart
 
 Install the chart with the release name `backup-utils`:
 
 ```console
-helm install backup-utils younsl/backup-utils
+helm install backup-utils oci://ghcr.io/younsl/charts/backup-utils
 ```
 
 Install with custom values:
 
 ```console
-helm install backup-utils younsl/backup-utils -f values.yaml
+helm install backup-utils oci://ghcr.io/younsl/charts/backup-utils -f values.yaml
 ```
 
 Install a specific version:
 
 ```console
-helm install backup-utils younsl/backup-utils --version 0.5.0
+helm install backup-utils oci://ghcr.io/younsl/charts/backup-utils --version 0.5.0
 ```
 
 ### Install from local chart
@@ -48,7 +51,7 @@ helm install backup-utils younsl/backup-utils --version 0.5.0
 Download backup-utils chart and install from local directory:
 
 ```console
-helm pull younsl/backup-utils --untar --version 0.5.0
+helm pull oci://ghcr.io/younsl/charts/backup-utils --untar --version 0.5.0
 helm install backup-utils ./backup-utils
 ```
 
@@ -57,7 +60,7 @@ The `--untar` option downloads and unpacks the chart files into a directory for 
 ## Upgrade
 
 ```console
-helm upgrade backup-utils younsl/backup-utils
+helm upgrade backup-utils oci://ghcr.io/younsl/charts/backup-utils
 ```
 
 ## Uninstall

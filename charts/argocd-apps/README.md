@@ -8,31 +8,34 @@ A Helm chart for managing additional Argo CD Applications and Projects
 
 ## Installation
 
-### Add Helm repository
+### List available versions
+
+This chart is distributed via OCI registry, so you need to use `crane` instead of `helm search repo` to discover available versions:
 
 ```console
-helm repo add younsl https://younsl.github.io/
-helm repo update
+crane ls ghcr.io/younsl/charts/argocd-apps
 ```
+
+If you don't have `crane` installed, you can install it with: `brew install crane`
 
 ### Install the chart
 
 Install the chart with the release name `argocd-apps`:
 
 ```console
-helm install argocd-apps younsl/argocd-apps
+helm install argocd-apps oci://ghcr.io/younsl/charts/argocd-apps
 ```
 
 Install with custom values:
 
 ```console
-helm install argocd-apps younsl/argocd-apps -f values.yaml
+helm install argocd-apps oci://ghcr.io/younsl/charts/argocd-apps -f values.yaml
 ```
 
 Install a specific version:
 
 ```console
-helm install argocd-apps younsl/argocd-apps --version 1.7.0
+helm install argocd-apps oci://ghcr.io/younsl/charts/argocd-apps --version 1.7.0
 ```
 
 ### Install from local chart
@@ -40,7 +43,7 @@ helm install argocd-apps younsl/argocd-apps --version 1.7.0
 Download argocd-apps chart and install from local directory:
 
 ```console
-helm pull younsl/argocd-apps --untar --version 1.7.0
+helm pull oci://ghcr.io/younsl/charts/argocd-apps --untar --version 1.7.0
 helm install argocd-apps ./argocd-apps
 ```
 
@@ -49,7 +52,7 @@ The `--untar` option downloads and unpacks the chart files into a directory for 
 ## Upgrade
 
 ```console
-helm upgrade argocd-apps younsl/argocd-apps
+helm upgrade argocd-apps oci://ghcr.io/younsl/charts/argocd-apps
 ```
 
 ## Uninstall

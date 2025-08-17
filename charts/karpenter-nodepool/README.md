@@ -8,31 +8,34 @@ A Helm chart for Karpenter Node pool, it will create the NodePool and the Ec2Nod
 
 ## Installation
 
-### Add Helm repository
+### List available versions
+
+This chart is distributed via OCI registry, so you need to use `crane` instead of `helm search repo` to discover available versions:
 
 ```console
-helm repo add younsl https://younsl.github.io/
-helm repo update
+crane ls ghcr.io/younsl/charts/karpenter-nodepool
 ```
+
+If you don't have `crane` installed, you can install it with: `brew install crane`
 
 ### Install the chart
 
 Install the chart with the release name `karpenter-nodepool`:
 
 ```console
-helm install karpenter-nodepool younsl/karpenter-nodepool
+helm install karpenter-nodepool oci://ghcr.io/younsl/charts/karpenter-nodepool
 ```
 
 Install with custom values:
 
 ```console
-helm install karpenter-nodepool younsl/karpenter-nodepool -f values.yaml
+helm install karpenter-nodepool oci://ghcr.io/younsl/charts/karpenter-nodepool -f values.yaml
 ```
 
 Install a specific version:
 
 ```console
-helm install karpenter-nodepool younsl/karpenter-nodepool --version 1.5.1
+helm install karpenter-nodepool oci://ghcr.io/younsl/charts/karpenter-nodepool --version 1.5.1
 ```
 
 ### Install from local chart
@@ -40,7 +43,7 @@ helm install karpenter-nodepool younsl/karpenter-nodepool --version 1.5.1
 Download karpenter-nodepool chart and install from local directory:
 
 ```console
-helm pull younsl/karpenter-nodepool --untar --version 1.5.1
+helm pull oci://ghcr.io/younsl/charts/karpenter-nodepool --untar --version 1.5.1
 helm install karpenter-nodepool ./karpenter-nodepool
 ```
 
@@ -49,7 +52,7 @@ The `--untar` option downloads and unpacks the chart files into a directory for 
 ## Upgrade
 
 ```console
-helm upgrade karpenter-nodepool younsl/karpenter-nodepool
+helm upgrade karpenter-nodepool oci://ghcr.io/younsl/charts/karpenter-nodepool
 ```
 
 ## Uninstall

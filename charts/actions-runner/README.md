@@ -20,31 +20,34 @@ self-hosted runners on Kubernetes.
 
 ## Installation
 
-### Add Helm repository
+### List available versions
+
+This chart is distributed via OCI registry, so you need to use `crane` instead of `helm search repo` to discover available versions:
 
 ```console
-helm repo add younsl https://younsl.github.io/
-helm repo update
+crane ls ghcr.io/younsl/charts/actions-runner
 ```
+
+If you don't have `crane` installed, you can install it with: `brew install crane`
 
 ### Install the chart
 
 Install the chart with the release name `actions-runner`:
 
 ```console
-helm install actions-runner younsl/actions-runner
+helm install actions-runner oci://ghcr.io/younsl/charts/actions-runner
 ```
 
 Install with custom values:
 
 ```console
-helm install actions-runner younsl/actions-runner -f values.yaml
+helm install actions-runner oci://ghcr.io/younsl/charts/actions-runner -f values.yaml
 ```
 
 Install a specific version:
 
 ```console
-helm install actions-runner younsl/actions-runner --version 0.1.4
+helm install actions-runner oci://ghcr.io/younsl/charts/actions-runner --version 0.1.4
 ```
 
 ### Install from local chart
@@ -52,7 +55,7 @@ helm install actions-runner younsl/actions-runner --version 0.1.4
 Download actions-runner chart and install from local directory:
 
 ```console
-helm pull younsl/actions-runner --untar --version 0.1.4
+helm pull oci://ghcr.io/younsl/charts/actions-runner --untar --version 0.1.4
 helm install actions-runner ./actions-runner
 ```
 
@@ -61,7 +64,7 @@ The `--untar` option downloads and unpacks the chart files into a directory for 
 ## Upgrade
 
 ```console
-helm upgrade actions-runner younsl/actions-runner
+helm upgrade actions-runner oci://ghcr.io/younsl/charts/actions-runner
 ```
 
 ## Uninstall

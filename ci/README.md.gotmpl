@@ -12,31 +12,34 @@
 
 ## Installation
 
-### Add Helm repository
+### List available versions
+
+This chart is distributed via OCI registry, so you need to use `crane` instead of `helm search repo` to discover available versions:
 
 ```console
-helm repo add younsl https://younsl.github.io/
-helm repo update
+crane ls ghcr.io/younsl/charts/{{ template "chart.name" . }}
 ```
+
+If you don't have `crane` installed, you can install it with: `brew install crane`
 
 ### Install the chart
 
 Install the chart with the release name `{{ template "chart.name" . }}`:
 
 ```console
-helm install {{ template "chart.name" . }} younsl/{{ template "chart.name" . }}
+helm install {{ template "chart.name" . }} oci://ghcr.io/younsl/charts/{{ template "chart.name" . }}
 ```
 
 Install with custom values:
 
 ```console
-helm install {{ template "chart.name" . }} younsl/{{ template "chart.name" . }} -f values.yaml
+helm install {{ template "chart.name" . }} oci://ghcr.io/younsl/charts/{{ template "chart.name" . }} -f values.yaml
 ```
 
 Install a specific version:
 
 ```console
-helm install {{ template "chart.name" . }} younsl/{{ template "chart.name" . }} --version {{ template "chart.version" . }}
+helm install {{ template "chart.name" . }} oci://ghcr.io/younsl/charts/{{ template "chart.name" . }} --version {{ template "chart.version" . }}
 ```
 
 ### Install from local chart
@@ -44,7 +47,7 @@ helm install {{ template "chart.name" . }} younsl/{{ template "chart.name" . }} 
 Download {{ template "chart.name" . }} chart and install from local directory:
 
 ```console
-helm pull younsl/{{ template "chart.name" . }} --untar --version {{ template "chart.version" . }}
+helm pull oci://ghcr.io/younsl/charts/{{ template "chart.name" . }} --untar --version {{ template "chart.version" . }}
 helm install {{ template "chart.name" . }} ./{{ template "chart.name" . }}
 ```
 
@@ -53,7 +56,7 @@ The `--untar` option downloads and unpacks the chart files into a directory for 
 ## Upgrade
 
 ```console
-helm upgrade {{ template "chart.name" . }} younsl/{{ template "chart.name" . }}
+helm upgrade {{ template "chart.name" . }} oci://ghcr.io/younsl/charts/{{ template "chart.name" . }}
 ```
 
 ## Uninstall

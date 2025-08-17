@@ -8,31 +8,34 @@ A Helm chart for managing kube-green SleepInfo resources. kube-green-sleepinfos 
 
 ## Installation
 
-### Add Helm repository
+### List available versions
+
+This chart is distributed via OCI registry, so you need to use `crane` instead of `helm search repo` to discover available versions:
 
 ```console
-helm repo add younsl https://younsl.github.io/
-helm repo update
+crane ls ghcr.io/younsl/charts/kube-green-sleepinfos
 ```
+
+If you don't have `crane` installed, you can install it with: `brew install crane`
 
 ### Install the chart
 
 Install the chart with the release name `kube-green-sleepinfos`:
 
 ```console
-helm install kube-green-sleepinfos younsl/kube-green-sleepinfos
+helm install kube-green-sleepinfos oci://ghcr.io/younsl/charts/kube-green-sleepinfos
 ```
 
 Install with custom values:
 
 ```console
-helm install kube-green-sleepinfos younsl/kube-green-sleepinfos -f values.yaml
+helm install kube-green-sleepinfos oci://ghcr.io/younsl/charts/kube-green-sleepinfos -f values.yaml
 ```
 
 Install a specific version:
 
 ```console
-helm install kube-green-sleepinfos younsl/kube-green-sleepinfos --version 0.1.1
+helm install kube-green-sleepinfos oci://ghcr.io/younsl/charts/kube-green-sleepinfos --version 0.1.1
 ```
 
 ### Install from local chart
@@ -40,7 +43,7 @@ helm install kube-green-sleepinfos younsl/kube-green-sleepinfos --version 0.1.1
 Download kube-green-sleepinfos chart and install from local directory:
 
 ```console
-helm pull younsl/kube-green-sleepinfos --untar --version 0.1.1
+helm pull oci://ghcr.io/younsl/charts/kube-green-sleepinfos --untar --version 0.1.1
 helm install kube-green-sleepinfos ./kube-green-sleepinfos
 ```
 
@@ -49,7 +52,7 @@ The `--untar` option downloads and unpacks the chart files into a directory for 
 ## Upgrade
 
 ```console
-helm upgrade kube-green-sleepinfos younsl/kube-green-sleepinfos
+helm upgrade kube-green-sleepinfos oci://ghcr.io/younsl/charts/kube-green-sleepinfos
 ```
 
 ## Uninstall
