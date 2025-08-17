@@ -37,7 +37,7 @@ This repository contains **7** Helm charts (5 active, 2 deprecated).
 | [backup-utils](../charts/backup-utils) | 0.5.0 | 3.15.4 | ⚠️ Deprecated | GitHub Enterprise Backup Utilities |
 | [karpenter-nodepool](../charts/karpenter-nodepool) | 1.5.1 | 1.5.0 | ✅ Active | A Helm chart for Karpenter Node pool, it will create the NodePool and the Ec2... |
 | [kube-green-sleepinfos](../charts/kube-green-sleepinfos) | 0.1.1 | 0.1.1 | ✅ Active | A Helm chart for managing kube-green SleepInfo resources. kube-green-sleepinf... |
-| [rbac](../charts/rbac) | 0.2.1 | 0.2.1 | ✅ Active | Helm chart to define RBAC resources in the gitops way |
+| [rbac](../charts/rbac) | 0.3.0 | 0.3.0 | ✅ Active | Helm chart to define RBAC resources in the gitops way |
 | [squid](../charts/squid) | 0.4.0 | 6.10 | ✅ Active | A Helm chart for Squid caching proxy |
 
 ## Chart Details
@@ -85,8 +85,8 @@ A Helm chart for managing kube-green SleepInfo resources. kube-green-sleepinfos 
 
 ### rbac
 **Status:** ✅ Active  
-**Version:** 0.2.1  
-**App Version:** 0.2.1  
+**Version:** 0.3.0  
+**App Version:** 0.3.0  
 **Keywords:** cluster-security, rbac, clusterRole, clusterRoleBinding, role, roleBinding  
 
 Helm chart to define RBAC resources in the gitops way
