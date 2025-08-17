@@ -89,33 +89,6 @@ run_chart_test() {
     return 0
 }
 
-generate_summary() {
-    {
-        echo "## 🧪 Helm Charts Test Summary (Kubernetes ${KUBERNETES_VERSION})"
-        echo ""
-        echo "| Status | Chart | Details |"
-        echo "|--------|-------|---------|"
-        
-        for item in "${TESTED[@]}"; do
-            echo "| ✅ Tested | ${item} | Passed all tests |"
-        done
-        
-        for item in "${SKIPPED[@]}"; do
-            IFS='|' read -r name reason <<< "${item}"
-            echo "| ⏭️ Skipped | ${name} | ${reason} |"
-        done
-        
-        for item in "${FAILED[@]}"; do
-            echo "| ❌ Failed | ${item} | Test execution failed |"
-        done
-        
-        echo ""
-        echo "### Summary"
-        echo "- ✅ Tested: ${#TESTED[@]}"
-        echo "- ⏭️ Skipped: ${#SKIPPED[@]}"
-        echo "- ❌ Failed: ${#FAILED[@]}"
-    } >> "${GITHUB_STEP_SUMMARY}"
-}
 
 # Main execution
 main() {
@@ -141,8 +114,6 @@ main() {
         test_chart "${chart}" || true
     done
     
-    # Generate summary
-    generate_summary
     
     # Exit with error if any charts failed
     [ ${#FAILED[@]} -eq 0 ] || exit 1
