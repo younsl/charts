@@ -1,6 +1,6 @@
 # charts
 
-Collection of Helm charts maintained by [@younsl](https://github.com/younsl), distributed via OCI artifacts on GitHub Container Registry for a modern, secure chart distribution approach.
+Collection of Helm charts maintained by [@younsl](https://github.com/younsl), distributed via OCI artifacts on GitHub Container Registry for a modern, secure chart distribution approach. All charts are tested on the latest 3 minor versions of Kubernetes using Kind clusters. For details, see [.github/workflows/release-helm-chart.yml](.github/workflows/release-helm-chart.yml).
 
 ## Documentation
 
