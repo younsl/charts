@@ -1,0 +1,57 @@
+# Test both nameOverride and fullnameOverride together
+# This tests edge cases and ensures proper precedence
+
+nameOverride: "access-control"
+fullnameOverride: "enterprise-rbac"
+
+global:
+  commonLabels:
+    environment: production
+    team: security
+    compliance: required
+
+clusterRoles:
+  security-auditor:
+    enabled: true
+    labels:
+      test-type: combined-override
+      compliance: required
+    rules:
+    - apiGroups: ["rbac.authorization.k8s.io"]
+      resources: ["roles", "rolebindings", "clusterroles", "clusterrolebindings"]
+      verbs: ["get", "list", "watch"]
+    - apiGroups: [""]
+      resources: ["serviceaccounts"]
+      verbs: ["get", "list", "watch"]
+
+  network-policy-reader:
+    enabled: true
+    labels:
+      test-type: combined-override
+    rules:
+    - apiGroups: ["networking.k8s.io"]
+      resources: ["networkpolicies"]
+      verbs: ["get", "list", "watch"]
+
+clusterRoleBindings:
+  security-auditor:
+    enabled: true
+    labels:
+      test-type: combined-override
+    roleRef:
+      kind: ClusterRole
+      name: security-auditor
+    subjects:
+      kind: Group
+      name: security-auditors
+
+  network-policy-reader:
+    enabled: true
+    labels:
+      test-type: combined-override
+    roleRef:
+      kind: ClusterRole
+      name: network-policy-reader
+    subjects:
+      kind: Group
+      name: network-operators

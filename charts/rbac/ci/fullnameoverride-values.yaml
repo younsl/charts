@@ -1,0 +1,55 @@
+# Test fullnameOverride functionality
+# This tests the fullname helper function behavior
+
+fullnameOverride: "my-custom-rbac"
+
+global:
+  commonLabels:
+    environment: test
+    team: platform
+
+clusterRoles:
+  admin-reader:
+    enabled: true
+    labels:
+      test-type: fullname-override
+    rules:
+    - apiGroups: ["*"]
+      resources: ["*"]
+      verbs: ["get", "list", "watch"]
+
+clusterRoleBindings:
+  admin-reader:
+    enabled: true
+    labels:
+      test-type: fullname-override
+    roleRef:
+      kind: ClusterRole
+      name: admin-reader
+    subjects:
+      kind: Group
+      name: platform-admins
+
+roles:
+  development:
+    namespace-admin:
+      enabled: true
+      labels:
+        test-type: fullname-override
+      rules:
+      - apiGroups: ["", "apps", "extensions"]
+        resources: ["*"]
+        verbs: ["*"]
+
+roleBindings:
+  development:
+    namespace-admin:
+      enabled: true
+      labels:
+        test-type: fullname-override
+      roleRef:
+        kind: Role
+        name: namespace-admin
+      subjects:
+      - kind: Group
+        name: dev-team

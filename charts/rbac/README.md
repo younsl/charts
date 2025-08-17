@@ -1,6 +1,6 @@
 # rbac
 
-![Version: 0.2.1](https://img.shields.io/badge/Version-0.2.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.2.1](https://img.shields.io/badge/AppVersion-0.2.1-informational?style=flat-square)
+![Version: 0.3.0](https://img.shields.io/badge/Version-0.3.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.3.0](https://img.shields.io/badge/AppVersion-0.3.0-informational?style=flat-square)
 
 Helm chart to define RBAC resources in the gitops way
 
@@ -32,7 +32,7 @@ helm install rbac younsl/rbac -f values.yaml
 Install a specific version:
 
 ```console
-helm install rbac younsl/rbac --version 0.2.1
+helm install rbac younsl/rbac --version 0.3.0
 ```
 
 ### Install from local chart
@@ -40,7 +40,7 @@ helm install rbac younsl/rbac --version 0.2.1
 Download rbac chart and install from local directory:
 
 ```console
-helm pull younsl/rbac --untar --version 0.2.1
+helm pull younsl/rbac --untar --version 0.3.0
 helm install rbac ./rbac
 ```
 
@@ -68,7 +68,9 @@ The following table lists the configurable parameters and their default values.
 |-----|------|---------|-------------|
 | clusterRoleBindings | object | `{}` |  |
 | clusterRoles | object | `{}` |  |
+| fullnameOverride | string | `""` |  |
 | global.commonLabels | object | `{}` |  |
+| nameOverride | string | `""` |  |
 | roleBindings | object | `{}` |  |
 | roles | object | `{}` |  |
 

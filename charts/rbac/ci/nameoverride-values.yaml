@@ -1,0 +1,50 @@
+# Test nameOverride functionality
+# This should change app.kubernetes.io/name label from "rbac" to "security"
+
+nameOverride: "security"
+
+clusterRoles:
+  pod-viewer:
+    enabled: true
+    labels:
+      test-type: name-override
+    rules:
+    - apiGroups: [""]
+      resources: ["pods", "services"]
+      verbs: ["get", "list", "watch"]
+
+clusterRoleBindings:
+  pod-viewer:
+    enabled: true
+    labels:
+      test-type: name-override
+    roleRef:
+      kind: ClusterRole
+      name: pod-viewer
+    subjects:
+      kind: Group
+      name: security-team
+
+roles:
+  monitoring:
+    log-reader:
+      enabled: true
+      labels:
+        test-type: name-override
+      rules:
+      - apiGroups: [""]
+        resources: ["pods/log"]
+        verbs: ["get", "list"]
+
+roleBindings:
+  monitoring:
+    log-reader:
+      enabled: true
+      labels:
+        test-type: name-override
+      roleRef:
+        kind: Role
+        name: log-reader
+      subjects:
+      - kind: User
+        name: monitoring-user

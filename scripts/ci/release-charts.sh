@@ -16,17 +16,19 @@ release_chart() {
     local chart_name="${1}"
     local chart_dir="charts/${chart_name}"
     local chart_version
+    local app_version
     
     chart_version=$(yq eval '.version' "${chart_dir}/Chart.yaml")
+    app_version=$(yq eval '.appVersion // "N/A"' "${chart_dir}/Chart.yaml")
     
-    echo "📦 Processing ${chart_name}:${chart_version}"
+    echo "📦 Processing ${chart_name}:${chart_version} (app: ${app_version})"
     
     # Check if version already exists in OCI registry
     local oci_url="oci://${REGISTRY}/${REPOSITORY_OWNER}/charts/${chart_name}"
     echo "🔍 Checking if ${chart_name}:${chart_version} already exists..."
     
     if helm pull "${oci_url}" --version "${chart_version}" --destination /tmp/check 2>/dev/null; then
-        SKIPPED+=("${chart_name}|${chart_version}|Version already exists in registry")
+        SKIPPED+=("${chart_name}|${chart_version}|${app_version}|Version already exists in registry")
         echo "⏭️ Skipped ${chart_name}:${chart_version} (version already exists in registry)"
         rm -rf /tmp/check
         return 0
@@ -35,7 +37,7 @@ release_chart() {
     
     # Package the chart
     if ! helm package "${chart_dir}" --destination /tmp 2>/dev/null; then
-        FAILED+=("${chart_name}|-|Failed to package")
+        FAILED+=("${chart_name}|-|${app_version}|Failed to package")
         return 1
     fi
     
@@ -45,10 +47,10 @@ release_chart() {
         "oci://${REGISTRY}/${REPOSITORY_OWNER}/charts" 2>&1)
     
     if [ $? -eq 0 ]; then
-        RELEASED+=("${chart_name}|${chart_version}|oci://${REGISTRY}/${REPOSITORY_OWNER}/charts/${chart_name}")
+        RELEASED+=("${chart_name}|${chart_version}|${app_version}|oci://${REGISTRY}/${REPOSITORY_OWNER}/charts/${chart_name}")
         echo "✅ Released ${chart_name}:${chart_version}"
     else
-        FAILED+=("${chart_name}|${chart_version}|Push failed: ${output}")
+        FAILED+=("${chart_name}|${chart_version}|${app_version}|Push failed: ${output}")
         echo "❌ Failed ${chart_name}:${chart_version}: ${output}"
         return 1
     fi
@@ -61,22 +63,22 @@ generate_summary() {
     {
         echo "## 📦 Helm Charts Release Summary"
         echo ""
-        echo "| Status | Chart | Version | Details |"
-        echo "|--------|-------|---------|---------|"
+        echo "| Status | Chart | Version | App Version | Details |"
+        echo "|--------|-------|---------|-------------|---------|"
         
         for item in "${RELEASED[@]}"; do
-            IFS='|' read -r name version location <<< "${item}"
-            echo "| ✅ Released | ${name} | ${version} | \`${location}\` |"
+            IFS='|' read -r name version app_version location <<< "${item}"
+            echo "| ✅ Released | ${name} | ${version} | ${app_version} | \`${location}\` |"
         done
         
         for item in "${SKIPPED[@]}"; do
-            IFS='|' read -r name version reason <<< "${item}"
-            echo "| ⏭️ Skipped | ${name} | ${version} | ${reason} |"
+            IFS='|' read -r name version app_version reason <<< "${item}"
+            echo "| ⏭️ Skipped | ${name} | ${version} | ${app_version} | ${reason} |"
         done
         
         for item in "${FAILED[@]}"; do
-            IFS='|' read -r name version reason <<< "${item}"
-            echo "| ❌ Failed | ${name} | ${version} | ${reason} |"
+            IFS='|' read -r name version app_version reason <<< "${item}"
+            echo "| ❌ Failed | ${name} | ${version} | ${app_version} | ${reason} |"
         done
         
         echo ""

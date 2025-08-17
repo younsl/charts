@@ -10,8 +10,8 @@ keywords:
 - role
 - roleBinding
 type: application
-version: 0.2.1
-appVersion: 0.2.1
+version: 0.3.0
+appVersion: 0.3.0
 home: https://kubernetes.io/docs/reference/access-authn-authz/rbac/
 sources:
   - https://github.com/younsl/younsl.github.io
@@ -24,5 +24,4 @@ annotations:
   "artifacthub.io/links": |
     - name: Chart Source
       url: https://github.com/younsl/charts
-  "helm.sh/skip-test": "true"
-  "helm.sh/skip-test-reason": "Only RBAC rules, no runtime components to test"
+  "helm.sh/skip-test": "false"
