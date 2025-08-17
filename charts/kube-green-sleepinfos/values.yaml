@@ -1,0 +1,56 @@
+# -- String to partially override the chart name.
+# @default -- chart name
+nameOverride: ~
+
+# -- String to fully override the release name.
+# @default -- release name
+fullnameOverride: ~
+
+# -- Common labels to add to all SleepInfo resources.
+# @default -- `[]`
+commonLabels: []
+  ## Add common labels to all sleepinfos
+  # app: kube-green-sleepinfos
+  # environment: dev
+
+# -- Common annotations to add to all SleepInfo resources.
+# @default -- `[]`
+commonAnnotations: []
+  ## Add common annotations to all sleepinfos
+  # my-common-annotation: my-common-value
+
+# -- Map of namespaces to SleepInfo configurations. Each namespace can have multiple SleepInfo resources.
+# @default -- `{}`
+sleepInfos: {}
+  ## Create multiple sleepinfos per namespace
+  # default:
+  #   # -- List of SleepInfo resources to create in the namespace
+  #   - name: "sleepinfo-example-1"
+  #     # -- Weekdays when the sleep schedule is active (1=Monday, 7=Sunday). Can be a range (e.g., "1-5") or specific days (e.g., "1,3,5")
+  #     weekdays: "1-5"
+  #     # -- Time when resources should be put to sleep (HH:MM format)
+  #     sleepAt: "20:00"
+  #     # -- Time when resources should wake up (HH:MM format)
+  #     wakeUpAt: "08:00"
+  #     # -- Timezone for the sleep schedule (e.g., "Europe/Rome", "America/New_York")
+  #     timeZone: "Europe/Rome"
+  #     # -- List of resources to manage. Each resource requires a kind and optional labelSelector
+  #     resources:
+  #       - kind: Deployment
+  #         labelSelector:
+  #           matchLabels:
+  #             kube-green.dev/weekday-only: "true"
+  #       - kind: StatefulSet
+  #         labelSelector:
+  #           matchLabels:
+
+  ## Create multiple sleepinfos per namespace
+  # app-namespace:
+  #   - name: "sleepinfo-example-1"
+  #     # -- Annotations to add to this specific SleepInfo resource
+  #     annotations:
+  #       my-annotation: "my-value"
+  #     weekdays: "1-5"
+  #     sleepAt: "20:00"
+  #     wakeUpAt: "08:00"
+  #     timeZone: "Europe/Rome"
