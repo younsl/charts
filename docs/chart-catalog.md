@@ -110,4 +110,4 @@ For contributing to these charts, please refer to the [main repository](https://
 
 ---
 
-*Last updated: 2025-08-16*
+*Last updated: 2025-08-17*
