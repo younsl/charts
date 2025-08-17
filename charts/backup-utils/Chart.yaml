@@ -1,0 +1,39 @@
+apiVersion: v2
+name: backup-utils
+description: |
+  GitHub Enterprise Backup Utilities
+  
+  ⚠️ DEPRECATION NOTICE: GitHub Enterprise Server 3.17 introduced a Built-in Backup Service as a Preview Feature.
+  
+  The Built-in Backup Service is recommended over backup-utils. Note that backup-utils may be deprecated in future releases.
+  
+  See: https://docs.github.com/en/enterprise-server@latest/admin/backing-up-and-restoring-your-instance/backup-service-for-github-enterprise-server/about-the-backup-service-for-github-enterprise-server
+deprecated: true
+keywords:
+  - github-enterprise-server
+  - github-enterprise
+  - backup-utils
+  - backup
+  - disaster-recovery
+type: application
+version: 0.4.2
+appVersion: 3.15.1
+home: https://github.com/github/backup-utils
+sources:
+  - https://github.com/github/backup-utils
+  - https://github.com/younsl/younsl.github.io
+maintainers:
+  - name: younsl
+    email: cysl@kakao.com
+    url: https://github.com/younsl
+annotations:
+  "helm.sh/deprecation-message": |
+    GitHub Enterprise Server 3.17 introduced a Built-in Backup Service as a Preview Feature. 
+    The Built-in Backup Service is recommended over backup-utils. 
+    Note that backup-utils may be deprecated in future releases.
+    See: https://docs.github.com/en/enterprise-server@latest/admin/backing-up-and-restoring-your-instance/backup-service-for-github-enterprise-server/about-the-backup-service-for-github-enterprise-server
+  "artifacthub.io/links": |
+    - name: Chart Source
+      url: https://younsl.github.io/
+  "helm.sh/skip-test": "true"
+  "helm.sh/skip-test-reason": "CronJob with 500Gi PVC not suitable for Kind testing"
