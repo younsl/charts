@@ -3,7 +3,7 @@
 set -e
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-ROOT_DIR="$(dirname "$SCRIPT_DIR")"
+ROOT_DIR="$(dirname "$(dirname "$SCRIPT_DIR")")"
 CATALOG_FILE="$ROOT_DIR/docs/chart-catalog.md"
 CHARTS_DIR="$ROOT_DIR/charts"
 
@@ -174,5 +174,9 @@ fi
 echo "Using yq version: $YQ_VERSION"
 
 echo "Generating chart catalog..."
+
+# Ensure docs directory exists
+mkdir -p "$(dirname "$CATALOG_FILE")"
+
 generate_catalog > "$CATALOG_FILE"
 echo "Chart catalog updated at: $CATALOG_FILE"
