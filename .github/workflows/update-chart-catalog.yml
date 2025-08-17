@@ -31,7 +31,7 @@ jobs:
 
       - name: Update chart catalog
         run: |
-          bash scripts/update-chart-catalog.sh
+          bash scripts/ci/update-chart-catalog.sh
 
       - name: Check for changes
         id: verify-changed-files

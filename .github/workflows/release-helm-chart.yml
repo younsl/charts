@@ -40,14 +40,13 @@ jobs:
           scripts/ci/detect-changed-charts.sh
 
   test:
-    name: Test ${{ matrix.chart }} on K8s ${{ matrix.kubernetes-version }}
+    name: Test Charts on K8s ${{ matrix.kubernetes-version }}
     needs: detect-changes
     if: needs.detect-changes.outputs.has_changes == 'true'
     runs-on: ubuntu-24.04
     strategy:
       fail-fast: false
       matrix:
-        chart: ${{ fromJson(needs.detect-changes.outputs.charts) }}
         kubernetes-version: ['1.30.13', '1.31.9', '1.32.5']
     permissions:
       contents: read
@@ -63,8 +62,17 @@ jobs:
       - name: Install yq
         uses: mikefarah/yq@v4.47.1
 
-      - name: Lint Chart
-        run: helm lint charts/${{ matrix.chart }}
+      - name: Lint Charts
+        env:
+          CHARTS_TO_LINT: ${{ needs.detect-changes.outputs.charts }}
+        run: |
+          # Parse charts from JSON array and lint each one
+          readarray -t charts < <(echo "${CHARTS_TO_LINT}" | jq -r '.[]')
+          
+          for chart in "${charts[@]}"; do
+            echo "🔍 Linting chart: ${chart}"
+            helm lint "charts/${chart}"
+          done
 
       - name: Create kind config
         run: |
@@ -91,20 +99,19 @@ jobs:
           node_image: kindest/node:v${{ matrix.kubernetes-version }}
           config: /tmp/kind-config.yaml
 
-      - name: Test Chart
+      - name: Test All Changed Charts
+        env:
+          CHARTS_TO_TEST: ${{ needs.detect-changes.outputs.charts }}
+          KUBERNETES_VERSION: ${{ matrix.kubernetes-version }}
         run: |
-          chmod +x scripts/ci/test-chart.sh
-          scripts/ci/test-chart.sh "${{ matrix.chart }}"
+          chmod +x scripts/ci/test-charts.sh
+          scripts/ci/test-charts.sh
 
   release:
     name: Release Charts to OCI Registry
     needs: [detect-changes, test]
     if: needs.detect-changes.outputs.has_changes == 'true'
     runs-on: ubuntu-24.04
-    strategy:
-      fail-fast: false
-      matrix:
-        chart: ${{ fromJson(needs.detect-changes.outputs.charts) }}
     permissions:
       contents: read
       packages: write
@@ -127,7 +134,9 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Release ${{ matrix.chart }}
+      - name: Release All Changed Charts
+        env:
+          CHARTS_TO_RELEASE: ${{ needs.detect-changes.outputs.charts }}
         run: |
-          chmod +x scripts/ci/release-chart.sh
-          scripts/ci/release-chart.sh "${{ matrix.chart }}"
+          chmod +x scripts/ci/release-charts.sh
+          scripts/ci/release-charts.sh
