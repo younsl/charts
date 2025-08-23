@@ -445,3 +445,21 @@ dashboard:
   grafanaNamespace: ""
   # A resource-specific annotations for ConfigMap
   annotations: {}
+
+# Extra manifests to deploy additional Kubernetes resources
+# Supports tpl function for dynamic values
+extraManifests: []
+  # - apiVersion: v1
+  #   kind: ConfigMap
+  #   metadata:
+  #     name: '{{ include "squid.fullname" . }}-extra'
+  #     namespace: '{{ .Release.Namespace }}'
+  #   data:
+  #     key: value
+  # - |
+  #   apiVersion: v1
+  #   kind: Secret
+  #   metadata:
+  #     name: {{ include "squid.fullname" . }}-secret
+  #   stringData:
+  #     password: {{ .Values.squidExporter.squidPassword | quote }}
