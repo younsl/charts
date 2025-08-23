@@ -100,7 +100,7 @@ The following table lists the configurable parameters and their default values.
 | dnsPolicy | string | `"ClusterFirst"` |  |
 | env | list | `[]` |  |
 | envFrom | list | `[]` |  |
-| extraManifests | list | `[]` |  |
+| extraManifests | list | `[]` | Extra manifests to deploy additional Kubernetes resources Supports tpl function for dynamic values |
 | fullnameOverride | string | `""` |  |
 | image.pullPolicy | string | `"IfNotPresent"` |  |
 | image.repository | string | `"ubuntu/squid"` |  |

@@ -446,7 +446,7 @@ dashboard:
   # A resource-specific annotations for ConfigMap
   annotations: {}
 
-# Extra manifests to deploy additional Kubernetes resources
+# -- Extra manifests to deploy additional Kubernetes resources
 # Supports tpl function for dynamic values
 extraManifests: []
   # - apiVersion: v1
