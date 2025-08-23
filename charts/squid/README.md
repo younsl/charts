@@ -1,6 +1,6 @@
 # squid
 
-![Version: 0.4.0](https://img.shields.io/badge/Version-0.4.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 6.10](https://img.shields.io/badge/AppVersion-6.10-informational?style=flat-square)
+![Version: 0.5.0](https://img.shields.io/badge/Version-0.5.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 6.10](https://img.shields.io/badge/AppVersion-6.10-informational?style=flat-square)
 
 A Helm chart for Squid caching proxy
 
@@ -39,7 +39,7 @@ helm install squid oci://ghcr.io/younsl/charts/squid -f values.yaml
 Install a specific version:
 
 ```console
-helm install squid oci://ghcr.io/younsl/charts/squid --version 0.4.0
+helm install squid oci://ghcr.io/younsl/charts/squid --version 0.5.0
 ```
 
 ### Install from local chart
@@ -47,7 +47,7 @@ helm install squid oci://ghcr.io/younsl/charts/squid --version 0.4.0
 Download squid chart and install from local directory:
 
 ```console
-helm pull oci://ghcr.io/younsl/charts/squid --untar --version 0.4.0
+helm pull oci://ghcr.io/younsl/charts/squid --untar --version 0.5.0
 helm install squid ./squid
 ```
 
@@ -100,6 +100,7 @@ The following table lists the configurable parameters and their default values.
 | dnsPolicy | string | `"ClusterFirst"` |  |
 | env | list | `[]` |  |
 | envFrom | list | `[]` |  |
+| extraManifests | list | `[]` | Extra manifests to deploy additional Kubernetes resources Supports tpl function for dynamic values |
 | fullnameOverride | string | `""` |  |
 | image.pullPolicy | string | `"IfNotPresent"` |  |
 | image.repository | string | `"ubuntu/squid"` |  |
