@@ -69,13 +69,13 @@ The following table lists the configurable parameters and their default values.
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| clusterRoleBindings | object | `{}` |  |
-| clusterRoles | object | `{}` |  |
+| nameOverride | string | `""` |  |
 | fullnameOverride | string | `""` |  |
 | global.commonLabels | object | `{}` |  |
-| nameOverride | string | `""` |  |
-| roleBindings | object | `{}` |  |
+| clusterRoles | object | `{}` |  |
+| clusterRoleBindings | object | `{}` |  |
 | roles | object | `{}` |  |
+| roleBindings | object | `{}` |  |
 
 ## Source Code
 

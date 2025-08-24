@@ -163,6 +163,14 @@ resources:
     cpu: 50m
     memory: 128Mi
 
+# Container resize policy for in-place resource updates
+# See: https://kubernetes.io/docs/tasks/configure-pod-container/resize-container-resources/
+resizePolicy: []
+  # - resourceName: cpu
+  #   restartPolicy: NotRequired
+  # - resourceName: memory
+  #   restartPolicy: RestartContainer
+
 nodeSelector: {}
 
 tolerations: []
@@ -420,6 +428,13 @@ squidExporter:
     requests:
       cpu: 10m
       memory: 32Mi
+  # Container resize policy for in-place resource updates
+  # See: https://kubernetes.io/docs/tasks/configure-pod-container/resize-container-resources/
+  resizePolicy: []
+    # - resourceName: cpu
+    #   restartPolicy: NotRequired
+    # - resourceName: memory
+    #   restartPolicy: RestartContainer
   # Squid connection settings
   squidHostname: localhost
   # If not specified squidPort, defaults to .Values.service.targetPort

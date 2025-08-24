@@ -6,3 +6,4 @@ repos:
         args:
           - --chart-search-root=charts
           - --template-files=ci/README.md.gotmpl
+          - --sort-values-order=file

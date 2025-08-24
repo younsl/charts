@@ -100,6 +100,10 @@ spec:
           resources:
             {{- toYaml . | nindent 12 }}
           {{- end }}
+          {{- with .Values.resizePolicy }}
+          resizePolicy:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
           volumeMounts:
             - name: squid-config
               mountPath: /etc/squid/squid.conf
@@ -162,6 +166,10 @@ spec:
             periodSeconds: 5
           {{- with .Values.squidExporter.resources }}
           resources:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
+          {{- with .Values.squidExporter.resizePolicy }}
+          resizePolicy:
             {{- toYaml . | nindent 12 }}
           {{- end }}
         {{- end }}
