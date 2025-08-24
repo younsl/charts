@@ -10,10 +10,10 @@ This is a Helm charts repository that distributes charts via OCI artifacts on Gi
 
 ### Active Charts
 - **argocd-apps** (v1.7.0): Management of ArgoCD Applications and AppProjects via ApplicationSet
-- **karpenter-nodepool** (v1.5.1): AWS Karpenter NodePool and EC2NodeClass resources for autoscaling
+- **karpenter-nodepool** (v1.5.1): AWS Karpenter NodePool and EC2NodeClass resources for autoscaling with overprovisioning support
 - **kube-green-sleepinfos** (v0.1.1): SleepInfo resources for kube-green to schedule resource hibernation
-- **rbac** (v0.2.1): Kubernetes RBAC resources (ServiceAccount, ClusterRole, ClusterRoleBinding)
-- **squid** (v0.4.0): Squid caching proxy with Grafana dashboard integration
+- **rbac** (v0.3.0): Kubernetes RBAC resources (ServiceAccount, ClusterRole, ClusterRoleBinding) - only chart with CI tests enabled
+- **squid** (v0.6.0): Squid caching proxy with Grafana dashboard integration and extra manifests support
 
 ### Deprecated Charts
 - **actions-runner** (v0.1.4): GitHub Actions self-hosted runner for Kubernetes (deprecated - use Actions Runner Controller)
@@ -28,6 +28,9 @@ make docs
 
 # Generate docs for specific chart (uses ci/README.md.gotmpl template)
 helm-docs --chart-search-root charts/<chart-name> --template-files=ci/README.md.gotmpl
+
+# Update chart catalog documentation
+scripts/ci/update-chart-catalog.sh
 ```
 
 ### Linting and Validation
@@ -53,7 +56,7 @@ helm test test-release
 helm install test-release charts/<chart-name> -f charts/<chart-name>/ci/test-values.yaml
 
 # Use CI script for comprehensive testing (mimics GitHub Actions)
-CHARTS_TO_TEST='["<chart-name>"]' KUBERNETES_VERSION="1.32.5" scripts/ci/test-charts.sh
+CHARTS_TO_TEST='["<chart-name>"]' KUBERNETES_VERSION="1.33.2" scripts/ci/test-charts.sh
 ```
 
 ### Chart Discovery and Registry Operations
@@ -93,6 +96,9 @@ scripts/ci/release-charts.sh
 
 # Update chart catalog documentation
 scripts/ci/update-chart-catalog.sh
+
+# Clean commit history (maintenance utility)
+scripts/commit-history-cleaner.sh
 ```
 
 ## Architecture and Structure
@@ -100,6 +106,9 @@ scripts/ci/update-chart-catalog.sh
 ### Directory Layout
 - `charts/`: Contains all Helm charts, each in its own directory
 - `.github/workflows/`: CI/CD pipelines for automated testing and releases
+- `scripts/ci/`: Automation scripts for testing, releasing, and documentation
+- `docs/`: Repository documentation including chart catalog and OCI background
+- `ci/`: Shared templates for documentation generation
 - Each chart follows standard Helm structure:
   - `Chart.yaml`: Chart metadata and dependencies
   - `values.yaml`: Default configuration values
@@ -109,12 +118,27 @@ scripts/ci/update-chart-catalog.sh
 
 ### CI/CD Pipeline
 The repository uses GitHub Actions for:
-1. **Pull Request Validation**: PR title format enforcement (`[charts/<chart-name>] description`)
+1. **Pull Request Validation**: 
+   - PR title format enforcement (`[charts/<chart-name>] description`)
+   - Automated commenting on invalid PR titles
+   - Regex validation: `^\\[charts\\/[a-z0-9-]+\\]`
+
 2. **Release Process**: Triggered by Chart.yaml changes or manual dispatch
-   - Multi-version testing on Kubernetes 1.30.13, 1.31.9, 1.32.5
+   - Multi-version testing on Kubernetes 1.31.9, 1.32.5, 1.33.2
    - Packages and pushes charts to OCI registry (ghcr.io/younsl/charts)
    - Smart change detection via `scripts/ci/detect-changed-charts.sh`
-3. **Documentation**: Auto-generates chart catalog and README files using helm-docs
+   - Version duplicate checking against OCI registry
+   - GitHub Actions step summaries for release tracking
+   - Atomic installations with automatic rollback on failure
+
+3. **Documentation**: 
+   - Auto-generates chart catalog and README files using helm-docs
+   - Chart catalog workflow runs on push to main branch
+   - Uses shared gotmpl template for consistent documentation
+
+4. **Maintenance**:
+   - Automated workflow run cleanup (daily at 1 AM UTC)
+   - Dependabot for dependency updates with automatic reviewer assignment
 
 ### Chart Development Guidelines
 - All charts require Helm 3.8.0+ and Kubernetes 1.21.0+
@@ -122,6 +146,7 @@ The repository uses GitHub Actions for:
 - Each chart includes comprehensive values documentation
 - Test values are provided in `ci/` directory for validation
 - Charts follow semantic versioning
+- CI uses Helm v3.18.0 and yq v4.47.1 for processing
 
 ## Key Technical Details
 
@@ -130,11 +155,13 @@ Charts are published to `ghcr.io/younsl/charts` as OCI artifacts. This provides:
 - Better security with container registry authentication
 - Improved performance with parallel layer downloads
 - Integration with existing container workflows
+- Version duplicate prevention via registry queries
 
 ### Testing Strategy
 - Unit tests: Template rendering validation
-- Integration tests: Installation in Kind clusters
+- Integration tests: Installation in Kind clusters with custom API server tuning
 - CI tests: Automated validation on pull requests
+- Only `rbac` chart has full CI tests enabled (other charts require external dependencies)
 
 ### Chart Testing and CI Behavior
 Charts can control CI testing behavior using annotations in Chart.yaml:
@@ -147,18 +174,21 @@ annotations:
 The CI testing process:
 1. Detects changed charts via git diff on Chart.yaml files
 2. Runs `helm lint` validation
-3. Creates Kind cluster with custom configuration
+3. Creates Kind cluster with custom configuration (API server performance tuning)
 4. Performs dry-run validation
-5. Installs chart using ci/test-values.yaml (if present)
-6. Runs `helm test` if test resources exist
-7. Cleans up test resources
+5. Discovers and runs all test files matching `charts/<chart-name>/ci/*.yaml`
+6. Installs chart using discovered test values
+7. Runs `helm test` if test resources exist and skip-test is false
+8. Captures comprehensive logs and results
+9. Cleans up test resources
 
 ### Special Considerations
 - **actions-runner**: Requires GitHub PAT for runner registration (deprecated)
 - **argocd-apps**: Manages ArgoCD CRDs, requires ArgoCD to be installed
-- **karpenter-nodepool**: AWS-specific, requires Karpenter controller
+- **karpenter-nodepool**: AWS-specific, requires Karpenter controller, includes overprovisioning with dummy deployments
 - **kube-green-sleepinfos**: Requires kube-green operator
-- **squid**: Includes Grafana dashboard ConfigMap for monitoring
+- **rbac**: Only chart with full CI testing enabled (skip-test: false)
+- **squid**: Includes Grafana dashboard ConfigMap and extra-manifests.yaml template for additional resources
 
 ## Best Practice References
 
@@ -182,7 +212,8 @@ When working with this repository:
 4. Test installation with dry-run before actual deployment
 5. Use OCI registry commands for distribution, not traditional repo commands
 6. For PRs, ensure title follows format: `[charts/<chart-name>] description`
-7. CI will automatically test on Kubernetes 1.30.13, 1.31.9, 1.32.5
+7. CI will automatically test on Kubernetes 1.31.9, 1.32.5, 1.33.2
+8. Check for version duplicates in OCI registry before releasing
 
 ## Troubleshooting
 
@@ -191,15 +222,30 @@ When working with this repository:
 - **Documentation not updating**: Ensure `make docs` was run and ci/README.md.gotmpl template is correct
 - **Release pipeline fails**: Verify Chart.yaml version bump and OCI registry authentication
 - **PR validation fails**: Check PR title format matches `[charts/<chart-name>] description`
+- **Version already exists**: Chart version already published to OCI registry, bump version in Chart.yaml
 
 ### Debugging Commands
 ```bash
 # Test specific chart locally like CI does
-CHARTS_TO_TEST='["chart-name"]' KUBERNETES_VERSION="1.32.5" scripts/ci/test-charts.sh
+CHARTS_TO_TEST='["chart-name"]' KUBERNETES_VERSION="1.33.2" scripts/ci/test-charts.sh
 
 # Check what changes CI would detect
 scripts/ci/detect-changed-charts.sh
 
 # Verify chart can be packaged
 helm package charts/<chart-name> --destination /tmp
+
+# Check if version exists in registry
+crane ls ghcr.io/younsl/charts/<chart-name> | grep <version>
 ```
+
+## Repository Maintenance
+
+### Automated Processes
+- **Workflow cleanup**: Runs daily at 1 AM UTC to clean old workflow runs
+- **Dependabot updates**: Automatic dependency updates for GitHub Actions
+- **Chart catalog generation**: Auto-updates on push to main branch
+
+### Manual Maintenance
+- **Commit history cleanup**: Use `scripts/commit-history-cleaner.sh` for git history maintenance
+- **Chart deprecation**: Update Chart.yaml with deprecated: true and update documentation
