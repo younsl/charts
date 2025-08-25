@@ -8,14 +8,11 @@ on:
       - 'charts/**/README.md.gotmpl'
       - 'ci/README.md.gotmpl'
 
-env:
-  HELM_DOCS_VERSION: "v1.14.2"
-
 jobs:
   helm-docs-check:
     runs-on: ubuntu-24.04
     container:
-      image: jnorwood/helm-docs:${{ env.HELM_DOCS_VERSION }}
+      image: jnorwood/helm-docs:v1.14.2
     steps:
       - name: Checkout
         uses: actions/checkout@v4
