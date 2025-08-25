@@ -17,14 +17,13 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
+      - name: Install dependencies
+        run: |
+          apk add --no-cache git make
+
       - name: Run helm-docs
         run: |
-          for chart in charts/*; do
-            if [ -f "$chart/Chart.yaml" ]; then
-              echo "Generating docs for $chart using common ci/README.md.gotmpl"
-              helm-docs --chart-search-root "$chart" --template-files="ci/README.md.gotmpl" --sort-values-order file --log-level info
-            fi
-          done
+          make docs
 
       - name: Check for uncommitted changes
         run: |
