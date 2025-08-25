@@ -1,0 +1,44 @@
+# Test values for extraManifests feature
+extraManifests:
+  # Test with a ConfigMap using Helm templating
+  - apiVersion: v1
+    kind: ConfigMap
+    metadata:
+      name: "{{ .Release.Name }}-extra-config"
+      namespace: "{{ .Release.Namespace }}"
+      labels:
+        app.kubernetes.io/name: "{{ include \"rbac.name\" . }}"
+        app.kubernetes.io/instance: "{{ .Release.Name }}"
+        helm.sh/chart: "{{ include \"rbac.chart\" . }}"
+        app.kubernetes.io/managed-by: "{{ .Release.Service }}"
+    data:
+      release-name: "{{ .Release.Name }}"
+      namespace: "{{ .Release.Namespace }}"
+      chart-version: "{{ .Chart.Version }}"
+      test-key: "test-value"
+  
+  # Test with a Secret using base64 encoding
+  - apiVersion: v1
+    kind: Secret
+    metadata:
+      name: "{{ .Release.Name }}-extra-secret"
+      namespace: "{{ .Release.Namespace }}"
+      labels:
+        app.kubernetes.io/name: "{{ include \"rbac.name\" . }}"
+        app.kubernetes.io/instance: "{{ .Release.Name }}"
+    type: Opaque
+    data:
+      username: "{{ \"admin\" | b64enc }}"
+      password: "{{ \"test-password\" | b64enc }}"
+  
+  # Test with a ServiceAccount
+  - apiVersion: v1
+    kind: ServiceAccount
+    metadata:
+      name: "{{ .Release.Name }}-extra-sa"
+      namespace: "{{ .Release.Namespace }}"
+      labels:
+        app.kubernetes.io/name: "{{ include \"rbac.name\" . }}"
+        app.kubernetes.io/instance: "{{ .Release.Name }}"
+      annotations:
+        test-annotation: "This is created via extraManifests"

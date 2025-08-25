@@ -1,6 +1,6 @@
 # rbac
 
-![Version: 0.3.0](https://img.shields.io/badge/Version-0.3.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.3.0](https://img.shields.io/badge/AppVersion-0.3.0-informational?style=flat-square)
+![Version: 0.4.0](https://img.shields.io/badge/Version-0.4.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 0.4.0](https://img.shields.io/badge/AppVersion-0.4.0-informational?style=flat-square)
 
 Helm chart to define RBAC resources in the gitops way
 
@@ -35,7 +35,7 @@ helm install rbac oci://ghcr.io/younsl/charts/rbac -f values.yaml
 Install a specific version:
 
 ```console
-helm install rbac oci://ghcr.io/younsl/charts/rbac --version 0.3.0
+helm install rbac oci://ghcr.io/younsl/charts/rbac --version 0.4.0
 ```
 
 ### Install from local chart
@@ -43,7 +43,7 @@ helm install rbac oci://ghcr.io/younsl/charts/rbac --version 0.3.0
 Download rbac chart and install from local directory:
 
 ```console
-helm pull oci://ghcr.io/younsl/charts/rbac --untar --version 0.3.0
+helm pull oci://ghcr.io/younsl/charts/rbac --untar --version 0.4.0
 helm install rbac ./rbac
 ```
 
@@ -76,6 +76,7 @@ The following table lists the configurable parameters and their default values.
 | clusterRoleBindings | object | `{}` |  |
 | roles | object | `{}` |  |
 | roleBindings | object | `{}` |  |
+| extraManifests | list | `[]` |  |
 
 ## Source Code
 

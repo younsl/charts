@@ -260,3 +260,24 @@ roleBindings: {}
   #     subjects:
   #     - kind: Group
   #       name: datadog-agent-maintainer
+
+#---------------------------------
+# Extra Manifests
+#---------------------------------
+## -- Extra manifests to deploy as an array. Each item can be a raw YAML manifest or use Helm templating.
+extraManifests: []
+  # - apiVersion: v1
+  #   kind: ConfigMap
+  #   metadata:
+  #     name: extra-configmap
+  #     namespace: {{ .Release.Namespace }}
+  #   data:
+  #     key: value
+  # - apiVersion: v1
+  #   kind: Secret
+  #   metadata:
+  #     name: {{ .Release.Name }}-extra-secret
+  #     namespace: {{ .Release.Namespace }}
+  #   type: Opaque
+  #   data:
+  #     password: {{ "mysecret" | b64enc }}
