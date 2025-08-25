@@ -1,12 +1,6 @@
 name: PR Helm Docs Check
 
-on:
-  pull_request:
-    paths:
-      - 'charts/**/Chart.yaml'
-      - 'charts/**/values.yaml'
-      - 'charts/**/README.md.gotmpl'
-      - 'ci/README.md.gotmpl'
+on: [pull_request]
 
 jobs:
   helm-docs-check:
