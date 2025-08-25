@@ -19,7 +19,11 @@ jobs:
 
       - name: Install dependencies
         run: |
-          apk add --no-cache git make
+          apk add --no-cache make
+
+      - name: Save original README files
+        run: |
+          find charts -name "README.md" -exec cp {} {}.orig \;
 
       - name: Run helm-docs
         run: |
@@ -27,14 +31,21 @@ jobs:
 
       - name: Check for uncommitted changes
         run: |
-          if [ -n "$(git status --porcelain)" ]; then
+          CHANGED=0
+          for file in $(find charts -name "README.md"); do
+            if [ -f "${file}.orig" ]; then
+              if ! diff -q "${file}.orig" "${file}" >/dev/null 2>&1; then
+                CHANGED=1
+                echo "❌ Changed file: ${file}"
+                echo "Diff:"
+                diff -u "${file}.orig" "${file}" || true
+                echo ""
+              fi
+            fi
+          done
+          
+          if [ ${CHANGED} -eq 1 ]; then
             echo "❌ Error: helm-docs has not been run. Please run 'make docs' and commit the changes."
-            echo ""
-            echo "Changed files:"
-            git status --porcelain
-            echo ""
-            echo "Diff:"
-            git diff
             exit 1
           else
             echo "✅ Success: All documentation is up to date."
