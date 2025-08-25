@@ -1,14 +1,17 @@
-## -- Provide a name in place of `rbac` for `app:` labels
+# -- Provide a name in place of `rbac` for `app:` labels
 nameOverride: ""
 
-## -- Provide a name to substitute for the full names of resources
+# -- Provide a name to substitute for the full names of resources
 fullnameOverride: ""
 
 #-----------------------------------------
 # Global values
 #-----------------------------------------
+# -- Global values
+# @default -- See below
 global:
-  ## -- Common labels for RBAC resources
+  # -- Common labels for RBAC resources
+  # @default -- `{}`
   commonLabels: {}
   # commonLabels:
   #   github.com/organization-name: funny-company
@@ -18,14 +21,18 @@ global:
 #-----------------------------------------
 # multiple "clusterRole" resource
 #-----------------------------------------
+# -- Map of ClusterRole resources to create. Each key represents a ClusterRole name.
+# @default -- `{}`
 clusterRoles: {}
-  # ## -- Name of clusterRole resource
   # pod-maintainer-developer:
-  #   ## -- Whether to create clusterRole resource
+  #   ## -- Whether to create this specific ClusterRole
+  #   ## @default -- `true`
   #   enabled: true
-  #   ## -- Labels for clusterRole resource
+  #   ## -- Additional labels for the ClusterRole
+  #   ## @default -- `{}`
   #   labels: {}
-  #   ## -- Rules for clusterRole resource
+  #   ## -- List of policy rules for the ClusterRole
+  #   ## @default -- See example
   #   rules:
   #   - apiGroups:
   #     - keda.sh
@@ -104,15 +111,17 @@ clusterRoles: {}
   #     - patch
   #     - update
 
-  # ## -- Name of clusterRole resource
   # security-audit:
-  #   ## -- Whether to create clusterRole resource
+  #   ## -- Whether to create this specific ClusterRole
+  #   ## @default -- `true`
   #   enabled: true
-  #   ## -- Labels for clusterRole resource
+  #   ## -- Additional labels for the ClusterRole
+  #   ## @default -- See example
   #   labels:
   #     funny-jira.atlassian.net/issue-number: FUN-1234
   #     funny-jira.atlassian.net/requestor: johndoe
-  #   ## -- Rules for clusterRole resource
+  #   ## -- List of policy rules for the ClusterRole
+  #   ## @default -- See example
   #   rules:
   #   - apiGroups:
   #     - rbac.authorization.k8s.io
@@ -143,35 +152,43 @@ clusterRoles: {}
 #-----------------------------------------
 # multiple "clusterRoleBinding" resource
 #-----------------------------------------
+# -- Map of ClusterRoleBinding resources to create. Each key represents a ClusterRoleBinding name.
+# @default -- `{}`
 clusterRoleBindings: {}
-  # ## -- Name of clusterRoleBinding resource
   # pod-maintainer-developer:
-  #   ## -- Whether to create clusterRoleBinding resource
+  #   ## -- Whether to create this specific ClusterRoleBinding
+  #   ## @default -- `true`
   #   enabled: true
-  #   ## -- Labels for clusterRoleBinding resource
+  #   ## -- Additional labels for the ClusterRoleBinding
+  #   ## @default -- `{}`
   #   labels: {}
-  #   ## -- roleRef for clusterRoleBinding resource
+  #   ## -- Reference to the ClusterRole
+  #   ## @default -- See example
   #   roleRef:
   #     kind: ClusterRole
   #     name: pod-maintainer-developer
-  #   ## -- subjects for clusterRoleBinding
+  #   ## -- Subjects to bind to the ClusterRole
+  #   ## @default -- See example
   #   subjects:
   #     kind: Group
   #     name: system:developers
 
-  # ## -- Name of clusterRoleBinding resource
   # security-audit:
-  #   ## -- Whether to create clusterRoleBinding resource
+  #   ## -- Whether to create this specific ClusterRoleBinding
+  #   ## @default -- `true`
   #   enabled: true
-  #   ## -- Labels for clusterRoleBinding resource
+  #   ## -- Additional labels for the ClusterRoleBinding
+  #   ## @default -- See example
   #   labels:
   #     funny-jira.atlassian.net/issue-number: FUN-1234
   #     funny-jira.atlassian.net/requestor: johndoe
-  #   ## -- roleRef for clusterRoleBinding resource
+  #   ## -- Reference to the ClusterRole
+  #   ## @default -- See example
   #   roleRef:
   #     kind: ClusterRole
   #     name: security-audit
-  #   ## -- subjects for clusterRoleBinding
+  #   ## -- Subjects to bind to the ClusterRole
+  #   ## @default -- See example
   #   subjects:
   #     kind: Group
   #     name: security-engineers
@@ -179,16 +196,19 @@ clusterRoleBindings: {}
 #---------------------------------
 # multiple "role" resource
 #---------------------------------
+# -- Map of namespaced Roles to create. Each key represents a namespace.
+# @default -- `{}`
 roles: {}
-  ## -- Namespace (role and roleBinding is namespace scoped resource.)
   # datadog:
-  #   ## -- Name of role resource
-  #   datadog-agent-maintainer:
-  #     ## -- Whether to create role resource
+  #   # datadog-agent-maintainer:
+  #     ## -- Whether to create this specific Role
+  #     ## @default -- `true`
   #     enabled: true
-  #     ## -- Labels for role resource
+  #     ## -- Additional labels for the Role
+  #     ## @default -- `{}`
   #     labels: {}
-  #     ## -- Rules for role resource
+  #     ## -- List of policy rules for the Role
+  #     ## @default -- See example
   #     rules:
   #     - apiGroups:
   #       - ""
@@ -243,20 +263,24 @@ roles: {}
 #---------------------------------
 # multiple "roleBinding" resource
 #---------------------------------
+# -- Map of namespaced RoleBindings to create. Each key represents a namespace.
+# @default -- `{}`
 roleBindings: {}
-  ## -- Namespace (role and roleBinding is namespace scoped resource.)
   # datadog:
-  #   ## -- Name of roleBinding resource
-  #   datadog-agent-maintainer:
-  #     ## -- Whether to create roleBinding resource
+  #   # datadog-agent-maintainer:
+  #     ## -- Whether to create this specific RoleBinding
+  #     ## @default -- `true`
   #     enabled: true
-  #     ## -- Labels for roleBinding resource
+  #     ## -- Additional labels for the RoleBinding
+  #     ## @default -- `{}`
   #     labels: {}
-  #     ## -- roleRef for roleBinding resource
+  #     ## -- Reference to the Role
+  #     ## @default -- See example
   #     roleRef:
   #       kind: Role
   #       name: datadog-agent-maintainer
-  #     ## -- subjects for roleBinding
+  #     ## -- Subjects to bind to the Role
+  #     ## @default -- See example
   #     subjects:
   #     - kind: Group
   #       name: datadog-agent-maintainer
@@ -264,7 +288,7 @@ roleBindings: {}
 #---------------------------------
 # Extra Manifests
 #---------------------------------
-## -- Extra manifests to deploy as an array. Each item can be a raw YAML manifest or use Helm templating.
+# -- Extra manifests to deploy as an array. Each item can be a raw YAML manifest or use Helm templating.
 extraManifests: []
   # - apiVersion: v1
   #   kind: ConfigMap

@@ -69,14 +69,15 @@ The following table lists the configurable parameters and their default values.
 
 | Key | Type | Default | Description |
 |-----|------|---------|-------------|
-| nameOverride | string | `""` |  |
-| fullnameOverride | string | `""` |  |
-| global.commonLabels | object | `{}` |  |
-| clusterRoles | object | `{}` |  |
-| clusterRoleBindings | object | `{}` |  |
-| roles | object | `{}` |  |
-| roleBindings | object | `{}` |  |
-| extraManifests | list | `[]` |  |
+| nameOverride | string | `""` | Provide a name in place of `rbac` for `app:` labels |
+| fullnameOverride | string | `""` | Provide a name to substitute for the full names of resources |
+| global | object | See below | Global values |
+| global.commonLabels | object | `{}` | Common labels for RBAC resources |
+| clusterRoles | object | `{}` | Map of ClusterRole resources to create. Each key represents a ClusterRole name. |
+| clusterRoleBindings | object | `{}` | Map of ClusterRoleBinding resources to create. Each key represents a ClusterRoleBinding name. |
+| roles | object | `{}` | Map of namespaced Roles to create. Each key represents a namespace. |
+| roleBindings | object | `{}` | Map of namespaced RoleBindings to create. Each key represents a namespace. |
+| extraManifests | list | `[]` | Extra manifests to deploy as an array. Each item can be a raw YAML manifest or use Helm templating. |
 
 ## Source Code
 
