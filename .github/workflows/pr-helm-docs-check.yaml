@@ -18,7 +18,13 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Run helm-docs
-        run: make docs
+        run: |
+          for chart in charts/*; do
+            if [ -f "$chart/Chart.yaml" ]; then
+              echo "Generating docs for $chart using common ci/README.md.gotmpl"
+              helm-docs --chart-search-root "$chart" --template-files="ci/README.md.gotmpl" --sort-values-order file --log-level info
+            fi
+          done
 
       - name: Check for uncommitted changes
         run: |
