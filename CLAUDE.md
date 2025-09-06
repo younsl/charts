@@ -26,11 +26,11 @@ This is a Helm charts repository that distributes charts via OCI artifacts on Gi
 # Generate documentation for all charts using shared template
 make docs
 
-# Generate docs for specific chart (uses ci/README.md.gotmpl template)
-helm-docs --chart-search-root charts/<chart-name> --template-files=ci/README.md.gotmpl
+# Generate docs for specific chart (uses .github/templates/README.md.gotmpl template)
+helm-docs --chart-search-root charts/<chart-name> --template-files=.github/templates/README.md.gotmpl
 
 # Update chart catalog documentation
-scripts/ci/update-chart-catalog.sh
+.github/scripts/update-chart-catalog.sh
 ```
 
 ### Linting and Validation
@@ -56,7 +56,7 @@ helm test test-release
 helm install test-release charts/<chart-name> -f charts/<chart-name>/ci/test-values.yaml
 
 # Use CI script for comprehensive testing (mimics GitHub Actions)
-CHARTS_TO_TEST='["<chart-name>"]' KUBERNETES_VERSION="1.33.2" scripts/ci/test-charts.sh
+CHARTS_TO_TEST='["<chart-name>"]' KUBERNETES_VERSION="1.33.2" .github/scripts/test-charts.sh
 ```
 
 ### Chart Discovery and Registry Operations
@@ -89,13 +89,13 @@ helm install <release-name> oci://ghcr.io/younsl/charts/<chart-name> \
 ### CI/CD Operations
 ```bash
 # Detect changed charts (like CI does)
-scripts/ci/detect-changed-charts.sh
+.github/scripts/detect-changed-charts.sh
 
 # Run chart release process
-scripts/ci/release-charts.sh
+.github/scripts/release-charts.sh
 
 # Update chart catalog documentation
-scripts/ci/update-chart-catalog.sh
+.github/scripts/update-chart-catalog.sh
 
 # Clean commit history (maintenance utility)
 scripts/commit-history-cleaner.sh
@@ -106,9 +106,10 @@ scripts/commit-history-cleaner.sh
 ### Directory Layout
 - `charts/`: Contains all Helm charts, each in its own directory
 - `.github/workflows/`: CI/CD pipelines for automated testing and releases
-- `scripts/ci/`: Automation scripts for testing, releasing, and documentation
+- `.github/scripts/`: Automation scripts for testing, releasing, and documentation
+- `.github/templates/`: Shared templates for documentation generation (helm-docs)
+- `scripts/`: Utility scripts (e.g., commit history cleaner)
 - `docs/`: Repository documentation including chart catalog and OCI background
-- `ci/`: Shared templates for documentation generation
 - Each chart follows standard Helm structure:
   - `Chart.yaml`: Chart metadata and dependencies
   - `values.yaml`: Default configuration values
@@ -126,7 +127,7 @@ The repository uses GitHub Actions for:
 2. **Release Process**: Triggered by Chart.yaml changes or manual dispatch
    - Multi-version testing on Kubernetes 1.31.9, 1.32.5, 1.33.2
    - Packages and pushes charts to OCI registry (ghcr.io/younsl/charts)
-   - Smart change detection via `scripts/ci/detect-changed-charts.sh`
+   - Smart change detection via `.github/scripts/detect-changed-charts.sh`
    - Version duplicate checking against OCI registry
    - GitHub Actions step summaries for release tracking
    - Atomic installations with automatic rollback on failure
@@ -134,7 +135,7 @@ The repository uses GitHub Actions for:
 3. **Documentation**: 
    - Auto-generates chart catalog and README files using helm-docs
    - Chart catalog workflow runs on push to main branch
-   - Uses shared gotmpl template for consistent documentation
+   - Uses shared gotmpl template (.github/templates/README.md.gotmpl) for consistent documentation
 
 4. **Maintenance**:
    - Automated workflow run cleanup (daily at 1 AM UTC)
@@ -219,7 +220,7 @@ When working with this repository:
 
 ### Common Issues
 - **Chart testing fails**: Check if chart has skip-test annotation or requires external dependencies
-- **Documentation not updating**: Ensure `make docs` was run and ci/README.md.gotmpl template is correct
+- **Documentation not updating**: Ensure `make docs` was run and .github/templates/README.md.gotmpl template is correct
 - **Release pipeline fails**: Verify Chart.yaml version bump and OCI registry authentication
 - **PR validation fails**: Check PR title format matches `[charts/<chart-name>] description`
 - **Version already exists**: Chart version already published to OCI registry, bump version in Chart.yaml
@@ -227,10 +228,10 @@ When working with this repository:
 ### Debugging Commands
 ```bash
 # Test specific chart locally like CI does
-CHARTS_TO_TEST='["chart-name"]' KUBERNETES_VERSION="1.33.2" scripts/ci/test-charts.sh
+CHARTS_TO_TEST='["chart-name"]' KUBERNETES_VERSION="1.33.2" .github/scripts/test-charts.sh
 
 # Check what changes CI would detect
-scripts/ci/detect-changed-charts.sh
+.github/scripts/detect-changed-charts.sh
 
 # Verify chart can be packaged
 helm package charts/<chart-name> --destination /tmp

@@ -36,8 +36,8 @@ jobs:
         env:
           INPUT_CHART: ${{ github.event.inputs.chart }}
         run: |
-          chmod +x scripts/ci/detect-changed-charts.sh
-          scripts/ci/detect-changed-charts.sh
+          chmod +x .github/scripts/detect-changed-charts.sh
+          .github/scripts/detect-changed-charts.sh
 
   test:
     name: Test Charts on K8s ${{ matrix.kubernetes-version }}
@@ -104,8 +104,8 @@ jobs:
           CHARTS_TO_TEST: ${{ needs.detect-changes.outputs.charts }}
           KUBERNETES_VERSION: ${{ matrix.kubernetes-version }}
         run: |
-          chmod +x scripts/ci/test-charts.sh
-          scripts/ci/test-charts.sh
+          chmod +x .github/scripts/test-charts.sh
+          .github/scripts/test-charts.sh
 
   release:
     name: Release Charts to OCI Registry
@@ -138,5 +138,5 @@ jobs:
         env:
           CHARTS_TO_RELEASE: ${{ needs.detect-changes.outputs.charts }}
         run: |
-          chmod +x scripts/ci/release-charts.sh
-          scripts/ci/release-charts.sh
+          chmod +x .github/scripts/release-charts.sh
+          .github/scripts/release-charts.sh

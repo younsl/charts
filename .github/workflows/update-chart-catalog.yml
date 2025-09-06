@@ -6,7 +6,7 @@ on:
       - main
     paths:
       - 'charts/*/Chart.yaml'
-      - 'scripts/ci/update-chart-catalog.sh'
+      - '.github/scripts/update-chart-catalog.sh'
   workflow_dispatch:
 
 jobs:
@@ -27,7 +27,7 @@ jobs:
 
       - name: Update chart catalog
         run: |
-          bash scripts/ci/update-chart-catalog.sh
+          bash .github/scripts/update-chart-catalog.sh
 
       - name: Check for changes
         id: verify-changed-files
