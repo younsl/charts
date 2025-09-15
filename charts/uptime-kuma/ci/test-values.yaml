@@ -1,0 +1,10 @@
+# Test values for uptime-kuma chart
+# This file is used for CI testing with minikube
+# PV is disabled for testing environment
+
+persistence:
+  enabled: false
+
+service:
+  type: ClusterIP
+  port: 3001
