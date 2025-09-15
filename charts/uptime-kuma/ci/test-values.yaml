@@ -1,8 +1,8 @@
 # Test values for uptime-kuma chart
 # This file is used for CI testing with minikube
-# PV is disabled for testing environment
+# Volume is disabled to avoid PVC issues in test environment
 
-persistence:
+volume:
   enabled: false
 
 service:
