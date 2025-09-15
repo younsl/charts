@@ -28,7 +28,7 @@ helm pull oci://ghcr.io/younsl/charts/<chart-name> --version <version> --untar
 
 ## Available Charts
 
-This repository contains **7** Helm charts (5 active, 2 deprecated).
+This repository contains **8** Helm charts (6 active, 2 deprecated).
 
 | Chart Name | Version | App Version | Status | Description |
 |------------|---------|-------------|--------|-------------|
@@ -39,6 +39,7 @@ This repository contains **7** Helm charts (5 active, 2 deprecated).
 | [kube-green-sleepinfos](../charts/kube-green-sleepinfos) | 0.1.1 | 0.1.1 | ✅ Active | A Helm chart for managing kube-green SleepInfo resources. kube-green-sleepinf... |
 | [rbac](../charts/rbac) | 0.4.0 | 0.4.0 | ✅ Active | Helm chart to define RBAC resources in the gitops way |
 | [squid](../charts/squid) | 0.6.0 | 6.10 | ✅ Active | A Helm chart for Squid caching proxy |
+| [uptime-kuma](../charts/uptime-kuma) | 2.22.0 | 1.23.16 | ✅ Active | A self-hosted Monitoring tool like Uptime-Robot. |
 
 ## Chart Details
 
@@ -99,6 +100,13 @@ Helm chart to define RBAC resources in the gitops way
 
 A Helm chart for Squid caching proxy
 
+### uptime-kuma
+**Status:** ✅ Active  
+**Version:** 2.22.0  
+**App Version:** 1.23.16  
+
+A self-hosted Monitoring tool like "Uptime-Robot".
+
 ## Requirements
 
 - Helm 3.8.0+
@@ -110,4 +118,4 @@ For contributing to these charts, please refer to the [main repository](https://
 
 ---
 
-*Last updated: 2025-09-06*
+*Last updated: 2025-09-15*
