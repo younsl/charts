@@ -1,6 +1,6 @@
 # uptime-kuma
 
-![Version: 2.22.0](https://img.shields.io/badge/Version-2.22.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.23.16](https://img.shields.io/badge/AppVersion-1.23.16-informational?style=flat-square)
+![Version: 2.23.0](https://img.shields.io/badge/Version-2.23.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.23.16](https://img.shields.io/badge/AppVersion-1.23.16-informational?style=flat-square)
 
 A self-hosted Monitoring tool like "Uptime-Robot".
 
@@ -41,7 +41,7 @@ helm install uptime-kuma oci://ghcr.io/younsl/charts/uptime-kuma -f values.yaml
 Install a specific version:
 
 ```console
-helm install uptime-kuma oci://ghcr.io/younsl/charts/uptime-kuma --version 2.22.0
+helm install uptime-kuma oci://ghcr.io/younsl/charts/uptime-kuma --version 2.23.0
 ```
 
 ### Install from local chart
@@ -49,7 +49,7 @@ helm install uptime-kuma oci://ghcr.io/younsl/charts/uptime-kuma --version 2.22.
 Download uptime-kuma chart and install from local directory:
 
 ```console
-helm pull oci://ghcr.io/younsl/charts/uptime-kuma --untar --version 2.22.0
+helm pull oci://ghcr.io/younsl/charts/uptime-kuma --untar --version 2.23.0
 helm install uptime-kuma ./uptime-kuma
 ```
 
@@ -105,6 +105,7 @@ The following table lists the configurable parameters and their default values.
 | ingress.hosts[0].paths[0].pathType | string | `"ImplementationSpecific"` |  |
 | ingress.tls | list | `[]` |  |
 | resources | object | `{}` |  |
+| resizePolicy | list | `[]` | Container resize policy for the uptime-kuma container Ref: https://kubernetes.io/docs/tasks/configure-pod-container/resize-container-resources/ |
 | nodeSelector | object | `{}` |  |
 | tolerations | list | `[]` |  |
 | affinity | object | `{}` |  |
