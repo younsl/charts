@@ -39,7 +39,7 @@ This repository contains **8** Helm charts (6 active, 2 deprecated).
 | [kube-green-sleepinfos](../charts/kube-green-sleepinfos) | 0.1.1 | 0.1.1 | ✅ Active | A Helm chart for managing kube-green SleepInfo resources. kube-green-sleepinf... |
 | [rbac](../charts/rbac) | 0.4.0 | 0.4.0 | ✅ Active | Helm chart to define RBAC resources in the gitops way |
 | [squid](../charts/squid) | 0.6.0 | 6.10 | ✅ Active | A Helm chart for Squid caching proxy |
-| [uptime-kuma](../charts/uptime-kuma) | 2.24.0 | 1.23.16 | ✅ Active | A self-hosted Monitoring tool like Uptime-Robot. |
+| [uptime-kuma](../charts/uptime-kuma) | 2.24.1 | 1.23.16 | ✅ Active | A self-hosted Monitoring tool like Uptime-Robot. |
 
 ## Chart Details
 
@@ -102,7 +102,7 @@ A Helm chart for Squid caching proxy
 
 ### uptime-kuma
 **Status:** ✅ Active  
-**Version:** 2.24.0  
+**Version:** 2.24.1  
 **App Version:** 1.23.16  
 
 A self-hosted Monitoring tool like "Uptime-Robot".
@@ -118,4 +118,4 @@ For contributing to these charts, please refer to the [main repository](https://
 
 ---
 
-*Last updated: 2025-09-15*
+*Last updated: 2025-09-18*
