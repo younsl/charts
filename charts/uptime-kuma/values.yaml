@@ -8,7 +8,9 @@ image:
   # Overrides the image tag whose default is the chart appVersion.
   tag: "1.23.16-debian"
 
+# -- Image pull secrets to avoid DockerHub rate limits or access private registries
 imagePullSecrets: []
+  # - name: "secret-name"
 nameOverride: ""
 fullnameOverride: ""
 # -- A custom namespace to override the default namespace for the deployed resources.

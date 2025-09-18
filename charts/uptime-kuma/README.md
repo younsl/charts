@@ -1,6 +1,6 @@
 # uptime-kuma
 
-![Version: 2.24.0](https://img.shields.io/badge/Version-2.24.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.23.16](https://img.shields.io/badge/AppVersion-1.23.16-informational?style=flat-square)
+![Version: 2.24.1](https://img.shields.io/badge/Version-2.24.1-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 1.23.16](https://img.shields.io/badge/AppVersion-1.23.16-informational?style=flat-square)
 
 A self-hosted Monitoring tool like "Uptime-Robot".
 
@@ -41,7 +41,7 @@ helm install uptime-kuma oci://ghcr.io/younsl/charts/uptime-kuma -f values.yaml
 Install a specific version:
 
 ```console
-helm install uptime-kuma oci://ghcr.io/younsl/charts/uptime-kuma --version 2.24.0
+helm install uptime-kuma oci://ghcr.io/younsl/charts/uptime-kuma --version 2.24.1
 ```
 
 ### Install from local chart
@@ -49,7 +49,7 @@ helm install uptime-kuma oci://ghcr.io/younsl/charts/uptime-kuma --version 2.24.
 Download uptime-kuma chart and install from local directory:
 
 ```console
-helm pull oci://ghcr.io/younsl/charts/uptime-kuma --untar --version 2.24.0
+helm pull oci://ghcr.io/younsl/charts/uptime-kuma --untar --version 2.24.1
 helm install uptime-kuma ./uptime-kuma
 ```
 
@@ -78,7 +78,7 @@ The following table lists the configurable parameters and their default values.
 | image.repository | string | `"louislam/uptime-kuma"` |  |
 | image.pullPolicy | string | `"IfNotPresent"` |  |
 | image.tag | string | `"1.23.16-debian"` |  |
-| imagePullSecrets | list | `[]` |  |
+| imagePullSecrets | list | `[]` | Image pull secrets to avoid DockerHub rate limits or access private registries |
 | nameOverride | string | `""` |  |
 | fullnameOverride | string | `""` |  |
 | namespaceOverride | string | `""` | A custom namespace to override the default namespace for the deployed resources. |
