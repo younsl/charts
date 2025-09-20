@@ -34,7 +34,7 @@ This repository contains **8** Helm charts (6 active, 2 deprecated).
 |------------|---------|-------------|--------|-------------|
 | [actions-runner](../charts/actions-runner) | 0.1.4 | - | ⚠️ Deprecated | A Helm chart for Kubernetes to deploy GitHub Actions runners include horizont... |
 | [argocd-apps](../charts/argocd-apps) | 1.7.0 | - | ✅ Active | A Helm chart for managing additional Argo CD Applications and Projects |
-| [backup-utils](../charts/backup-utils) | 0.5.0 | 3.15.4 | ⚠️ Deprecated | GitHub Enterprise Backup Utilities |
+| [backup-utils](../charts/backup-utils) | 0.6.0 | 3.17.2 | ⚠️ Deprecated | GitHub Enterprise Backup Utilities |
 | [karpenter-nodepool](../charts/karpenter-nodepool) | 1.5.1 | 1.5.0 | ✅ Active | A Helm chart for Karpenter Node pool, it will create the NodePool and the Ec2... |
 | [kube-green-sleepinfos](../charts/kube-green-sleepinfos) | 0.1.1 | 0.1.1 | ✅ Active | A Helm chart for managing kube-green SleepInfo resources. kube-green-sleepinf... |
 | [rbac](../charts/rbac) | 0.4.0 | 0.4.0 | ✅ Active | Helm chart to define RBAC resources in the gitops way |
@@ -60,8 +60,8 @@ A Helm chart for managing additional Argo CD Applications and Projects
 
 ### backup-utils
 **Status:** ⚠️ Deprecated  
-**Version:** 0.5.0  
-**App Version:** 3.15.4  
+**Version:** 0.6.0  
+**App Version:** 3.17.2  
 **Keywords:** github-enterprise-server, github-enterprise, backup-utils, backup, disaster-recovery  
 
 GitHub Enterprise Backup Utilities
@@ -118,4 +118,4 @@ For contributing to these charts, please refer to the [main repository](https://
 
 ---
 
-*Last updated: 2025-09-18*
+*Last updated: 2025-09-20*
