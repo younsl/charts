@@ -1,6 +1,6 @@
 # squid
 
-![Version: 0.6.0](https://img.shields.io/badge/Version-0.6.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 6.10](https://img.shields.io/badge/AppVersion-6.10-informational?style=flat-square)
+![Version: 0.7.0](https://img.shields.io/badge/Version-0.7.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 6.13](https://img.shields.io/badge/AppVersion-6.13-informational?style=flat-square)
 
 A Helm chart for Squid caching proxy
 
@@ -43,7 +43,7 @@ helm install squid oci://ghcr.io/younsl/charts/squid -f values.yaml
 Install a specific version:
 
 ```console
-helm install squid oci://ghcr.io/younsl/charts/squid --version 0.6.0
+helm install squid oci://ghcr.io/younsl/charts/squid --version 0.7.0
 ```
 
 ### Install from local chart
@@ -51,7 +51,7 @@ helm install squid oci://ghcr.io/younsl/charts/squid --version 0.6.0
 Download squid chart and install from local directory:
 
 ```console
-helm pull oci://ghcr.io/younsl/charts/squid --untar --version 0.6.0
+helm pull oci://ghcr.io/younsl/charts/squid --untar --version 0.7.0
 helm install squid ./squid
 ```
 
@@ -85,7 +85,7 @@ The following table lists the configurable parameters and their default values.
 | strategy.rollingUpdate.maxSurge | string | `"25%"` |  |
 | strategy.rollingUpdate.maxUnavailable | string | `"25%"` |  |
 | image.repository | string | `"ubuntu/squid"` |  |
-| image.tag | string | `"6.10-24.10_beta"` |  |
+| image.tag | string | `"6.13-25.04_beta"` |  |
 | image.pullPolicy | string | `"IfNotPresent"` |  |
 | imagePullSecrets | list | `[]` |  |
 | commonLabels | object | `{}` |  |
@@ -117,16 +117,14 @@ The following table lists the configurable parameters and their default values.
 | service.loadBalancerSourceRanges | list | `[]` |  |
 | service.trafficDistribution | string | `""` |  |
 | service.annotations | object | `{}` |  |
-| ingress.enabled | bool | `false` |  |
-| ingress.className | string | `""` |  |
-| ingress.annotations | object | `{}` |  |
-| ingress.hosts[0].host | string | `"squid.local"` |  |
-| ingress.hosts[0].paths[0].path | string | `"/"` |  |
-| ingress.hosts[0].paths[0].pathType | string | `"Prefix"` |  |
-| ingress.tls | list | `[]` |  |
-| resources.limits.memory | string | `"256Mi"` |  |
-| resources.requests.cpu | string | `"50m"` |  |
-| resources.requests.memory | string | `"128Mi"` |  |
+| ingress | object | `{"annotations":{},"className":"","enabled":false,"hosts":[{"host":"squid.local","paths":[{"path":"/","pathType":"Prefix"}]}],"tls":[]}` | Ingress configuration for external access to squid proxy |
+| ingress.enabled | bool | `false` | Enable or disable Ingress resource creation |
+| ingress.className | string | `""` | IngressClass name to use for this Ingress |
+| ingress.hosts | list | `[{"host":"squid.local","paths":[{"path":"/","pathType":"Prefix"}]}]` | List of hostnames and paths for Ingress routing |
+| ingress.tls | list | `[]` | TLS configuration for HTTPS termination |
+| resources | object | `{"limits":{"memory":"256Mi"},"requests":{"cpu":"50m","memory":"128Mi"}}` | Resource limits and requests for squid container |
+| resources.limits | object | `{"memory":"256Mi"}` | Maximum resource limits (CPU and memory) |
+| resources.requests | object | `{"cpu":"50m","memory":"128Mi"}` | Minimum resource requests (CPU and memory) |
 | resizePolicy | list | `[]` |  |
 | nodeSelector | object | `{}` |  |
 | tolerations | list | `[]` |  |
@@ -194,8 +192,8 @@ The following table lists the configurable parameters and their default values.
 ## Source Code
 
 * <https://www.squid-cache.org/>
-* <https://github.com/younsl/younsl.github.io>
-* <https://younsl.github.io/charts/>
+* <https://hub.docker.com/r/ubuntu/squid>
+* <https://github.com/younsl/charts>
 
 ## Maintainers
 
