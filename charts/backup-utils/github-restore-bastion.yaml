@@ -34,7 +34,7 @@ spec:
         - |
           /bin/bash
           sleep 500000000
-        image: ghcr.io/younsl/backup-utils:v3.11.4
+        image: ghcr.io/younsl/backup-utils:v3.17.2
         imagePullPolicy: IfNotPresent
         name: backup-utils
         resources:

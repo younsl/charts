@@ -1,6 +1,6 @@
 # backup-utils
 
-![Version: 0.5.0](https://img.shields.io/badge/Version-0.5.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 3.15.4](https://img.shields.io/badge/AppVersion-3.15.4-informational?style=flat-square)
+![Version: 0.6.0](https://img.shields.io/badge/Version-0.6.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 3.17.2](https://img.shields.io/badge/AppVersion-3.17.2-informational?style=flat-square)
 
 GitHub Enterprise Backup Utilities
 
@@ -43,7 +43,7 @@ helm install backup-utils oci://ghcr.io/younsl/charts/backup-utils -f values.yam
 Install a specific version:
 
 ```console
-helm install backup-utils oci://ghcr.io/younsl/charts/backup-utils --version 0.5.0
+helm install backup-utils oci://ghcr.io/younsl/charts/backup-utils --version 0.6.0
 ```
 
 ### Install from local chart
@@ -51,7 +51,7 @@ helm install backup-utils oci://ghcr.io/younsl/charts/backup-utils --version 0.5
 Download backup-utils chart and install from local directory:
 
 ```console
-helm pull oci://ghcr.io/younsl/charts/backup-utils --untar --version 0.5.0
+helm pull oci://ghcr.io/younsl/charts/backup-utils --untar --version 0.6.0
 helm install backup-utils ./backup-utils
 ```
 
