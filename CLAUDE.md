@@ -14,6 +14,7 @@ This is a Helm charts repository that distributes charts via OCI artifacts on Gi
 - **kube-green-sleepinfos** (v0.1.1): SleepInfo resources for kube-green to schedule resource hibernation
 - **rbac** (v0.3.0): Kubernetes RBAC resources (ServiceAccount, ClusterRole, ClusterRoleBinding) - only chart with CI tests enabled
 - **squid** (v0.6.0): Squid caching proxy with Grafana dashboard integration and extra manifests support
+- **uptime-kuma** (v2.24.1): Self-hosted monitoring tool similar to Uptime Robot with MariaDB database dependency
 
 ### Deprecated Charts
 - **actions-runner** (v0.1.4): GitHub Actions self-hosted runner for Kubernetes (deprecated - use Actions Runner Controller)
@@ -190,6 +191,7 @@ The CI testing process:
 - **kube-green-sleepinfos**: Requires kube-green operator
 - **rbac**: Only chart with full CI testing enabled (skip-test: false)
 - **squid**: Includes Grafana dashboard ConfigMap and extra-manifests.yaml template for additional resources
+- **uptime-kuma**: Includes MariaDB dependency chart, requires persistent storage for database
 
 ## Best Practice References
 
