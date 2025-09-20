@@ -10,13 +10,17 @@ Helm chart to define RBAC resources in the gitops way
 
 ### List available versions
 
-This chart is distributed via OCI registry, so you need to use `crane` instead of `helm search repo` to discover available versions:
+This chart is distributed via OCI registry, so you need to use [crane](https://github.com/google/go-containerregistry/blob/main/cmd/crane/README.md) instead of `helm search repo` to discover available versions:
 
 ```console
 crane ls ghcr.io/younsl/charts/rbac
 ```
 
-If you don't have `crane` installed, you can install it with: `brew install crane`
+If you need to install crane on macOS, you can easily install it using [Homebrew](https://brew.sh/), the package manager.
+
+```bash
+brew install crane
+```
 
 ### Install the chart
 
