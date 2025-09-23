@@ -28,11 +28,12 @@ helm pull oci://ghcr.io/younsl/charts/<chart-name> --version <version> --untar
 
 ## Available Charts
 
-This repository contains **8** Helm charts (6 active, 2 deprecated).
+This repository contains **9** Helm charts (7 active, 2 deprecated).
 
 | Chart Name | Version | App Version | Status | Description |
 |------------|---------|-------------|--------|-------------|
 | [actions-runner](../charts/actions-runner) | 0.1.4 | - | ⚠️ Deprecated | A Helm chart for Kubernetes to deploy GitHub Actions runners include horizont... |
+| [argo-workflows-templates](../charts/argo-workflows-templates) | 0.1.0 | - | ✅ Active | A Helm chart for managing Argo Workflows Templates. |
 | [argocd-apps](../charts/argocd-apps) | 1.7.0 | - | ✅ Active | A Helm chart for managing additional Argo CD Applications and Projects |
 | [backup-utils](../charts/backup-utils) | 0.6.0 | 3.17.2 | ⚠️ Deprecated | GitHub Enterprise Backup Utilities |
 | [karpenter-nodepool](../charts/karpenter-nodepool) | 1.5.1 | 1.5.0 | ✅ Active | A Helm chart for Karpenter Node pool, it will create the NodePool and the Ec2... |
@@ -50,6 +51,13 @@ This repository contains **8** Helm charts (6 active, 2 deprecated).
 A Helm chart for Kubernetes to deploy GitHub Actions runners include horizontalRunnerAutoscaler and serviceAccount
 
 > **Deprecation Notice:** This chart is deprecated. Please use the official Actions Runner Controller (ARC) instead:
+
+### argo-workflows-templates
+**Status:** ✅ Active  
+**Version:** 0.1.0  
+**Keywords:** argoproj, argo-workflows, workflows, workflow-templates, gitops  
+
+A Helm chart for managing Argo Workflows Templates.
 
 ### argocd-apps
 **Status:** ✅ Active  
@@ -118,4 +126,4 @@ For contributing to these charts, please refer to the [main repository](https://
 
 ---
 
-*Last updated: 2025-09-20*
+*Last updated: 2025-09-23*
