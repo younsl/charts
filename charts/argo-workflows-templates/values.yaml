@@ -1,0 +1,51 @@
+# -- Configuration for Argo WorkflowTemplate resources
+workflowTemplates:
+  # -- (bool) Enable or disable all WorkflowTemplate resources globally
+  enabled: true
+  # -- (object) WorkflowTemplate resource definitions
+  templates: {}
+    ## Example workflow template configuration
+    ## See: https://argoproj.github.io/argo-workflows/workflow-templates/
+    # delightful-whale:
+    #   enabled: true
+    #   labels:
+    #     example: "true"
+    #     workflows.argoproj.io/creator: system-serviceaccount-argo-workflows-argo-workflows-server
+    #   arguments:
+    #     parameters:
+    #     - name: message
+    #       value: hello argo
+    #   entrypoint: argosay
+    #   imagePullSecrets:
+    #   - name: dockerhub-regcred
+    #   podGC:
+    #     strategy: OnPodCompletion
+    #   templates:
+    #   - name: argosay
+    #     container:
+    #       image: argoproj/argosay:v2
+    #       name: main
+    #       command:
+    #       - /argosay
+    #       args:
+    #       - echo
+    #       - '{{inputs.parameters.message}}'
+    #       resources: {}
+    #     inputs:
+    #       parameters:
+    #       - name: message
+    #         value: '{{workflow.parameters.message}}'
+    #     metadata: {}
+    #     outputs: {}
+    #   ttlStrategy:
+    #     secondsAfterCompletion: 300
+    #   workflowMetadata:
+    #     labels:
+    #       example: "true"
+
+# -- Configuration for Argo CronWorkflow resources
+cronWorkflows:
+  # -- (bool) Enable or disable all CronWorkflow resources globally
+  enabled: true
+  # -- (object) CronWorkflow resource definitions
+  templates: {}
