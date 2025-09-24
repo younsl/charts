@@ -31,6 +31,10 @@ spec:
   podGC:
     {{- toYaml . | nindent 4 }}
   {{- end }}
+  {{- with $template.synchronization }}
+  synchronization:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
   {{- with $template.templates }}
   templates:
     {{- toYaml . | nindent 4 }}
