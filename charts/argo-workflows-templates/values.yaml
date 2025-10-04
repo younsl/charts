@@ -49,3 +49,18 @@ cronWorkflows:
   enabled: true
   # -- (object) CronWorkflow resource definitions
   templates: {}
+
+# -- Configuration for ServiceAccount resources
+serviceAccounts:
+  # -- (bool) Enable or disable all ServiceAccount resources globally
+  enabled: true
+  # -- (object) ServiceAccount resource definitions
+  accounts: {}
+    ## Example ServiceAccount configuration for IRSA
+    # coinone-scope-batch-airdrop:
+    #   enabled: true
+    #   labels:
+    #     app: coinone-scope-batch-airdrop
+    #   annotations:
+    #     eks.amazonaws.com/role-arn: arn:aws:iam::111122223333:role/ROLE-NAME
+    #   automountServiceAccountToken: true

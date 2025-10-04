@@ -7,10 +7,11 @@ kind: CronWorkflow
 metadata:
   name: {{ $name }}
   namespace: {{ $.Release.Namespace | quote }}
-  {{- with $cronWorkflow.labels }}
   labels:
+    {{- include "argo-workflows-templates.labels" $ | nindent 4 }}
+    {{- with $cronWorkflow.labels }}
     {{- toYaml . | nindent 4 }}
-  {{- end }}
+    {{- end }}
   {{- with $cronWorkflow.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}

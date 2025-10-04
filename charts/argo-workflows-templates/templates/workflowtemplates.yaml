@@ -7,10 +7,11 @@ kind: WorkflowTemplate
 metadata:
   name: {{ $name }}
   namespace: {{ $.Release.Namespace | quote }}
-  {{- with $template.labels }}
   labels:
+    {{- include "argo-workflows-templates.labels" $ | nindent 4 }}
+    {{- with $template.labels }}
     {{- toYaml . | nindent 4 }}
-  {{- end }}
+    {{- end }}
   {{- with $template.annotations }}
   annotations:
     {{- toYaml . | nindent 4 }}
@@ -29,10 +30,6 @@ spec:
   {{- end }}
   {{- with $template.podGC }}
   podGC:
-    {{- toYaml . | nindent 4 }}
-  {{- end }}
-  {{- with $template.synchronization }}
-  synchronization:
     {{- toYaml . | nindent 4 }}
   {{- end }}
   {{- with $template.templates }}
@@ -68,6 +65,10 @@ spec:
   {{- end }}
   {{- with $template.affinity }}
   affinity:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with $template.synchronization }}
+  synchronization:
     {{- toYaml . | nindent 4 }}
   {{- end }}
 {{- end }}
