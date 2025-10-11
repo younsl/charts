@@ -23,6 +23,9 @@ spec:
   {{- if .storageClass }}
   storageClassName: {{ .storageClass }}
   {{- end }}
+  {{- if .volumeAttributesClassName }}
+  volumeAttributesClassName: {{ .volumeAttributesClassName }}
+  {{- end }}
   accessModes:
     {{- toYaml .accessModes | nindent 4 }}
   resources:
