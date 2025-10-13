@@ -17,8 +17,15 @@ metadata:
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
+  {{- if and $cronWorkflow.schedule $cronWorkflow.schedules }}
+  {{- fail "Error in CronWorkflow: Only one of 'schedule' or 'schedules' can be specified, not both" }}
+  {{- end }}
   {{- with $cronWorkflow.schedule }}
   schedule: {{ . | quote }}
+  {{- end }}
+  {{- with $cronWorkflow.schedules }}
+  schedules:
+    {{- toYaml . | nindent 4 }}
   {{- end }}
   {{- with $cronWorkflow.timezone }}
   timezone: {{ . | quote }}
