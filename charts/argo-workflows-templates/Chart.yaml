@@ -7,7 +7,7 @@ description: |
   IMPORTANT: Requires Argo Workflows controller to be installed first to manage these custom resources.
 deprecated: false
 type: application
-version: 0.1.0
+version: 0.2.0
 keywords:
   - argoproj
   - argo-workflows
