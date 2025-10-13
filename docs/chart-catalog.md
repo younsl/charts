@@ -32,7 +32,7 @@ This repository contains **9** Helm charts (7 active, 2 deprecated).
 
 | Chart Name | Version | App Version | Status | Description |
 |------------|---------|-------------|--------|-------------|
-| [actions-runner](../charts/actions-runner) | 0.2.0 | - | ⚠️ Deprecated | A Helm chart for Kubernetes to deploy GitHub Actions runners include horizont... |
+| [actions-runner](../charts/actions-runner) | 0.3.0 | - | ⚠️ Deprecated | A Helm chart for Kubernetes to deploy GitHub Actions runners include horizont... |
 | [argo-workflows-templates](../charts/argo-workflows-templates) | 0.2.0 | - | ✅ Active | A Helm chart for managing Argo Workflows Templates. |
 | [argocd-apps](../charts/argocd-apps) | 1.7.0 | - | ✅ Active | A Helm chart for managing additional Argo CD Applications and Projects |
 | [backup-utils](../charts/backup-utils) | 0.8.0 | 3.17.2 | ⚠️ Deprecated | GitHub Enterprise Backup Utilities |
@@ -46,7 +46,7 @@ This repository contains **9** Helm charts (7 active, 2 deprecated).
 
 ### actions-runner
 **Status:** ⚠️ Deprecated  
-**Version:** 0.2.0  
+**Version:** 0.3.0  
 
 A Helm chart for Kubernetes to deploy GitHub Actions runners include horizontalRunnerAutoscaler and serviceAccount
 
