@@ -83,6 +83,10 @@ backupUtils:
     # -- (string) Image pull policy (Always, Never, IfNotPresent)
     pullPolicy: IfNotPresent
 
+  # -- (list) Names of secrets in the same namespace for pulling images from private registries
+  imagePullSecrets: []
+    # - name: myRegistryKeySecretName
+
   # -- (list) Command to execute within the backup-utils container
   # Use an array format for command to ensure proper handling of arguments
   command: ["/bin/bash", "-c", /backup-utils/backup.sh]

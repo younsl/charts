@@ -30,6 +30,10 @@ spec:
           dnsConfig:
             {{- toYaml .dnsConfig | nindent 12 }}
           {{- end }}
+          {{- with .imagePullSecrets }}
+          imagePullSecrets:
+            {{- toYaml . | nindent 12 }}
+          {{- end }}
           containers:
           - name: backup-utils
             image: {{ include "github-backup-utils.image" (merge (dict "Chart" $.Chart) .) }}
