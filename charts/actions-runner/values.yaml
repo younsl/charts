@@ -170,7 +170,7 @@ runnerDeployments:
       #   accessModes:
       #     - ReadWriteOnce
       #   # -- (string) Storage class name for the PVC.
-      #   storageClass: gp3
+      #   storageClassName: gp3
       #   # -- (string) Volume attributes class name for modifying volume attributes.
       #   # Requires Kubernetes 1.29+ with VolumeAttributesClass feature gate enabled.
       #   volumeAttributesClassName: ""
