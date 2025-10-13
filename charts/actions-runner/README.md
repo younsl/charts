@@ -1,6 +1,6 @@
 # actions-runner
 
-![Version: 0.2.0](https://img.shields.io/badge/Version-0.2.0-informational?style=flat-square)
+![Version: 0.3.0](https://img.shields.io/badge/Version-0.3.0-informational?style=flat-square)
 
 A Helm chart for Kubernetes to deploy GitHub Actions runners include horizontalRunnerAutoscaler and serviceAccount
 
@@ -51,7 +51,7 @@ helm install actions-runner oci://ghcr.io/younsl/charts/actions-runner -f values
 Install a specific version:
 
 ```console
-helm install actions-runner oci://ghcr.io/younsl/charts/actions-runner --version 0.2.0
+helm install actions-runner oci://ghcr.io/younsl/charts/actions-runner --version 0.3.0
 ```
 
 ### Install from local chart
@@ -59,7 +59,7 @@ helm install actions-runner oci://ghcr.io/younsl/charts/actions-runner --version
 Download actions-runner chart and install from local directory:
 
 ```console
-helm pull oci://ghcr.io/younsl/charts/actions-runner --untar --version 0.2.0
+helm pull oci://ghcr.io/younsl/charts/actions-runner --untar --version 0.3.0
 helm install actions-runner ./actions-runner
 ```
 
