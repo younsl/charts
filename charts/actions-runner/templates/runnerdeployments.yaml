@@ -74,7 +74,7 @@ spec:
         {{- toYaml . | nindent 8 }}
       {{- end }}
       ephemeral: {{ .ephemeral }}
-      {{- with .envFrom }}
+      {{- with .ephemeralContainers }}
       ephemeralContainers:
         {{- toYaml . | nindent 8 }}
       {{- end }}
@@ -90,10 +90,6 @@ spec:
       serviceAccountName: {{ .runnerName }}
       {{- else }}
       serviceAccountName: default
-      {{- end }}
-      {{- with .dnsConfig }}
-      dnsConfig:
-        {{- toYaml . | nindent 8 }}
       {{- end }}
       {{- with .containers }}
       containers:

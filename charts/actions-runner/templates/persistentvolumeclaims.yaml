@@ -20,12 +20,21 @@ metadata:
   {{- end }}
   {{- end }}
 spec:
+  {{- if $claim.accessModes }}
   accessModes:
-  - ReadWriteOnce
+  {{- range $accessMode := $claim.accessModes }}
+  - {{ $accessMode }}
+  {{- end }}
+  {{- end }}
   resources:
     requests:
       storage: {{ $claim.size }}
+  {{- if $claim.storageClass }}
   storageClassName: {{ $claim.storageClass }}
+  {{- end }}
+  {{- if $claim.volumeAttributesClassName }}
+  volumeAttributesClassName: {{ $claim.volumeAttributesClassName }}
+  {{- end }}
   volumeMode: Filesystem
 {{- end }}
 {{- end }}
