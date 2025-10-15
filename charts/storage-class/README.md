@@ -80,7 +80,7 @@ The following table lists the configurable parameters and their default values.
 | globalAnnotations | object | `{}` | Global annotations to apply to all StorageClasses |
 | globalLabels | object | `{}` | Global labels to apply to all StorageClasses |
 | defaultStorageClass | string | `"gp3"` | Name of the default StorageClass (must match one of the keys in storageClasses) Set to empty string to not set any default |
-| storageClasses | object | `{"gp3":{"allowVolumeExpansion":true,"allowedTopologies":[],"annotations":{},"enabled":true,"labels":{},"mountOptions":[],"parameters":{"type":"gp3"},"provisioner":"ebs.csi.aws.com","reclaimPolicy":"Delete","volumeBindingMode":"WaitForFirstConsumer"},"gp3-encrypted":{"allowVolumeExpansion":true,"allowedTopologies":[],"annotations":{},"enabled":false,"labels":{},"mountOptions":[],"parameters":{"encrypted":"true","type":"gp3"},"provisioner":"ebs.csi.aws.com","reclaimPolicy":"Delete","volumeBindingMode":"WaitForFirstConsumer"}}` | Map of StorageClass configurations to create The key is used as the StorageClass name |
+| storageClasses | object | See [values.yaml](https://github.com/younsl/charts/blob/main/charts/storage-class/values.yaml) | Map of StorageClass configurations to create |
 | storageClasses.gp3.enabled | bool | `true` | Enable this StorageClass |
 | storageClasses.gp3.annotations | object | `{}` | Annotations for the StorageClass |
 | storageClasses.gp3.labels | object | `{}` | Labels for the StorageClass |
@@ -105,6 +105,7 @@ The following table lists the configurable parameters and their default values.
 ## Source Code
 
 * <https://github.com/younsl/charts/tree/main/charts/storage-class>
+* <https://kubernetes.io/docs/concepts/storage/storage-classes/>
 
 ## Maintainers
 

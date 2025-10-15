@@ -30,7 +30,9 @@ metadata:
 provisioner: {{ $sc.provisioner }}
 reclaimPolicy: {{ $sc.reclaimPolicy }}
 volumeBindingMode: {{ $sc.volumeBindingMode }}
+{{- if hasKey $sc "allowVolumeExpansion" }}
 allowVolumeExpansion: {{ $sc.allowVolumeExpansion }}
+{{- end }}
 {{- with $sc.parameters }}
 parameters:
   {{- toYaml . | nindent 2 }}

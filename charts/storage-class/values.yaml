@@ -9,7 +9,7 @@ globalLabels: {}
 defaultStorageClass: gp3
 
 # -- (object) Map of StorageClass configurations to create
-# The key is used as the StorageClass name
+# @default -- See [values.yaml](https://github.com/younsl/charts/blob/main/charts/storage-class/values.yaml)
 storageClasses:
   gp3:
     # -- (bool) Enable this StorageClass
