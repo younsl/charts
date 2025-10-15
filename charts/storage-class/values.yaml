@@ -1,0 +1,68 @@
+# -- (object) Global annotations to apply to all StorageClasses
+globalAnnotations: {}
+
+# -- (object) Global labels to apply to all StorageClasses
+globalLabels: {}
+
+# -- (string) Name of the default StorageClass (must match one of the keys in storageClasses)
+# Set to empty string to not set any default
+defaultStorageClass: gp3
+
+# -- (object) Map of StorageClass configurations to create
+# The key is used as the StorageClass name
+storageClasses:
+  gp3:
+    # -- (bool) Enable this StorageClass
+    enabled: true
+    # -- (object) Annotations for the StorageClass
+    annotations: {}
+    # -- (object) Labels for the StorageClass
+    labels: {}
+    # -- (string) Provisioner for the StorageClass (AWS EBS CSI driver)
+    provisioner: ebs.csi.aws.com
+    # -- (string) Reclaim policy for PersistentVolumes (Delete or Retain)
+    reclaimPolicy: Delete
+    # -- (string) Volume binding mode (Immediate or WaitForFirstConsumer)
+    volumeBindingMode: WaitForFirstConsumer
+    # -- (bool) Allow volume expansion
+    allowVolumeExpansion: true
+    # -- (object) Parameters specific to the provisioner
+    parameters:
+      type: gp3
+      # iops: "3000"
+      # throughput: "125"
+      # encrypted: "true"
+      # kmsKeyId: ""
+    # -- (list) Allowed topologies for volume provisioning
+    allowedTopologies: []
+    # - matchLabelExpressions:
+    #   - key: topology.ebs.csi.aws.com/zone
+    #     values:
+    #       - us-east-1a
+    #       - us-east-1b
+    # -- (list) Mount options for volumes
+    mountOptions: []
+
+  gp3-encrypted:
+    # -- (bool) Enable this StorageClass
+    enabled: false
+    # -- (object) Annotations for the StorageClass
+    annotations: {}
+    # -- (object) Labels for the StorageClass
+    labels: {}
+    # -- (string) Provisioner for the StorageClass (AWS EBS CSI driver)
+    provisioner: ebs.csi.aws.com
+    # -- (string) Reclaim policy for PersistentVolumes (Delete or Retain)
+    reclaimPolicy: Delete
+    # -- (string) Volume binding mode (Immediate or WaitForFirstConsumer)
+    volumeBindingMode: WaitForFirstConsumer
+    # -- (bool) Allow volume expansion
+    allowVolumeExpansion: true
+    # -- (object) Parameters specific to the provisioner
+    parameters:
+      type: gp3
+      encrypted: "true"
+    # -- (list) Allowed topologies for volume provisioning
+    allowedTopologies: []
+    # -- (list) Mount options for volumes
+    mountOptions: []

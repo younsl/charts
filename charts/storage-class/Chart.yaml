@@ -1,0 +1,21 @@
+apiVersion: v2
+name: storage-class
+description: Declarative management of Kubernetes StorageClass resources with support for AWS EBS CSI driver, encryption, and multiple storage tiers
+type: application
+version: 0.1.0
+kubeVersion: ">=1.21.0-0"
+home: https://github.com/younsl/charts
+sources:
+  - https://github.com/younsl/charts/tree/main/charts/storage-class
+maintainers:
+  - name: younsl
+keywords:
+  - storage
+  - storageclass
+  - persistentvolume
+  - aws
+  - ebs
+  - kubernetes
+annotations:
+  "helm.sh/skip-test": "true"
+  "helm.sh/skip-test-reason": "Requires CSI driver to be installed"
