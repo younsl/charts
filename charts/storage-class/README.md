@@ -1,8 +1,8 @@
 # storage-class
 
-![Version: 0.1.0](https://img.shields.io/badge/Version-0.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
+![Version: 0.2.0](https://img.shields.io/badge/Version-0.2.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
 
-Declarative management of Kubernetes StorageClass resources with support for AWS EBS CSI driver, encryption, and multiple storage tiers
+Declarative management of Kubernetes StorageClass and VolumeAttributesClass resources with support for AWS EBS CSI driver, encryption, and multiple storage tiers
 
 **Homepage:** <https://github.com/younsl/charts>
 
@@ -43,7 +43,7 @@ helm install storage-class oci://ghcr.io/younsl/charts/storage-class -f values.y
 Install a specific version:
 
 ```console
-helm install storage-class oci://ghcr.io/younsl/charts/storage-class --version 0.1.0
+helm install storage-class oci://ghcr.io/younsl/charts/storage-class --version 0.2.0
 ```
 
 ### Install from local chart
@@ -51,7 +51,7 @@ helm install storage-class oci://ghcr.io/younsl/charts/storage-class --version 0
 Download storage-class chart and install from local directory:
 
 ```console
-helm pull oci://ghcr.io/younsl/charts/storage-class --untar --version 0.1.0
+helm pull oci://ghcr.io/younsl/charts/storage-class --untar --version 0.2.0
 helm install storage-class ./storage-class
 ```
 
@@ -101,11 +101,23 @@ The following table lists the configurable parameters and their default values.
 | storageClasses.gp3-encrypted.parameters | object | `{"encrypted":"true","type":"gp3"}` | Parameters specific to the provisioner |
 | storageClasses.gp3-encrypted.allowedTopologies | list | `[]` | Allowed topologies for volume provisioning |
 | storageClasses.gp3-encrypted.mountOptions | list | `[]` | Mount options for volumes |
+| volumeAttributeClasses | object | See [Volume Attributes Classes](https://kubernetes.io/docs/concepts/storage/volume-attributes-classes/) | Map of VolumeAttributeClass configurations to create |
+| volumeAttributeClasses.gold.enabled | bool | `false` | Enable this VolumeAttributeClass |
+| volumeAttributeClasses.gold.annotations | object | `{}` | Annotations for the VolumeAttributeClass |
+| volumeAttributeClasses.gold.labels | object | `{}` | Labels for the VolumeAttributeClass |
+| volumeAttributeClasses.gold.driverName | string | `"ebs.csi.aws.com"` | Driver name for the VolumeAttributeClass (requires corresponding CSI driver to be installed) |
+| volumeAttributeClasses.gold.parameters | object | `{"iops":"4000","throughput":"250","type":"gp3"}` | Parameters specific to the driver |
+| volumeAttributeClasses.silver.enabled | bool | `false` | Enable this VolumeAttributeClass |
+| volumeAttributeClasses.silver.annotations | object | `{}` | Annotations for the VolumeAttributeClass |
+| volumeAttributeClasses.silver.labels | object | `{}` | Labels for the VolumeAttributeClass |
+| volumeAttributeClasses.silver.driverName | string | `"ebs.csi.aws.com"` | Driver name for the VolumeAttributeClass (requires corresponding CSI driver to be installed) |
+| volumeAttributeClasses.silver.parameters | object | `{"iops":"3000","throughput":"125","type":"gp3"}` | Parameters specific to the driver |
 
 ## Source Code
 
 * <https://github.com/younsl/charts/tree/main/charts/storage-class>
 * <https://kubernetes.io/docs/concepts/storage/storage-classes/>
+* <https://kubernetes.io/docs/concepts/storage/volume-attributes-classes/>
 
 ## Maintainers
 

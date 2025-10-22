@@ -66,3 +66,36 @@ storageClasses:
     allowedTopologies: []
     # -- (list) Mount options for volumes
     mountOptions: []
+
+# -- (object) Map of VolumeAttributeClass configurations to create
+# @default -- See [Volume Attributes Classes](https://kubernetes.io/docs/concepts/storage/volume-attributes-classes/)
+volumeAttributeClasses:
+  gold:
+    # -- (bool) Enable this VolumeAttributeClass
+    enabled: false
+    # -- (object) Annotations for the VolumeAttributeClass
+    annotations: {}
+    # -- (object) Labels for the VolumeAttributeClass
+    labels: {}
+    # -- (string) Driver name for the VolumeAttributeClass (requires corresponding CSI driver to be installed)
+    driverName: ebs.csi.aws.com
+    # -- (object) Parameters specific to the driver
+    parameters:
+      iops: "4000"
+      throughput: "250"
+      type: gp3
+
+  silver:
+    # -- (bool) Enable this VolumeAttributeClass
+    enabled: false
+    # -- (object) Annotations for the VolumeAttributeClass
+    annotations: {}
+    # -- (object) Labels for the VolumeAttributeClass
+    labels: {}
+    # -- (string) Driver name for the VolumeAttributeClass (requires corresponding CSI driver to be installed)
+    driverName: ebs.csi.aws.com
+    # -- (object) Parameters specific to the driver
+    parameters:
+      iops: "3000"
+      throughput: "125"
+      type: gp3
