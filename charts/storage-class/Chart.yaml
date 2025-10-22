@@ -3,7 +3,7 @@ name: storage-class
 description: Declarative management of Kubernetes StorageClass and VolumeAttributesClass resources with support for AWS EBS CSI driver, encryption, and multiple storage tiers
 deprecated: false
 type: application
-version: 0.2.0
+version: 0.3.0
 kubeVersion: ">=1.21.0-0"
 home: https://github.com/younsl/charts
 sources:
