@@ -9,17 +9,18 @@ This is a Helm charts repository that distributes charts via OCI artifacts on Gi
 ## Available Charts
 
 ### Active Charts
-- **argo-workflows-templates** (v0.1.0): WorkflowTemplate and ClusterWorkflowTemplate resources for Argo Workflows
+- **argo-workflows-templates** (v0.2.0): WorkflowTemplate and ClusterWorkflowTemplate resources for Argo Workflows
 - **argocd-apps** (v1.7.0): Management of ArgoCD Applications and AppProjects via ApplicationSet
 - **karpenter-nodepool** (v1.5.1): AWS Karpenter NodePool and EC2NodeClass resources for autoscaling with overprovisioning support
 - **kube-green-sleepinfos** (v0.1.1): SleepInfo resources for kube-green to schedule resource hibernation
-- **rbac** (v0.4.0): Kubernetes RBAC resources (ServiceAccount, ClusterRole, ClusterRoleBinding, Role, RoleBinding) - only chart with CI tests enabled
+- **rbac** (v0.4.0): Kubernetes RBAC resources (ServiceAccount, ClusterRole, ClusterRoleBinding, Role, RoleBinding) with CI tests enabled
 - **squid** (v0.7.0): Squid caching proxy with Grafana dashboard integration and extra manifests support
+- **storage-class** (v0.3.0): StorageClass and VolumeAttributesClass resources for AWS EBS CSI driver with encryption and multiple storage tiers support, includes CI tests
 - **uptime-kuma** (v2.24.1): Self-hosted monitoring tool similar to Uptime Robot with MariaDB database dependency
 
 ### Deprecated Charts
-- **actions-runner** (v0.1.4): GitHub Actions self-hosted runner for Kubernetes (deprecated - use Actions Runner Controller)
-- **backup-utils** (v0.6.0): GitHub Enterprise Server backup utilities (deprecated - use built-in backup service)
+- **actions-runner** (v0.3.0): GitHub Actions self-hosted runner for Kubernetes (deprecated - use Actions Runner Controller)
+- **backup-utils** (v0.9.0): GitHub Enterprise Server backup utilities (deprecated - use built-in backup service)
 
 ## Common Development Commands
 
@@ -29,7 +30,7 @@ This is a Helm charts repository that distributes charts via OCI artifacts on Gi
 make docs
 
 # Generate docs for specific chart (uses .github/templates/README.md.gotmpl template)
-helm-docs --chart-search-root charts/<chart-name> --template-files=.github/templates/README.md.gotmpl
+helm-docs --chart-search-root charts/<chart-name> --template-files=../../.github/templates/README.md.gotmpl --sort-values-order file --log-level info
 
 # Update chart catalog documentation
 .github/scripts/update-chart-catalog.sh
@@ -145,7 +146,7 @@ The repository uses GitHub Actions for:
 - Each chart includes comprehensive values documentation
 - Test values are provided in `ci/` directory for validation
 - Charts follow semantic versioning
-- CI uses Helm v3.18.0 and yq v4.47.1 for processing
+- CI uses Helm v3.18.0 and yq v4.48.1 for processing
 
 ## Key Technical Details
 
@@ -160,7 +161,7 @@ Charts are published to `ghcr.io/younsl/charts` as OCI artifacts. This provides:
 - Unit tests: Template rendering validation
 - Integration tests: Installation in Kind clusters with custom API server tuning
 - CI tests: Automated validation on pull requests
-- Only `rbac` chart has full CI tests enabled (other charts require external dependencies)
+- Charts with full CI tests enabled: `rbac`, `storage-class` (other charts require external dependencies)
 
 ### Chart Testing and CI Behavior
 Charts can control CI testing behavior using annotations in Chart.yaml:
@@ -188,8 +189,9 @@ The CI testing process:
 - **backup-utils**: Cronjob-based backups with PVC storage (deprecated)
 - **karpenter-nodepool**: AWS-specific, requires Karpenter controller, includes overprovisioning with dummy deployments
 - **kube-green-sleepinfos**: Requires kube-green operator
-- **rbac**: Only chart with full CI testing enabled (skip-test: false), supports extra-manifests for additional resources
+- **rbac**: Chart with full CI testing enabled (skip-test: false), supports extra-manifests for additional resources
 - **squid**: Includes Grafana dashboard ConfigMap and extra-manifests.yaml template for additional resources
+- **storage-class**: Chart with full CI testing enabled (skip-test: false), manages StorageClass and VolumeAttributesClass resources, supports AWS EBS CSI driver configurations
 - **uptime-kuma**: Includes MariaDB dependency chart, requires persistent storage for database
 
 ## Best Practice References
