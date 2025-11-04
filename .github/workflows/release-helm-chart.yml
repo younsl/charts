@@ -80,6 +80,8 @@ jobs:
           ---
           kind: Cluster
           apiVersion: kind.x-k8s.io/v1alpha4
+          featureGates:
+            "MutatingAdmissionPolicy": true
           nodes:
           - role: control-plane
             kubeadmConfigPatches:
@@ -89,7 +91,6 @@ jobs:
                 extraArgs:
                   max-requests-inflight: "1000"
                   max-mutating-requests-inflight: "500"
-                  feature-gates: "MutatingAdmissionPolicy=true"
           EOF
 
       - name: Setup Kind cluster
