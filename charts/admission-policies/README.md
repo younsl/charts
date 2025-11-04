@@ -8,7 +8,7 @@ Kubernetes-native admission policies and bindings using ValidatingAdmissionPolic
 
 ## Requirements
 
-Kubernetes: `>=1.34.0-0`
+Kubernetes: `>=1.30.0-0`
 
 ## Installation
 

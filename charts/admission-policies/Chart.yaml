@@ -3,7 +3,7 @@ name: admission-policies
 description: Kubernetes-native admission policies and bindings using ValidatingAdmissionPolicy and MutatingAdmissionPolicy
 type: application
 version: 0.1.0
-kubeVersion: ">=1.34.0-0"
+kubeVersion: ">=1.30.0-0"
 home: https://github.com/younsl/charts
 sources:
   - https://github.com/younsl/charts/tree/main/charts/admission-policies
