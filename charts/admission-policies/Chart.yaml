@@ -1,0 +1,26 @@
+apiVersion: v2
+name: admission-policies
+description: Kubernetes-native admission policies and bindings using ValidatingAdmissionPolicy and MutatingAdmissionPolicy
+type: application
+version: 0.1.0
+kubeVersion: ">=1.30.0-0"
+home: https://github.com/younsl/charts
+sources:
+  - https://github.com/younsl/charts/tree/main/charts/admission-policies
+  - https://kubernetes.io/docs/reference/access-authn-authz/mutating-admission-policy/
+  - https://kubernetes.io/docs/reference/access-authn-authz/validating-admission-policy/
+maintainers:
+  - name: younsl
+    email: cysl@kakao.com
+    url: https://github.com/younsl
+deprecated: false 
+keywords:
+  - kubernetes
+  - admission
+  - policy
+  - validating
+  - mutating
+  - security
+  - governance
+annotations:
+  "helm.sh/skip-test": "false"

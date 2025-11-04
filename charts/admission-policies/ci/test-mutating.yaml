@@ -1,0 +1,49 @@
+# CI test values for MutatingAdmissionPolicies
+# This tests MutatingAdmissionPolicy resources (requires Kubernetes 1.33+)
+
+mutatingAdmissionPolicies:
+  add-default-labels:
+    enabled: true
+    name: add-default-labels
+    policy:
+      enabled: true
+      failurePolicy: Fail
+      matchConstraints:
+        resourceRules:
+          - apiGroups: [""]
+            apiVersions: ["v1"]
+            operations: ["CREATE"]
+            resources: ["pods"]
+      mutations:
+        - patchType: "JSONPatch"
+          jsonPatch:
+            expression: |
+              [
+                {
+                  "op": "add",
+                  "path": "/metadata/labels/managed-by",
+                  "value": "admission-policy"
+                }
+              ]
+    bindings:
+      dev:
+        enabled: true
+        name: add-default-labels-dev
+        matchResources:
+          namespaceSelector:
+            matchLabels:
+              auto-label: "true"
+      prod:
+        enabled: true
+        name: add-default-labels-prod
+        matchResources:
+          namespaceSelector:
+            matchLabels:
+              environment: production
+
+commonLabels:
+  managed-by: helm
+  chart: policies
+
+commonAnnotations:
+  example.com/owner: platform-team

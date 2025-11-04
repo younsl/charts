@@ -1,0 +1,47 @@
+Thank you for installing {{ .Chart.Name }}.
+
+Your release is named {{ .Release.Name }}.
+
+The following resources have been created:
+
+{{- if .Values.validatingAdmissionPolicies }}
+
+ValidatingAdmissionPolicies:
+{{- range .Values.validatingAdmissionPolicies }}
+  - {{ .name }}
+{{- end }}
+{{- end }}
+
+{{- if .Values.validatingAdmissionPolicyBindings }}
+
+ValidatingAdmissionPolicyBindings:
+{{- range .Values.validatingAdmissionPolicyBindings }}
+  - {{ .name }} (policy: {{ .policyName }})
+{{- end }}
+{{- end }}
+
+{{- if .Values.mutatingAdmissionPolicies }}
+
+MutatingAdmissionPolicies:
+{{- range .Values.mutatingAdmissionPolicies }}
+  - {{ .name }}
+{{- end }}
+{{- end }}
+
+{{- if .Values.mutatingAdmissionPolicyBindings }}
+
+MutatingAdmissionPolicyBindings:
+{{- range .Values.mutatingAdmissionPolicyBindings }}
+  - {{ .name }} (policy: {{ .policyName }})
+{{- end }}
+{{- end }}
+
+To check the status of your admission policies:
+
+  kubectl get validatingadmissionpolicies
+  kubectl get validatingadmissionpolicybindings
+  kubectl get mutatingadmissionpolicies
+  kubectl get mutatingadmissionpolicybindings
+
+For more information about Kubernetes Admission Policies:
+  https://kubernetes.io/docs/reference/access-authn-authz/validating-admission-policy/

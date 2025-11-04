@@ -1,0 +1,102 @@
+# -- (string) Override chart name
+# @default -- `""`
+nameOverride: ""
+
+# -- (string) Override full resource names
+# @default -- `""`
+fullnameOverride: ""
+
+# -- (object) Labels applied to all resources
+# @default -- `{}`
+commonLabels: {}
+
+# -- (object) Annotations applied to all resources
+# @default -- `{}`
+commonAnnotations: {}
+
+# -- (object) ValidatingAdmissionPolicies with bindings. [Kubernetes Docs](https://kubernetes.io/docs/reference/access-authn-authz/validating-admission-policy/)
+# @default -- `{}`
+validatingAdmissionPolicies: {}
+  # deny-privileged-containers:
+  #   enabled: true
+  #   name: deny-privileged-containers
+  #   policy:
+  #     enabled: true
+  #     failurePolicy: Fail
+  #     matchConstraints:
+  #       resourceRules:
+  #         - apiGroups: [""]
+  #           apiVersions: ["v1"]
+  #           operations: ["CREATE", "UPDATE"]
+  #           resources: ["pods"]
+  #     validations:
+  #       - expression: "!object.spec.containers.exists(c, has(c.securityContext) && has(c.securityContext.privileged) && c.securityContext.privileged)"
+  #         message: "Privileged containers are not allowed"
+  #     matchConditions: []
+  #     auditAnnotations: []
+  #     variables: []
+  #     paramKind: {}
+  #   bindings:
+  #     production:
+  #       enabled: true
+  #       name: deny-privileged-containers-production
+  #       validationActions: ["Deny"]
+  #       matchResources:
+  #         namespaceSelector:
+  #           matchLabels:
+  #             environment: production
+  #       paramRef: {}
+  #     staging:
+  #       enabled: false
+  #       name: deny-privileged-containers-staging
+  #       validationActions: ["Warn"]
+  #       matchResources:
+  #         namespaceSelector:
+  #           matchLabels:
+  #             environment: staging
+
+# -- (object) MutatingAdmissionPolicies with bindings (requires Kubernetes 1.33+, beta). [Kubernetes Docs](https://kubernetes.io/docs/reference/access-authn-authz/mutating-admission-policy/)
+# @default -- `{}`
+mutatingAdmissionPolicies: {}
+  # add-default-labels:
+  #   enabled: true
+  #   name: add-default-labels
+  #   policy:
+  #     enabled: true
+  #     failurePolicy: Fail
+  #     matchConstraints:
+  #       resourceRules:
+  #         - apiGroups: [""]
+  #           apiVersions: ["v1"]
+  #           operations: ["CREATE"]
+  #           resources: ["pods"]
+  #     mutations:
+  #       - patchType: "JSONPatch"
+  #         jsonPatch:
+  #           expression: |
+  #             [
+  #               {
+  #                 "op": "add",
+  #                 "path": "/metadata/labels/managed-by",
+  #                 "value": "admission-policy"
+  #               }
+  #             ]
+  #     matchConditions: []
+  #     variables: []
+  #     paramKind: {}
+  #   bindings:
+  #     dev:
+  #       enabled: true
+  #       name: add-default-labels-dev
+  #       matchResources:
+  #         namespaceSelector:
+  #           matchLabels:
+  #             auto-label: "true"
+  #       paramRef: {}
+  #     prod:
+  #       enabled: false
+  #       name: add-default-labels-prod
+  #       matchResources:
+  #         namespaceSelector:
+  #           matchLabels:
+  #             environment: production

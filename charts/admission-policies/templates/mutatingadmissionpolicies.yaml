@@ -1,0 +1,41 @@
+{{- if semverCompare ">=1.33.0-0" .Capabilities.KubeVersion.Version }}
+{{- range $key, $value := .Values.mutatingAdmissionPolicies }}
+{{- if and $value.enabled $value.policy.enabled }}
+---
+apiVersion: admissionregistration.k8s.io/v1alpha1
+kind: MutatingAdmissionPolicy
+metadata:
+  name: {{ $value.name }}
+  labels:
+    {{- include "admission-policies.labels" $ | nindent 4 }}
+  {{- with $.Values.commonAnnotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  {{- with $value.policy.failurePolicy }}
+  failurePolicy: {{ . }}
+  {{- end }}
+  {{- with $value.policy.matchConstraints }}
+  matchConstraints:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with $value.policy.mutations }}
+  mutations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with $value.policy.matchConditions }}
+  matchConditions:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with $value.policy.variables }}
+  variables:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with $value.policy.paramKind }}
+  paramKind:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+{{- end }}
+{{- end }}
+{{- end }}
