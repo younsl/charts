@@ -8,7 +8,7 @@ Kubernetes-native admission policies and bindings using ValidatingAdmissionPolic
 
 ## Requirements
 
-Kubernetes: `>=1.30.0-0`
+Kubernetes: `>=1.34.0-0`
 
 ## Installation
 
@@ -82,7 +82,7 @@ The following table lists the configurable parameters and their default values.
 | commonLabels | object | `{}` | Labels applied to all resources |
 | commonAnnotations | object | `{}` | Annotations applied to all resources |
 | validatingAdmissionPolicies | object | `{}` | ValidatingAdmissionPolicies with bindings. [Kubernetes Docs](https://kubernetes.io/docs/reference/access-authn-authz/validating-admission-policy/) |
-| mutatingAdmissionPolicies | object | `{}` | MutatingAdmissionPolicies with bindings (requires Kubernetes 1.33+, beta). [Kubernetes Docs](https://kubernetes.io/docs/reference/access-authn-authz/mutating-admission-policy/) |
+| mutatingAdmissionPolicies | object | `{}` | MutatingAdmissionPolicies with bindings (requires Kubernetes 1.34+, beta). [Kubernetes Docs](https://kubernetes.io/docs/reference/access-authn-authz/mutating-admission-policy/) |
 
 ## Source Code
 

@@ -1,11 +1,11 @@
-{{- if semverCompare ">=1.33.0-0" .Capabilities.KubeVersion.Version }}
+{{- if semverCompare ">=1.34.0-0" .Capabilities.KubeVersion.Version }}
 {{- range $policyKey, $policyValue := .Values.mutatingAdmissionPolicies }}
 {{- if $policyValue.enabled }}
 {{- $policyName := $policyValue.name }}
 {{- range $bindingKey, $bindingValue := $policyValue.bindings }}
 {{- if $bindingValue.enabled }}
 ---
-apiVersion: admissionregistration.k8s.io/v1alpha1
+apiVersion: admissionregistration.k8s.io/v1beta1
 kind: MutatingAdmissionPolicyBinding
 metadata:
   name: {{ $bindingValue.name }}
