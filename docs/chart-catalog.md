@@ -28,11 +28,12 @@ helm pull oci://ghcr.io/younsl/charts/<chart-name> --version <version> --untar
 
 ## Available Charts
 
-This repository contains **10** Helm charts (8 active, 2 deprecated).
+This repository contains **11** Helm charts (9 active, 2 deprecated).
 
 | Chart Name | Version | App Version | Status | Description |
 |------------|---------|-------------|--------|-------------|
 | [actions-runner](../charts/actions-runner) | 0.3.0 | - | ⚠️ Deprecated | A Helm chart for Kubernetes to deploy GitHub Actions runners include horizont... |
+| [admission-policies](../charts/admission-policies) | 0.1.0 | - | ✅ Active | Kubernetes-native admission policies and bindings using ValidatingAdmissionPo... |
 | [argo-workflows-templates](../charts/argo-workflows-templates) | 0.2.0 | - | ✅ Active | A Helm chart for managing Argo Workflows Templates. |
 | [argocd-apps](../charts/argocd-apps) | 1.7.0 | - | ✅ Active | A Helm chart for managing additional Argo CD Applications and Projects |
 | [backup-utils](../charts/backup-utils) | 0.9.0 | 3.18.0 | ⚠️ Deprecated | GitHub Enterprise Backup Utilities |
@@ -52,6 +53,13 @@ This repository contains **10** Helm charts (8 active, 2 deprecated).
 A Helm chart for Kubernetes to deploy GitHub Actions runners include horizontalRunnerAutoscaler and serviceAccount
 
 > **Deprecation Notice:** This chart is deprecated. Please use the official Actions Runner Controller (ARC) instead:
+
+### admission-policies
+**Status:** ✅ Active  
+**Version:** 0.1.0  
+**Keywords:** kubernetes, admission, policy, validating, mutating, security, governance  
+
+Kubernetes-native admission policies and bindings using ValidatingAdmissionPolicy and MutatingAdmissionPolicy
 
 ### argo-workflows-templates
 **Status:** ✅ Active  
@@ -134,4 +142,4 @@ For contributing to these charts, please refer to the [main repository](https://
 
 ---
 
-*Last updated: 2025-10-22*
+*Last updated: 2025-11-04*
