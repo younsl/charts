@@ -1,0 +1,83 @@
+{{- $name := "require-traffic-distribution-prefer-close" }}
+{{- $policy := index .Values.predefinedPolicies $name }}
+{{- if $policy.enabled }}
+---
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingAdmissionPolicy
+metadata:
+  name: {{ include "admission-policies.fullname" . }}-{{ $name }}
+  labels:
+    {{- include "admission-policies.labels" . | nindent 4 }}
+  {{- with .Values.commonAnnotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  failurePolicy: {{ $policy.failurePolicy }}
+  matchConstraints:
+    resourceRules:
+      - apiGroups: [""]
+        apiVersions: ["v1"]
+        operations: ["CREATE", "UPDATE"]
+        resources: ["services"]
+  validations:
+    - expression: |
+        !has(object.spec.trafficDistribution) ||
+        object.spec.trafficDistribution == 'PreferClose'
+      message: "Services must have spec.trafficDistribution set to PreferClose for local AZ traffic optimization"
+      reason: Invalid
+---
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingAdmissionPolicyBinding
+metadata:
+  name: {{ include "admission-policies.fullname" . }}-{{ $name }}-binding
+  labels:
+    {{- include "admission-policies.labels" . | nindent 4 }}
+  {{- with .Values.commonAnnotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  policyName: {{ include "admission-policies.fullname" . }}-{{ $name }}
+  validationActions:
+    {{- toYaml $policy.validationActions | nindent 4 }}
+  matchResources:
+    {{- $matchResources := $policy.matchResources }}
+    {{- if $matchResources.namespaceSelector }}
+    namespaceSelector:
+      {{- if $matchResources.namespaceSelector.matchLabels }}
+      matchLabels:
+        {{- toYaml $matchResources.namespaceSelector.matchLabels | nindent 8 }}
+      {{- end }}
+      matchExpressions:
+        # Always exclude system namespaces
+        - key: kubernetes.io/metadata.name
+          operator: NotIn
+          values:
+            - kube-system
+            - kube-public
+            - kube-node-lease
+        {{- with $matchResources.namespaceSelector.matchExpressions }}
+        # User-defined namespace expressions
+        {{- toYaml . | nindent 8 }}
+        {{- end }}
+    {{- else }}
+    namespaceSelector:
+      matchExpressions:
+        # Always exclude system namespaces
+        - key: kubernetes.io/metadata.name
+          operator: NotIn
+          values:
+            - kube-system
+            - kube-public
+            - kube-node-lease
+    {{- end }}
+    {{- with $matchResources.objectSelector }}
+    objectSelector:
+      {{- toYaml . | nindent 6 }}
+    {{- end }}
+    {{- with $matchResources.excludeResourceRules }}
+    excludeResourceRules:
+      {{- toYaml . | nindent 6 }}
+    {{- end }}
+{{- end }}
