@@ -32,7 +32,7 @@ This repository contains **11** Helm charts (9 active, 2 deprecated).
 
 | Chart Name | Version | App Version | Status | Description |
 |------------|---------|-------------|--------|-------------|
-| [actions-runner](../charts/actions-runner) | 0.3.0 | - | ⚠️ Deprecated | A Helm chart for Kubernetes to deploy GitHub Actions runners include horizont... |
+| [actions-runner](../charts/actions-runner) | 0.4.0 | - | ⚠️ Deprecated | A Helm chart for Kubernetes to deploy GitHub Actions runners include horizont... |
 | [admission-policies](../charts/admission-policies) | 0.2.0 | - | ✅ Active | Kubernetes-native admission policies and bindings using ValidatingAdmissionPo... |
 | [argo-workflows-templates](../charts/argo-workflows-templates) | 0.2.0 | - | ✅ Active | A Helm chart for managing Argo Workflows Templates. |
 | [argocd-apps](../charts/argocd-apps) | 1.7.0 | - | ✅ Active | A Helm chart for managing additional Argo CD Applications and Projects |
@@ -48,7 +48,7 @@ This repository contains **11** Helm charts (9 active, 2 deprecated).
 
 ### actions-runner
 **Status:** ⚠️ Deprecated  
-**Version:** 0.3.0  
+**Version:** 0.4.0  
 
 A Helm chart for Kubernetes to deploy GitHub Actions runners include horizontalRunnerAutoscaler and serviceAccount
 
@@ -142,4 +142,4 @@ For contributing to these charts, please refer to the [main repository](https://
 
 ---
 
-*Last updated: 2025-11-05*
+*Last updated: 2025-11-11*
