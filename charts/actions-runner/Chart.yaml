@@ -13,7 +13,7 @@ description: |
   The gha-runner-scale-set-controller chart provides better integration with GitHub Actions and more features for managing 
   self-hosted runners on Kubernetes.
 deprecated: true
-version: 0.3.0
+version: 0.4.0
 home: https://github.com/actions/actions-runner-controller
 sources:
   - https://github.com/actions/actions-runner-controller

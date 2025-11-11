@@ -126,23 +126,25 @@ runnerDeployments:
         # number of runners will be halved when scaling down.
         scaleDownFactor: '0.5'
 
-    # -- (bool) Automatically mount service account token.
-    automountServiceAccountToken: true
-
     # -- (object) Kubernetes service account configuration.
     # A service account provides authentication information used by pods to interact with the Kubernetes API server within the cluster.
     # This configuration allows the runner pod to access necessary cluster resources by assigning appropriate permissions.
     # Using a service account enhances cluster security and allows for the association with specific IAM roles to access AWS resources.
     serviceAccount:
-
       # -- (bool) Determines whether to create a new service account. Setting this to 'true' will create a new service account.
       create: true
 
-      # -- (object) Annotation for linking an IAM role with the service account. This annotation associates the service account with an AWS IAM role,
-      # allowing the service account to obtain permissions to access AWS resources (e.g. S3 buckets).
-      # By using IRSA (IAM Role for Service Account), you can securely access AWS resources.
-      annotations:
-        eks.amazonaws.com/role-arn: arn:aws:iam::111122223333:role/doge-eks-cluster-actions-build-runner-s3-access-irsa-role
+      # -- (bool) Automatically mount service account token.
+      automountServiceAccountToken: true
+
+      # -- (list) Image pull secrets for the service account. This allows the service account to pull images from private container registries.
+      imagePullSecrets: []
+        # - name: my-registry-secret
+
+      # -- (object) Annotations for the service account.
+      # Supports AWS IAM integration via IRSA or EKS Pod Identity for secure access to AWS resources.
+      annotations: {}
+        # eks.amazonaws.com/role-arn: arn:aws:iam::111122223333:role/doge-eks-cluster-actions-build-runner-s3-access-irsa-role
 
     # -- (object) Topology Spread Constraints for the runner. This setting defines how pods should be spread across different topology domains,
     # such as nodes or availability zones, to ensure high availability and fault tolerance. It helps to distribute the pods evenly
