@@ -42,7 +42,7 @@ This repository contains **11** Helm charts (9 active, 2 deprecated).
 | [rbac](../charts/rbac) | 0.4.0 | 0.4.0 | ✅ Active | Helm chart to define RBAC resources in the gitops way |
 | [squid](../charts/squid) | 0.8.0 | 6.13 | ✅ Active | A Helm chart for Squid caching proxy |
 | [storage-class](../charts/storage-class) | 0.3.0 | - | ✅ Active | Declarative management of Kubernetes StorageClass and VolumeAttributesClass r... |
-| [uptime-kuma](../charts/uptime-kuma) | 2.24.1 | 1.23.16 | ✅ Active | A self-hosted Monitoring tool like Uptime-Robot. |
+| [uptime-kuma](../charts/uptime-kuma) | 2.25.0 | 1.23.16 | ✅ Active | A self-hosted Monitoring tool like Uptime-Robot. |
 
 ## Chart Details
 
@@ -126,7 +126,7 @@ Declarative management of Kubernetes StorageClass and VolumeAttributesClass reso
 
 ### uptime-kuma
 **Status:** ✅ Active  
-**Version:** 2.24.1  
+**Version:** 2.25.0  
 **App Version:** 1.23.16  
 
 A self-hosted Monitoring tool like "Uptime-Robot".
@@ -142,4 +142,4 @@ For contributing to these charts, please refer to the [main repository](https://
 
 ---
 
-*Last updated: 2025-11-12*
+*Last updated: 2025-11-13*
