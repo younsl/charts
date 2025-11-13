@@ -2,7 +2,7 @@ apiVersion: v2
 name: admission-policies
 description: Kubernetes-native admission policies and bindings using ValidatingAdmissionPolicy and MutatingAdmissionPolicy
 type: application
-version: 0.2.0
+version: 0.1.0
 kubeVersion: ">=1.30.0-0"
 home: https://github.com/younsl/charts
 sources:

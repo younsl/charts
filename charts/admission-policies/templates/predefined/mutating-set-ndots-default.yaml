@@ -1,0 +1,59 @@
+{{- $name := "set-ndots-default" }}
+{{- $policy := index .Values.predefinedPolicies $name }}
+{{- if $policy.enabled }}
+---
+apiVersion: admissionregistration.k8s.io/v1beta1
+kind: MutatingAdmissionPolicy
+metadata:
+  name: {{ include "admission-policies.fullname" . }}-{{ $name }}
+  labels:
+    {{- include "admission-policies.labels" . | nindent 4 }}
+  {{- with .Values.commonAnnotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  failurePolicy: {{ $policy.failurePolicy }}
+  matchConstraints:
+    resourceRules:
+      - apiGroups:   ["apps"]
+        apiVersions: ["v1"]
+        resources:   ["deployments", "statefulsets", "daemonsets"]
+        operations:  ["CREATE", "UPDATE"]
+  reinvocationPolicy: IfNeeded
+  mutations:
+    - patchType: "JSONPatch"
+      jsonPatch:
+        expression: |
+          [
+            JSONPatch{
+              op: "add",
+              path: "/spec/template/spec/dnsConfig",
+              value: {
+                "options": [
+                  {
+                    "name": "ndots",
+                    "value": "{{ $policy.policyParameters.ndotsValue }}"
+                  }
+                ]
+              }
+            }
+          ]
+---
+apiVersion: admissionregistration.k8s.io/v1alpha1
+kind: MutatingAdmissionPolicyBinding
+metadata:
+  name: {{ include "admission-policies.fullname" . }}-{{ $name }}-binding
+  labels:
+    {{- include "admission-policies.labels" . | nindent 4 }}
+  {{- with .Values.commonAnnotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  policyName: {{ include "admission-policies.fullname" . }}-{{ $name }}
+  {{- with $policy.matchResources }}
+  matchResources:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+{{- end }}

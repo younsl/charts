@@ -1,6 +1,6 @@
 # admission-policies
 
-![Version: 0.2.0](https://img.shields.io/badge/Version-0.2.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
+![Version: 0.1.0](https://img.shields.io/badge/Version-0.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
 
 Kubernetes-native admission policies and bindings using ValidatingAdmissionPolicy and MutatingAdmissionPolicy
 
@@ -43,7 +43,7 @@ helm install admission-policies oci://ghcr.io/younsl/charts/admission-policies -
 Install a specific version:
 
 ```console
-helm install admission-policies oci://ghcr.io/younsl/charts/admission-policies --version 0.2.0
+helm install admission-policies oci://ghcr.io/younsl/charts/admission-policies --version 0.1.0
 ```
 
 ### Install from local chart
@@ -51,7 +51,7 @@ helm install admission-policies oci://ghcr.io/younsl/charts/admission-policies -
 Download admission-policies chart and install from local directory:
 
 ```console
-helm pull oci://ghcr.io/younsl/charts/admission-policies --untar --version 0.2.0
+helm pull oci://ghcr.io/younsl/charts/admission-policies --untar --version 0.1.0
 helm install admission-policies ./admission-policies
 ```
 
@@ -81,7 +81,13 @@ The following table lists the configurable parameters and their default values.
 | fullnameOverride | string | `""` | Override full resource names |
 | commonLabels | object | `{}` | Labels applied to all resources |
 | commonAnnotations | object | `{}` | Annotations applied to all resources |
-| predefinedPolicies | object | `{"require-ndots-2":{"enabled":false,"failurePolicy":"Fail","matchResources":{},"validationActions":["Deny"]},"require-traffic-distribution-prefer-close":{"enabled":false,"failurePolicy":"Fail","matchResources":{},"validationActions":["Deny"]}}` | Predefined admission policies that can be easily enabled/disabled |
+| predefinedPolicies | object | `{"require-ndots-2":{"enabled":false,"failurePolicy":"Fail","matchResources":{},"validationActions":["Deny"]},"require-traffic-distribution-prefer-close":{"enabled":false,"failurePolicy":"Fail","matchResources":{},"validationActions":["Deny"]},"set-ndots-default":{"enabled":false,"failurePolicy":"Fail","matchResources":{},"policyParameters":{"ndotsValue":"2"}}}` | Predefined admission policies that can be easily enabled/disabled |
+| predefinedPolicies.set-ndots-default | object | `{"enabled":false,"failurePolicy":"Fail","matchResources":{},"policyParameters":{"ndotsValue":"2"}}` | Policy to set default ndots value in dnsConfig for workloads (Mutating) |
+| predefinedPolicies.set-ndots-default.enabled | bool | `false` | Enable the ndots mutation policy |
+| predefinedPolicies.set-ndots-default.failurePolicy | string | `"Fail"` | Failure policy for the admission policy (Fail or Ignore) |
+| predefinedPolicies.set-ndots-default.policyParameters | object | `{"ndotsValue":"2"}` | Policy parameters |
+| predefinedPolicies.set-ndots-default.policyParameters.ndotsValue | string | `"2"` | Default ndots value to set (typically "1" or "2") |
+| predefinedPolicies.set-ndots-default.matchResources | object | `{}` | Additional match resources configuration for the policy binding. System namespaces (kube-system, kube-public, kube-node-lease) are always excluded by default. |
 | predefinedPolicies.require-ndots-2 | object | `{"enabled":false,"failurePolicy":"Fail","matchResources":{},"validationActions":["Deny"]}` | Policy to require pods to have ndots set to 1 or 2 in dnsConfig |
 | predefinedPolicies.require-ndots-2.enabled | bool | `false` | Enable the ndots validation policy |
 | predefinedPolicies.require-ndots-2.failurePolicy | string | `"Fail"` | Failure policy for the admission policy (Fail or Ignore) |

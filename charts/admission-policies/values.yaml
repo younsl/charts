@@ -16,6 +16,28 @@ commonAnnotations: {}
 
 # -- (object) Predefined admission policies that can be easily enabled/disabled
 predefinedPolicies:
+  # -- (object) Policy to set default ndots value in dnsConfig for workloads (Mutating)
+  set-ndots-default:
+    # -- (bool) Enable the ndots mutation policy
+    enabled: false
+    # -- (string) Failure policy for the admission policy (Fail or Ignore)
+    failurePolicy: Fail
+    # -- (object) Policy parameters
+    policyParameters:
+      # -- (string) Default ndots value to set (typically "1" or "2")
+      ndotsValue: "2"
+    # -- (object) Additional match resources configuration for the policy binding. System namespaces (kube-system, kube-public, kube-node-lease) are always excluded by default.
+    # @default -- `{}`
+    matchResources: {}
+      # # Match only production namespaces (in addition to excluding system namespaces)
+      # namespaceSelector:
+      #   matchLabels:
+      #     environment: production
+      # # Match specific workloads by label
+      # objectSelector:
+      #   matchLabels:
+      #     app: my-app
+
   # -- (object) Policy to require pods to have ndots set to 1 or 2 in dnsConfig
   require-ndots-2:
     # -- (bool) Enable the ndots validation policy
