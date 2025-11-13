@@ -1,50 +1,58 @@
-# Default values for uptime-kuma.
-# This is a YAML-formatted file.
-# Declare variables to be passed into your templates.
-
-image:
-  repository: louislam/uptime-kuma
-  pullPolicy: IfNotPresent
-  # Overrides the image tag whose default is the chart appVersion.
-  tag: "1.23.16-debian"
-
-# -- Image pull secrets to avoid DockerHub rate limits or access private registries
-imagePullSecrets: []
-  # - name: "secret-name"
+# -- (string) Override the name of the chart
 nameOverride: ""
+# -- (string) Override the full name of the chart
 fullnameOverride: ""
-# -- A custom namespace to override the default namespace for the deployed resources.
+# -- (string) A custom namespace to override the default namespace for the deployed resources
 namespaceOverride: ""
 
-# If this option is set to false a StateFulset instead of a Deployment is used
+# -- Container image configuration
+# @default -- Omitted for brevity
+image:
+  # -- (string) Uptime Kuma container image repository
+  repository: louislam/uptime-kuma
+  # -- (string) Image pull policy
+  pullPolicy: IfNotPresent
+  # -- (string) Overrides the image tag whose default is the chart appVersion
+  tag: "1.23.16-debian"
+
+# -- (list) Image pull secrets to avoid DockerHub rate limits or access private registries
+imagePullSecrets: []
+  # - name: "secret-name"
+
+# -- (bool) If this option is set to false a StatefulSet instead of a Deployment is used
 useDeploy: true
 
+# -- ServiceAccount configuration
+# @default -- Omitted for brevity
 serviceAccount:
-  # Specifies whether a service account should be created
+  # -- (bool) Specifies whether a service account should be created
   create: false
-  # Annotations to add to the service account
+  # -- (object) Annotations to add to the service account
   annotations: {}
-  # The name of the service account to use.
-  # If not set and create is true, a name is generated using the fullname template
+  # -- (string) The name of the service account to use. If not set and create is true, a name is generated using the fullname template
   name: ""
-  # -- Automatically mount a ServiceAccount's API credentials
+  # -- (bool) Automatically mount a ServiceAccount's API credentials
   automountServiceAccountToken: true
+  # -- (list) Image pull secrets to attach to the service account
+  imagePullSecrets: []
+    # - name: my-dockerhub-regcred
 
+# -- (object) Annotations to add to the pod
 podAnnotations: {}
-podLabels:
-  {}
+# -- (object) Labels to add to the pod
+podLabels: {}
   # app: uptime-kuma
+# -- (list) Optional additional environment variables for the pod
 podEnv: []
-  # optional additional environment variables
   # - name: "A_VARIABLE"
   #   value: "a-value"
 
-podSecurityContext:
-  {}
+# -- (object) Security context for the pod
+podSecurityContext: {}
   # fsGroup: 2000
 
-securityContext:
-  {}
+# -- (object) Security context for the container
+securityContext: {}
   # capabilities:
   #   drop:
   #   - ALL
@@ -52,18 +60,30 @@ securityContext:
   # runAsNonRoot: true
   # runAsUser: 1000
 
+# -- Service configuration
+# @default -- Omitted for brevity
 service:
+  # -- (string) Kubernetes service type
   type: ClusterIP
+  # -- (int) Service port
   port: 3001
+  # -- (int) Node port (only used if type is NodePort)
   nodePort:
+  # -- (object) Annotations to add to the service
   annotations: {}
 
+# -- Ingress configuration
+# @default -- Omitted for brevity
 ingress:
+  # -- (bool) Enable ingress controller resource
   enabled: false
+  # -- (string) IngressClass that will be used to implement the Ingress
   # className: ""
-  extraLabels:
-    {}
+  # -- (object) Additional labels to add to the ingress
+  extraLabels: {}
     # vhost: uptime-kuma.company.corp
+  # -- (object) Annotations to add to the ingress (includes default NGINX configuration for WebSocket support)
+  # @default -- Omitted for brevity
   annotations:
     nginx.ingress.kubernetes.io/proxy-read-timeout: "3600"
     nginx.ingress.kubernetes.io/proxy-send-timeout: "3600"
@@ -81,24 +101,21 @@ ingress:
         proxy_set_header   Upgrade $http_upgrade;
         proxy_cache_bypass $http_upgrade;
       }
+  # -- (list) Ingress host configuration
   hosts:
     - host: chart-example.local
       paths:
         - path: /
           pathType: ImplementationSpecific
 
-  tls:
-    []
+  # -- (list) TLS configuration for the ingress
+  tls: []
     # - secretName: chart-example-tls
     #   hosts:
     #     - chart-example.local
 
-resources:
-  {}
-  # We usually recommend not to specify default resources and to leave this as a conscious
-  # choice for the user. This also increases chances charts run on environments with little
-  # resources, such as Minikube. If you do want to specify resources, uncomment the following
-  # lines, adjust them as necessary, and remove the curly braces after 'resources:'.
+# -- (object) Resource limits and requests for the container
+resources: {}
   # limits:
   #   cpu: 100m
   #   memory: 128Mi
@@ -106,44 +123,61 @@ resources:
   #   cpu: 100m
   #   memory: 128Mi
 
-# -- Container resize policy for the uptime-kuma container
+# -- (list) Container resize policy for the uptime-kuma container
 # Ref: https://kubernetes.io/docs/tasks/configure-pod-container/resize-container-resources/
 resizePolicy: []
-# - resourceName: cpu
-#   restartPolicy: NotRequired
-# - resourceName: memory
-#   restartPolicy: RestartContainer
+  # - resourceName: cpu
+  #   restartPolicy: NotRequired
+  # - resourceName: memory
+  #   restartPolicy: RestartContainer
 
+# -- (object) Node labels for pod assignment
 nodeSelector: {}
 
+# -- (list) Tolerations for pod assignment
 tolerations: []
 
+# -- (object) Affinity for pod assignment
 affinity: {}
 
 livenessProbe:
+  # -- (bool) Enable liveness probe
   enabled: true
+  # -- (int) Number of consecutive failures before considering the probe as failed
   failureThreshold: 3
-  # Uptime-Kuma recommends to configure a delay of 180 seconds until the server fully started.
+  # -- (int) Initial delay before liveness probe is initiated (Uptime Kuma recommends 180 seconds)
   # https://github.com/louislam/uptime-kuma/blob/ae224f9e188b1fc32ed8729818710975589cdce7/extra/healthcheck.go#L3
   initialDelaySeconds: 180
+  # -- (int) How often to perform the probe
   periodSeconds: 10
+  # -- (int) Minimum consecutive successes for the probe to be considered successful
   successThreshold: 1
+  # -- (int) Probe timeout
   timeoutSeconds: 2
-  # The NodeJS Version of this Healthcheck is no longer supported, therefore we don't specify a node command.
+  # -- (object) Execute command for liveness probe (uses Go-based healthcheck)
+  # The NodeJS Version of this Healthcheck is no longer supported
   # https://github.com/louislam/uptime-kuma/blob/ae224f9e188b1fc32ed8729818710975589cdce7/extra/healthcheck.js#L6
   exec:
     command:
       - "extra/healthcheck"
 
 readinessProbe:
+  # -- (bool) Enable readiness probe
   enabled: true
+  # -- (int) Initial delay before readiness probe is initiated
   initialDelaySeconds: 10
+  # -- (int) How often to perform the probe
   periodSeconds: 10
+  # -- (int) Probe timeout
   timeoutSeconds: 1
+  # -- (int) Number of consecutive failures before considering the probe as failed
   failureThreshold: 3
+  # -- (int) Minimum consecutive successes for the probe to be considered successful
   successThreshold: 1
+  # -- (object) Execute command for readiness probe
   exec:
     command: []
+  # -- (object) HTTP GET request for readiness probe
   httpGet:
     path: /
     port: 3001
@@ -151,102 +185,108 @@ readinessProbe:
     httpHeaders: []
 
 volume:
+  # -- (bool) Enable persistent volume for storage
   enabled: true
+  # -- (string) Access mode for the persistent volume
   accessMode: ReadWriteOnce
+  # -- (string) Size of the persistent volume
   size: 4Gi
-  # If you want to use a storage class other than the default, uncomment this
-  # line and define the storage class name
+  # -- (string) Storage class name for the persistent volume
   storageClassName: gp3
-  # Reuse your own pre-existing PVC.
+  # -- (string) Reuse your own pre-existing PVC
   existingClaim: ""
 
-# -- A list of additional volumes to be added to the pod
-additionalVolumes:
-  []
+# -- (list) A list of additional volumes to be added to the pod
+additionalVolumes: []
   # - name: "additional-certificates"
   #   configMap:
   #     name: "additional-certificates"
   #     optional: true
   #     defaultMode: 420
 
-# -- A list of additional volumeMounts to be added to the pod
-additionalVolumeMounts:
-  []
+# -- (list) A list of additional volumeMounts to be added to the pod
+additionalVolumeMounts: []
   # - name: "additional-certificates"
   #   mountPath: "/etc/ssl/certs/additional/additional-ca.pem"
   #   readOnly: true
   #   subPath: "additional-ca.pem"
 
+# -- Deployment strategy configuration
 strategy:
+  # -- (string) Type of deployment strategy
   type: Recreate
 
-# Mariadb configurations
-mariadb:
-  enabled: false
-  architecture: standalone
-  auth:
-    database: uptime_kuma
-    username: uptime_kuma
-    password: ""
-    rootPassword: ""
-
-# Prometheus ServiceMonitor configuration
 serviceMonitor:
+  # -- (bool) Enable Prometheus ServiceMonitor
   enabled: false
-  # -- Scrape interval. If not set, the Prometheus default scrape interval is used.
+  # -- (string) Scrape interval. If not set, the Prometheus default scrape interval is used
   interval: 60s
-  # -- Timeout if metrics can't be retrieved in given time interval
+  # -- (string) Timeout if metrics can't be retrieved in given time interval
   scrapeTimeout: 10s
-  # -- Scheme to use when scraping, e.g. http (default) or https.
+  # -- (string) Scheme to use when scraping, e.g. http (default) or https
   scheme: ~
-  # -- TLS configuration to use when scraping, only applicable for scheme https.
+  # -- (object) TLS configuration to use when scraping, only applicable for scheme https
   tlsConfig: {}
-  # -- Prometheus [RelabelConfigs] to apply to samples before scraping
+  # -- (list) Prometheus [RelabelConfigs] to apply to samples before scraping
   relabelings: []
-  # -- Prometheus [MetricRelabelConfigs] to apply to samples before ingestion
+  # -- (list) Prometheus [MetricRelabelConfigs] to apply to samples before ingestion
   metricRelabelings: []
-  # -- Prometheus ServiceMonitor selector, only select Prometheus's with these
-  # labels (if not set, select any Prometheus)
+  # -- (object) Prometheus ServiceMonitor selector, only select Prometheus instances with these labels (if not set, select any Prometheus)
   selector: {}
 
-  # -- Namespace where the ServiceMonitor resource should be created, default is
-  # the same as the release namespace
+  # -- (string) Namespace where the ServiceMonitor resource should be created, default is the same as the release namespace
   namespace: ~
-  # -- Additional labels to add to the ServiceMonitor
+  # -- (object) Additional labels to add to the ServiceMonitor
   additionalLabels: {}
-  # -- Additional annotations to add to the ServiceMonitor
+  # -- (object) Additional annotations to add to the ServiceMonitor
   annotations: {}
 
-  # -- BasicAuth credentials for scraping metrics, use API token and any string for username
+  # -- (object) BasicAuth credentials for scraping metrics, use API token and any string for username
   # basicAuth:
   #   username: "metrics"
   #   password: ""
 
-# -- Use this option to set a custom DNS policy to the created deployment
+# -- (string) Use this option to set a custom DNS policy to the created deployment
 dnsPolicy: ""
 
-# -- Use this option to set custom DNS configurations to the created deployment
+# -- (object) Use this option to set custom DNS configurations to the created deployment
 dnsConfig: {}
 
-# -- Use this option to set custom PriorityClass to the created deployment
+# -- (string) Use this option to set custom PriorityClass to the created deployment
 # ref: https://kubernetes.io/docs/concepts/scheduling-eviction/pod-priority-preemption/#priorityclass
 priorityClassName: ""
 
-# -- Create a NetworkPolicy
 networkPolicy:
-  # -- Enable/disable Network Policy
+  # -- (bool) Enable/disable Network Policy
   enabled: false
-  # -- Enable/disable Ingress policy type
+  # -- (bool) Enable/disable Ingress policy type
   ingress: true
-  # -- Enable/disable Egress policy type
+  # -- (bool) Enable/disable Egress policy type
   egress: true
-  # -- Allow incoming connections only from specific Pods
-  # When set to true, the geoserver will accept connections from any source.
-  # When false, only Pods with the label {{ include "geoserver.fullname" . }}-client=true will have network access
+  # -- (bool) Allow incoming connections only from specific Pods. When set to true, the server will accept connections from any source. When false, only Pods with the label {{ include "uptime-kuma.fullname" . }}-client=true will have network access
   allowExternal: true
-  # -- Selects particular namespaces for which all Pods are allowed as ingress sources
+  # -- (object) Selects particular namespaces for which all Pods are allowed as ingress sources
   namespaceSelector: {}
   #  matchLabels:
   #    role: frontend
   #  matchExpressions:
   #   - {key: role, operator: In, values: [frontend]}
+
+# -- MariaDB subchart configuration (from Bitnami)
+# @default -- Omitted for brevity
+mariadb:
+  # -- (bool) Enable MariaDB subchart
+  enabled: false
+  # -- (string) MariaDB architecture (standalone or replication)
+  architecture: standalone
+  # -- MariaDB authentication configuration
+  # @default -- Omitted for brevity
+  auth:
+    # -- (string) Database name to create
+    database: uptime_kuma
+    # -- (string) Database username to create
+    username: uptime_kuma
+    # -- (string) Password for the database user
+    password: ""
+    # -- (string) MariaDB root password
+    rootPassword: ""
