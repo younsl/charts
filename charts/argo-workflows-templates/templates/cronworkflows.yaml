@@ -17,6 +17,7 @@ metadata:
     {{- toYaml . | nindent 4 }}
   {{- end }}
 spec:
+  suspend: {{ $cronWorkflow.suspend | default false }}
   {{- if and $cronWorkflow.schedule $cronWorkflow.schedules }}
   {{- fail "Error in CronWorkflow: Only one of 'schedule' or 'schedules' can be specified, not both" }}
   {{- end }}
@@ -41,9 +42,6 @@ spec:
   {{- end }}
   {{- with $cronWorkflow.failedJobsHistoryLimit }}
   failedJobsHistoryLimit: {{ . }}
-  {{- end }}
-  {{- with $cronWorkflow.suspend }}
-  suspend: {{ . }}
   {{- end }}
   {{- with $cronWorkflow.workflowSpec }}
   workflowSpec:

@@ -52,6 +52,7 @@ cronWorkflows:
     ## Example value for cronWorkflow resources with single schedule
     # my-cron-workflow:
     #   enabled: true
+    #   suspend: false
     #   schedule: '*/5 * * * *'
     #   concurrencyPolicy: Forbid
     #   timezone: Asia/Seoul
@@ -65,6 +66,7 @@ cronWorkflows:
     ## Note: Only one of 'schedule' or 'schedules' can be used, not both
     # my-multi-schedule-workflow:
     #   enabled: true
+    #   suspend: false
     #   schedules:
     #     - '5 4 * * *'   # Run at 4:05 AM daily
     #     - '0 1 * * *'   # Run at 1:00 AM daily
