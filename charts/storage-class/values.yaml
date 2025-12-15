@@ -42,6 +42,13 @@ storageClasses:
     #       - us-east-1b
     # -- (list) Mount options for volumes
     mountOptions: []
+    # -- (object) Volume tags to apply to provisioned EBS volumes (AWS EBS CSI driver only)
+    # Tags are added as tagSpecification_<key> parameters
+    # @default -- {}
+    volumeTags: {}
+      # Environment: Production
+      # Team: Platform
+      # CostCenter: "12345"
 
   gp3-encrypted:
     # -- (bool) Enable this StorageClass
@@ -66,6 +73,13 @@ storageClasses:
     allowedTopologies: []
     # -- (list) Mount options for volumes
     mountOptions: []
+    # -- (object) Volume tags to apply to provisioned EBS volumes (AWS EBS CSI driver only)
+    # Tags are added as tagSpecification_<key> parameters
+    # @default -- {}
+    volumeTags: {}
+      # Environment: Production
+      # Team: Platform
+      # CostCenter: "12345"
 
 # -- (object) Map of VolumeAttributeClass configurations to create
 # Requires EKS 1.31.0+ or Vanilla Kubernetes 1.34.0+ (stable feature)
