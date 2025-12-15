@@ -41,7 +41,7 @@ This repository contains **11** Helm charts (9 active, 2 deprecated).
 | [kube-green-sleepinfos](../charts/kube-green-sleepinfos) | 0.1.1 | 0.1.1 | ✅ Active | A Helm chart for managing kube-green SleepInfo resources. kube-green-sleepinf... |
 | [rbac](../charts/rbac) | 0.4.0 | 0.4.0 | ✅ Active | Helm chart to define RBAC resources in the gitops way |
 | [squid](../charts/squid) | 0.8.0 | 6.13 | ✅ Active | A Helm chart for Squid caching proxy |
-| [storage-class](../charts/storage-class) | 0.3.0 | - | ✅ Active | Declarative management of Kubernetes StorageClass and VolumeAttributesClass r... |
+| [storage-class](../charts/storage-class) | 0.4.0 | - | ✅ Active | Declarative management of Kubernetes StorageClass and VolumeAttributesClass r... |
 | [uptime-kuma](../charts/uptime-kuma) | 2.25.0 | 1.23.16 | ✅ Active | A self-hosted Monitoring tool like Uptime-Robot. |
 
 ## Chart Details
@@ -119,7 +119,7 @@ A Helm chart for Squid caching proxy
 
 ### storage-class
 **Status:** ✅ Active  
-**Version:** 0.3.0  
+**Version:** 0.4.0  
 **Keywords:** storage, storageclass, volumeattributesclass, persistentvolume, aws, ebs, kubernetes  
 
 Declarative management of Kubernetes StorageClass and VolumeAttributesClass resources with support for AWS EBS CSI driver, encryption, and multiple storage tiers
@@ -142,4 +142,4 @@ For contributing to these charts, please refer to the [main repository](https://
 
 ---
 
-*Last updated: 2025-11-14*
+*Last updated: 2025-12-15*
