@@ -33,9 +33,14 @@ volumeBindingMode: {{ $sc.volumeBindingMode }}
 {{- if hasKey $sc "allowVolumeExpansion" }}
 allowVolumeExpansion: {{ $sc.allowVolumeExpansion }}
 {{- end }}
-{{- with $sc.parameters }}
+{{- if or $sc.parameters $sc.volumeTags }}
 parameters:
+  {{- with $sc.parameters }}
   {{- toYaml . | nindent 2 }}
+  {{- end }}
+  {{- range $tagKey, $tagValue := $sc.volumeTags }}
+  tagSpecification_{{ $tagKey }}: {{ printf "%s=%s" $tagKey $tagValue | quote }}
+  {{- end }}
 {{- end }}
 {{- with $sc.allowedTopologies }}
 allowedTopologies:
