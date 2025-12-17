@@ -1,0 +1,62 @@
+# CI test values for istio-envoyfilters chart
+
+defaultNamespace: istio-system
+
+commonLabels:
+  environment: test
+
+commonAnnotations:
+  test-annotation: test-value
+
+envoyFilters:
+  # Test: Basic rate limiting filter
+  test-rate-limit:
+    enabled: true
+    priority: 10
+    workloadSelector:
+      labels:
+        app: test-app
+    configPatches:
+      - applyTo: HTTP_FILTER
+        match:
+          context: SIDECAR_INBOUND
+          listener:
+            filterChain:
+              filter:
+                name: envoy.filters.network.http_connection_manager
+                subFilter:
+                  name: envoy.filters.http.router
+        patch:
+          operation: INSERT_BEFORE
+          value:
+            name: envoy.filters.http.local_ratelimit
+            typed_config:
+              "@type": type.googleapis.com/udpa.type.v1.TypedStruct
+              type_url: type.googleapis.com/envoy.extensions.filters.http.local_ratelimit.v3.LocalRateLimit
+              value:
+                stat_prefix: http_local_rate_limiter
+
+  # Test: Disabled filter (should not be rendered)
+  test-disabled-filter:
+    enabled: false
+    configPatches:
+      - applyTo: HTTP_FILTER
+        patch:
+          operation: INSERT_BEFORE
+          value:
+            name: envoy.filters.http.lua
+
+  # Test: Filter with custom namespace and annotations
+  test-custom-namespace:
+    enabled: true
+    namespace: default
+    annotations:
+      custom-annotation: custom-value
+    configPatches:
+      - applyTo: NETWORK_FILTER
+        match:
+          context: SIDECAR_OUTBOUND
+        patch:
+          operation: MERGE
+          value:
+            name: envoy.filters.network.tcp_proxy

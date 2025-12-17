@@ -1,0 +1,119 @@
+# -- String to partially override the chart name.
+# @default -- chart name
+nameOverride: ~
+
+# -- String to fully override the release name.
+# @default -- release name
+fullnameOverride: ~
+
+# -- Default namespace for all EnvoyFilter resources. Can be overridden per filter.
+# @default -- `istio-system`
+defaultNamespace: istio-system
+
+# -- Common labels to add to all EnvoyFilter resources.
+# @default -- `{}`
+commonLabels: {}
+  ## Add common labels to all envoyfilters
+  # app: istio-envoyfilters
+  # environment: production
+
+# -- Common annotations to add to all EnvoyFilter resources.
+# @default -- `{}`
+commonAnnotations: {}
+  ## Add common annotations to all envoyfilters
+  # my-annotation: my-value
+
+# -- Map of EnvoyFilter configurations. Key is used as the EnvoyFilter name.
+# @default -- `{}`
+envoyFilters: {}
+  ## Example: Rate limiting filter
+  # rate-limit-filter:
+  #   # -- Enable or disable this EnvoyFilter
+  #   enabled: true
+  #   # -- Namespace for this EnvoyFilter (optional, defaults to defaultNamespace)
+  #   # namespace: istio-system
+  #   # -- Annotations to add to this specific EnvoyFilter resource
+  #   annotations: {}
+  #   # -- Priority of the EnvoyFilter (optional). Lower numbers are processed first.
+  #   priority: 0
+  #   # -- Workload selector to target specific pods (optional)
+  #   # Note: workloadSelector and targetRefs are mutually exclusive
+  #   workloadSelector:
+  #     labels:
+  #       app: my-app
+  #   # -- Target refs to target specific resources like Gateway, Service, ServiceEntry (optional)
+  #   # Note: workloadSelector and targetRefs are mutually exclusive
+  #   # targetRefs:
+  #   #   - kind: Gateway
+  #   #     group: gateway.networking.k8s.io
+  #   #     name: my-gateway
+  #   # -- List of config patches to apply
+  #   configPatches:
+  #     - applyTo: HTTP_FILTER
+  #       match:
+  #         context: SIDECAR_INBOUND
+  #         listener:
+  #           filterChain:
+  #             filter:
+  #               name: envoy.filters.network.http_connection_manager
+  #               subFilter:
+  #                 name: envoy.filters.http.router
+  #       patch:
+  #         operation: INSERT_BEFORE
+  #         value:
+  #           name: envoy.filters.http.local_ratelimit
+  #           typed_config:
+  #             "@type": type.googleapis.com/udpa.type.v1.TypedStruct
+  #             type_url: type.googleapis.com/envoy.extensions.filters.http.local_ratelimit.v3.LocalRateLimit
+  #             value:
+  #               stat_prefix: http_local_rate_limiter
+
+  ## Example: Custom Lua header filter (disabled)
+  # add-custom-headers:
+  #   enabled: false
+  #   configPatches:
+  #     - applyTo: HTTP_FILTER
+  #       match:
+  #         context: SIDECAR_OUTBOUND
+  #         listener:
+  #           filterChain:
+  #             filter:
+  #               name: envoy.filters.network.http_connection_manager
+  #               subFilter:
+  #                 name: envoy.filters.http.router
+  #       patch:
+  #         operation: INSERT_BEFORE
+  #         value:
+  #           name: envoy.filters.http.lua
+  #           typed_config:
+  #             "@type": type.googleapis.com/envoy.extensions.filters.http.lua.v3.Lua
+  #             inlineCode: |
+  #               function envoy_on_request(request_handle)
+  #                 request_handle:headers():add("x-custom-header", "custom-value")
+  #               end
+
+  ## Example: Filter in different namespace
+  # app-specific-filter:
+  #   enabled: true
+  #   namespace: app-namespace
+  #   workloadSelector:
+  #     labels:
+  #       app: backend
+  #   configPatches:
+  #     - applyTo: NETWORK_FILTER
+  #       match:
+  #         context: SIDECAR_INBOUND
+  #         listener:
+  #           filterChain:
+  #             filter:
+  #               name: envoy.filters.network.http_connection_manager
+  #       patch:
+  #         operation: MERGE
+  #         value:
+  #           typed_config:
+  #             "@type": type.googleapis.com/envoy.extensions.filters.network.http_connection_manager.v3.HttpConnectionManager
+  #             access_log:
+  #               - name: envoy.access_loggers.file
+  #                 typed_config:
+  #                   "@type": type.googleapis.com/envoy.extensions.access_loggers.file.v3.FileAccessLog
+  #                   path: /dev/stdout

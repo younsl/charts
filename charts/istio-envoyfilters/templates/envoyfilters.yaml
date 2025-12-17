@@ -1,0 +1,45 @@
+{{- /*
+Note: EnvoyFilter custom resource requires Istio to be installed in the cluster.
+Without Istio, the EnvoyFilter resources created by this chart will not work properly.
+*/ -}}
+
+{{- range $name, $filter := .Values.envoyFilters }}
+{{- if $filter.enabled }}
+---
+apiVersion: networking.istio.io/v1alpha3
+kind: EnvoyFilter
+metadata:
+  name: {{ $name }}
+  namespace: {{ $filter.namespace | default $.Values.defaultNamespace }}
+  labels:
+    {{- include "istio-envoyfilters.labels" $ | nindent 4 }}
+  {{- if or $.Values.commonAnnotations $filter.annotations }}
+  annotations:
+    {{- with $.Values.commonAnnotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+    {{- with $filter.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- end }}
+spec:
+  {{- if and $filter.workloadSelector $filter.targetRefs }}
+  {{- fail "workloadSelector and targetRefs are mutually exclusive. Use only one." }}
+  {{- end }}
+  {{- if $filter.workloadSelector }}
+  workloadSelector:
+    {{- toYaml $filter.workloadSelector | nindent 4 }}
+  {{- end }}
+  {{- if $filter.targetRefs }}
+  targetRefs:
+    {{- toYaml $filter.targetRefs | nindent 4 }}
+  {{- end }}
+  {{- if $filter.priority }}
+  priority: {{ $filter.priority }}
+  {{- end }}
+  {{- if $filter.configPatches }}
+  configPatches:
+    {{- toYaml $filter.configPatches | nindent 4 }}
+  {{- end }}
+{{- end }}
+{{- end }}
