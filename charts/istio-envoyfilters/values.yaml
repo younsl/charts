@@ -1,29 +1,29 @@
-# -- String to partially override the chart name.
+# -- (string) String to partially override the chart name.
 # @default -- chart name
 nameOverride: ~
 
-# -- String to fully override the release name.
+# -- (string) String to fully override the release name.
 # @default -- release name
 fullnameOverride: ~
 
-# -- Default namespace for all EnvoyFilter resources. Can be overridden per filter.
+# -- (string) Default namespace for all EnvoyFilter resources. Can be overridden per filter.
 # @default -- `istio-system`
 defaultNamespace: istio-system
 
-# -- Common labels to add to all EnvoyFilter resources.
+# -- (object) Common labels to add to all EnvoyFilter resources.
 # @default -- `{}`
 commonLabels: {}
   ## Add common labels to all envoyfilters
   # app: istio-envoyfilters
   # environment: production
 
-# -- Common annotations to add to all EnvoyFilter resources.
+# -- (object) Common annotations to add to all EnvoyFilter resources.
 # @default -- `{}`
 commonAnnotations: {}
   ## Add common annotations to all envoyfilters
   # my-annotation: my-value
 
-# -- Map of EnvoyFilter configurations. Key is used as the EnvoyFilter name.
+# -- (object) Map of EnvoyFilter configurations. Key is used as the EnvoyFilter name.
 # @default -- `{}`
 envoyFilters: {}
   ## Example: Rate limiting filter
