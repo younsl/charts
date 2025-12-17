@@ -28,7 +28,7 @@ helm pull oci://ghcr.io/younsl/charts/<chart-name> --version <version> --untar
 
 ## Available Charts
 
-This repository contains **11** Helm charts (9 active, 2 deprecated).
+This repository contains **12** Helm charts (10 active, 2 deprecated).
 
 | Chart Name | Version | App Version | Status | Description |
 |------------|---------|-------------|--------|-------------|
@@ -37,6 +37,7 @@ This repository contains **11** Helm charts (9 active, 2 deprecated).
 | [argo-workflows-templates](../charts/argo-workflows-templates) | 0.3.0 | - | ✅ Active | A Helm chart for managing Argo Workflows Templates. |
 | [argocd-apps](../charts/argocd-apps) | 1.7.0 | - | ✅ Active | A Helm chart for managing additional Argo CD Applications and Projects |
 | [backup-utils](../charts/backup-utils) | 0.9.0 | 3.18.0 | ⚠️ Deprecated | GitHub Enterprise Backup Utilities |
+| [istio-envoyfilters](../charts/istio-envoyfilters) | 0.1.0 | 0.1.0 | ✅ Active | A Helm chart for managing Istio EnvoyFilter resources. This chart enables cus... |
 | [karpenter-nodepool](../charts/karpenter-nodepool) | 1.5.1 | 1.5.0 | ✅ Active | A Helm chart for Karpenter Node pool, it will create the NodePool and the Ec2... |
 | [kube-green-sleepinfos](../charts/kube-green-sleepinfos) | 0.1.1 | 0.1.1 | ✅ Active | A Helm chart for managing kube-green SleepInfo resources. kube-green-sleepinf... |
 | [rbac](../charts/rbac) | 0.4.0 | 0.4.0 | ✅ Active | Helm chart to define RBAC resources in the gitops way |
@@ -84,6 +85,14 @@ A Helm chart for managing additional Argo CD Applications and Projects
 GitHub Enterprise Backup Utilities
 
 > **Deprecation Notice:** GitHub Enterprise Server 3.17 introduced a Built-in Backup Service as a Preview Feature. 
+
+### istio-envoyfilters
+**Status:** ✅ Active  
+**Version:** 0.1.0  
+**App Version:** 0.1.0  
+**Keywords:** istio, envoyfilter, envoy, service-mesh, custom-resources  
+
+A Helm chart for managing Istio EnvoyFilter resources. This chart enables customization of Envoy proxy configurations across namespaces.
 
 ### karpenter-nodepool
 **Status:** ✅ Active  
@@ -142,4 +151,4 @@ For contributing to these charts, please refer to the [main repository](https://
 
 ---
 
-*Last updated: 2025-12-15*
+*Last updated: 2025-12-17*
