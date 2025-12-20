@@ -1,0 +1,138 @@
+# -- String to partially override the chart name.
+# @default -- chart name
+nameOverride: ~
+
+# -- String to fully override the release name.
+# @default -- release name
+fullnameOverride: ~
+
+# -- Common labels to add to all resources.
+# @default -- `{}`
+commonLabels: {}
+  ## Add common labels to all resources
+  # app: netbox-ipam
+  # environment: dev
+
+# -- Common annotations to add to all resources.
+# @default -- `{}`
+commonAnnotations: {}
+  ## Add common annotations to all resources
+  # my-common-annotation: my-common-value
+
+# -- Map of IpAddress resources to create.
+# IpAddress represents a specific IP address that already exists or should be created in NetBox.
+# The key is used as the resource name.
+# @default -- `{}`
+ipAddresses: {}
+  ## Example: Create a static IP address for a database server
+  # database-server-ip:
+  #   enabled: true
+  #   ipAddress: "10.0.1.100/32"
+  #   tenant: "platform-team"
+  #   description: "Primary database server IP"
+  #   comments: "PostgreSQL primary instance"
+  #   preserveInNetbox: true
+  #   labels:
+  #     app: postgres
+  #     tier: database
+  #   annotations:
+  #     owner: dba-team
+  #   customFields:
+  #     environment: production
+  #
+  ## Example: Create an IP address for a load balancer
+  # nginx-lb-ip:
+  #   enabled: true
+  #   ipAddress: "192.168.10.50/32"
+  #   tenant: "infra-team"
+  #   description: "NGINX load balancer VIP"
+  #   preserveInNetbox: false
+
+# -- Map of IpAddressClaim resources to create.
+# IpAddressClaim requests an IP address from a parent prefix in NetBox.
+# The key is used as the resource name.
+# @default -- `{}`
+ipAddressClaims: {}
+  ## Example: Request an IP from a specific parent prefix
+  # web-server-ip-claim:
+  #   enabled: true
+  #   parentPrefix: "10.0.0.0/24"
+  #   tenant: "web-team"
+  #   description: "Web server dynamic IP allocation"
+  #   comments: "Auto-assigned by NetBox Operator"
+  #   preserveInNetbox: true
+  #   labels:
+  #     app: nginx
+  #     tier: frontend
+  #
+  ## Example: Request an IP using parentPrefixSelector
+  # api-server-ip-claim:
+  #   enabled: true
+  #   parentPrefixSelector:
+  #     tenant: "platform-team"
+  #     site: "dc1-seoul"
+  #   tenant: "platform-team"
+  #   description: "API server IP from DC1 Seoul"
+  #   preserveInNetbox: true
+  #   customFields:
+  #     service: api-gateway
+
+# -- Map of Prefix resources to create.
+# Prefix represents a specific network prefix that already exists or should be created in NetBox.
+# The key is used as the resource name.
+# @default -- `{}`
+prefixes: {}
+  ## Example: Create a subnet for Kubernetes pods
+  # k8s-pod-network:
+  #   enabled: true
+  #   prefix: "10.244.0.0/16"
+  #   tenant: "platform-team"
+  #   site: "dc1-seoul"
+  #   description: "Kubernetes pod CIDR"
+  #   comments: "Managed by Calico CNI"
+  #   preserveInNetbox: true
+  #   labels:
+  #     cluster: production
+  #     network-type: pod
+  #
+  ## Example: Create a subnet for application services (disabled)
+  # app-service-network:
+  #   enabled: false
+  #   prefix: "192.168.100.0/24"
+  #   tenant: "app-team"
+  #   site: "dc2-busan"
+  #   description: "Application service network"
+  #   preserveInNetbox: false
+
+# -- Map of PrefixClaim resources to create.
+# PrefixClaim requests a prefix from a parent prefix in NetBox.
+# The key is used as the resource name.
+# @default -- `{}`
+prefixClaims: {}
+  ## Example: Request a /24 subnet from a larger prefix
+  # new-app-subnet-claim:
+  #   enabled: true
+  #   parentPrefix: "10.0.0.0/16"
+  #   prefixLength: "/24"
+  #   tenant: "dev-team"
+  #   site: "dc1-seoul"
+  #   description: "New application subnet"
+  #   comments: "Auto-allocated /24 subnet"
+  #   preserveInNetbox: true
+  #   labels:
+  #     environment: development
+  #     purpose: application
+  #
+  ## Example: Request a /28 subnet using parentPrefixSelector
+  # monitoring-subnet-claim:
+  #   enabled: true
+  #   parentPrefixSelector:
+  #     tenant: "infra-team"
+  #     site: "dc1-seoul"
+  #   prefixLength: "/28"
+  #   tenant: "infra-team"
+  #   site: "dc1-seoul"
+  #   description: "Monitoring stack subnet"
+  #   preserveInNetbox: true
+  #   customFields:
+  #     service: prometheus-stack

@@ -1,0 +1,47 @@
+{{- /*
+Note: IpAddress custom resource requires the NetBox Operator to be installed in the cluster.
+Without the NetBox Operator, the IpAddress resources created by this chart will not work properly.
+*/ -}}
+
+{{- range $name, $ipAddress := .Values.ipAddresses }}
+{{- if $ipAddress.enabled }}
+---
+apiVersion: netbox.dev/v1
+kind: IpAddress
+metadata:
+  name: {{ $name }}
+  namespace: {{ $.Release.Namespace }}
+  labels:
+    {{- include "netbox-ipam.labels" $ | nindent 4 }}
+    {{- with $ipAddress.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- if or $.Values.commonAnnotations $ipAddress.annotations }}
+  annotations:
+    {{- with $.Values.commonAnnotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+    {{- with $ipAddress.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- end }}
+spec:
+  ipAddress: {{ $ipAddress.ipAddress | quote }}
+  {{- with $ipAddress.tenant }}
+  tenant: {{ . | quote }}
+  {{- end }}
+  {{- with $ipAddress.description }}
+  description: {{ . | quote }}
+  {{- end }}
+  {{- with $ipAddress.comments }}
+  comments: {{ . | quote }}
+  {{- end }}
+  {{- if $ipAddress.preserveInNetbox }}
+  preserveInNetbox: {{ $ipAddress.preserveInNetbox }}
+  {{- end }}
+  {{- with $ipAddress.customFields }}
+  customFields:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+{{- end }}
+{{- end }}

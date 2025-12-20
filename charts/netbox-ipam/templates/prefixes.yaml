@@ -1,0 +1,50 @@
+{{- /*
+Note: Prefix custom resource requires the NetBox Operator to be installed in the cluster.
+Without the NetBox Operator, the Prefix resources created by this chart will not work properly.
+*/ -}}
+
+{{- range $name, $prefix := .Values.prefixes }}
+{{- if $prefix.enabled }}
+---
+apiVersion: netbox.dev/v1
+kind: Prefix
+metadata:
+  name: {{ $name }}
+  namespace: {{ $.Release.Namespace }}
+  labels:
+    {{- include "netbox-ipam.labels" $ | nindent 4 }}
+    {{- with $prefix.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- if or $.Values.commonAnnotations $prefix.annotations }}
+  annotations:
+    {{- with $.Values.commonAnnotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+    {{- with $prefix.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- end }}
+spec:
+  prefix: {{ $prefix.prefix | quote }}
+  {{- with $prefix.tenant }}
+  tenant: {{ . | quote }}
+  {{- end }}
+  {{- with $prefix.site }}
+  site: {{ . | quote }}
+  {{- end }}
+  {{- with $prefix.description }}
+  description: {{ . | quote }}
+  {{- end }}
+  {{- with $prefix.comments }}
+  comments: {{ . | quote }}
+  {{- end }}
+  {{- if $prefix.preserveInNetbox }}
+  preserveInNetbox: {{ $prefix.preserveInNetbox }}
+  {{- end }}
+  {{- with $prefix.customFields }}
+  customFields:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+{{- end }}
+{{- end }}

@@ -1,0 +1,52 @@
+# CI test values for disabled resources
+# Validates that resources with enabled: false are not rendered
+
+ipAddresses:
+  enabled-ip:
+    enabled: true
+    ipAddress: "10.0.1.100/32"
+    tenant: "platform-team"
+    description: "This IP should be rendered"
+  disabled-ip:
+    enabled: false
+    ipAddress: "10.0.1.200/32"
+    tenant: "platform-team"
+    description: "This IP should NOT be rendered"
+
+ipAddressClaims:
+  enabled-ip-claim:
+    enabled: true
+    parentPrefix: "10.0.0.0/24"
+    tenant: "web-team"
+    description: "This claim should be rendered"
+  disabled-ip-claim:
+    enabled: false
+    parentPrefix: "10.0.0.0/24"
+    tenant: "web-team"
+    description: "This claim should NOT be rendered"
+
+prefixes:
+  enabled-prefix:
+    enabled: true
+    prefix: "10.244.0.0/16"
+    tenant: "platform-team"
+    description: "This prefix should be rendered"
+  disabled-prefix:
+    enabled: false
+    prefix: "192.168.0.0/16"
+    tenant: "platform-team"
+    description: "This prefix should NOT be rendered"
+
+prefixClaims:
+  enabled-prefix-claim:
+    enabled: true
+    parentPrefix: "10.0.0.0/16"
+    prefixLength: "/24"
+    tenant: "dev-team"
+    description: "This claim should be rendered"
+  disabled-prefix-claim:
+    enabled: false
+    parentPrefix: "172.16.0.0/12"
+    prefixLength: "/24"
+    tenant: "dev-team"
+    description: "This claim should NOT be rendered"
