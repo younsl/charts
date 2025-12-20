@@ -28,7 +28,7 @@ helm pull oci://ghcr.io/younsl/charts/<chart-name> --version <version> --untar
 
 ## Available Charts
 
-This repository contains **12** Helm charts (10 active, 2 deprecated).
+This repository contains **13** Helm charts (11 active, 2 deprecated).
 
 | Chart Name | Version | App Version | Status | Description |
 |------------|---------|-------------|--------|-------------|
@@ -40,6 +40,7 @@ This repository contains **12** Helm charts (10 active, 2 deprecated).
 | [istio-envoyfilters](../charts/istio-envoyfilters) | 0.1.0 | 0.1.0 | ✅ Active | A Helm chart for managing Istio EnvoyFilter resources. This chart enables cus... |
 | [karpenter-nodepool](../charts/karpenter-nodepool) | 1.5.1 | 1.5.0 | ✅ Active | A Helm chart for Karpenter Node pool, it will create the NodePool and the Ec2... |
 | [kube-green-sleepinfos](../charts/kube-green-sleepinfos) | 0.1.1 | 0.1.1 | ✅ Active | A Helm chart for managing kube-green SleepInfo resources. kube-green-sleepinf... |
+| [netbox-ipam](../charts/netbox-ipam) | 0.1.0 | 0.1.0 | ✅ Active | A Helm chart for managing NetBox Operator IPAM resources. Creates IpAddress, ... |
 | [rbac](../charts/rbac) | 0.4.0 | 0.4.0 | ✅ Active | Helm chart to define RBAC resources in the gitops way |
 | [squid](../charts/squid) | 0.8.0 | 6.13 | ✅ Active | A Helm chart for Squid caching proxy |
 | [storage-class](../charts/storage-class) | 0.4.0 | - | ✅ Active | Declarative management of Kubernetes StorageClass and VolumeAttributesClass r... |
@@ -110,6 +111,14 @@ A Helm chart for Karpenter Node pool, it will create the NodePool and the Ec2Nod
 
 A Helm chart for managing kube-green SleepInfo resources. kube-green-sleepinfos chart is used to create SleepInfo resources for kube-green operator.
 
+### netbox-ipam
+**Status:** ✅ Active  
+**Version:** 0.1.0  
+**App Version:** 0.1.0  
+**Keywords:** netbox, netbox-operator, ipam, ipaddress, prefix, custom-resources  
+
+A Helm chart for managing NetBox Operator IPAM resources. Creates IpAddress, IpAddressClaim, Prefix, and PrefixClaim custom resources.
+
 ### rbac
 **Status:** ✅ Active  
 **Version:** 0.4.0  
@@ -151,4 +160,4 @@ For contributing to these charts, please refer to the [main repository](https://
 
 ---
 
-*Last updated: 2025-12-17*
+*Last updated: 2025-12-20*
