@@ -28,14 +28,13 @@ helm pull oci://ghcr.io/younsl/charts/<chart-name> --version <version> --untar
 
 ## Available Charts
 
-This repository contains **13** Helm charts (11 active, 2 deprecated).
+This repository contains **12** Helm charts (10 active, 2 deprecated).
 
 | Chart Name | Version | App Version | Status | Description |
 |------------|---------|-------------|--------|-------------|
 | [actions-runner](../charts/actions-runner) | 0.4.0 | - | ⚠️ Deprecated | A Helm chart for Kubernetes to deploy GitHub Actions runners include horizont... |
 | [admission-policies](../charts/admission-policies) | 0.1.0 | - | ✅ Active | Kubernetes-native admission policies and bindings using ValidatingAdmissionPo... |
 | [argo-workflows-templates](../charts/argo-workflows-templates) | 0.3.0 | - | ✅ Active | A Helm chart for managing Argo Workflows Templates. |
-| [argocd-apps](../charts/argocd-apps) | 1.7.0 | - | ✅ Active | A Helm chart for managing additional Argo CD Applications and Projects |
 | [backup-utils](../charts/backup-utils) | 0.9.0 | 3.18.0 | ⚠️ Deprecated | GitHub Enterprise Backup Utilities |
 | [istio-envoyfilters](../charts/istio-envoyfilters) | 0.1.0 | 0.1.0 | ✅ Active | A Helm chart for managing Istio EnvoyFilter resources. This chart enables cus... |
 | [karpenter-nodepool](../charts/karpenter-nodepool) | 1.5.1 | 1.5.0 | ✅ Active | A Helm chart for Karpenter Node pool, it will create the NodePool and the Ec2... |
@@ -64,18 +63,11 @@ A Helm chart for Kubernetes to deploy GitHub Actions runners include horizontalR
 Kubernetes-native admission policies and bindings using ValidatingAdmissionPolicy and MutatingAdmissionPolicy
 
 ### argo-workflows-templates
-**Status:** ✅ Active  
-**Version:** 0.3.0  
-**Keywords:** argoproj, argo-workflows, workflows, workflow-templates, gitops  
+**Status:** ✅ Active
+**Version:** 0.3.0
+**Keywords:** argoproj, argo-workflows, workflows, workflow-templates, gitops
 
 A Helm chart for managing Argo Workflows Templates.
-
-### argocd-apps
-**Status:** ✅ Active  
-**Version:** 1.7.0  
-**Keywords:** argoproj, argocd, gitops  
-
-A Helm chart for managing additional Argo CD Applications and Projects
 
 ### backup-utils
 **Status:** ⚠️ Deprecated  
@@ -160,4 +152,4 @@ For contributing to these charts, please refer to the [main repository](https://
 
 ---
 
-*Last updated: 2025-12-20*
+*Last updated: 2025-12-30*

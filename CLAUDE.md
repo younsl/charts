@@ -10,7 +10,6 @@ This is a Helm charts repository that distributes charts via OCI artifacts on Gi
 
 ### Active Charts
 - **argo-workflows-templates** (v0.2.0): WorkflowTemplate and ClusterWorkflowTemplate resources for Argo Workflows
-- **argocd-apps** (v1.7.0): Management of ArgoCD Applications and AppProjects via ApplicationSet
 - **karpenter-nodepool** (v1.5.1): AWS Karpenter NodePool and EC2NodeClass resources for autoscaling with overprovisioning support
 - **kube-green-sleepinfos** (v0.1.1): SleepInfo resources for kube-green to schedule resource hibernation
 - **rbac** (v0.4.0): Kubernetes RBAC resources (ServiceAccount, ClusterRole, ClusterRoleBinding, Role, RoleBinding) with CI tests enabled
@@ -185,7 +184,6 @@ The CI testing process:
 ### Special Considerations
 - **actions-runner**: Requires GitHub PAT for runner registration (deprecated)
 - **argo-workflows-templates**: Requires Argo Workflows controller, creates WorkflowTemplate and ClusterWorkflowTemplate resources
-- **argocd-apps**: Manages ArgoCD CRDs, requires ArgoCD to be installed, supports multiple sources and progressive syncs
 - **backup-utils**: Cronjob-based backups with PVC storage (deprecated)
 - **karpenter-nodepool**: AWS-specific, requires Karpenter controller, includes overprovisioning with dummy deployments
 - **kube-green-sleepinfos**: Requires kube-green operator
