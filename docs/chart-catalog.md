@@ -63,9 +63,9 @@ A Helm chart for Kubernetes to deploy GitHub Actions runners include horizontalR
 Kubernetes-native admission policies and bindings using ValidatingAdmissionPolicy and MutatingAdmissionPolicy
 
 ### argo-workflows-templates
-**Status:** ✅ Active
-**Version:** 0.3.0
-**Keywords:** argoproj, argo-workflows, workflows, workflow-templates, gitops
+**Status:** ✅ Active  
+**Version:** 0.3.0  
+**Keywords:** argoproj, argo-workflows, workflows, workflow-templates, gitops  
 
 A Helm chart for managing Argo Workflows Templates.
 
