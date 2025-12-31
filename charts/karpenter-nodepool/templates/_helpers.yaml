@@ -30,9 +30,9 @@ helm.sh/chart: {{ include "chart" . | quote }}
 Return labels for NodePool template metadata (excludes kubernetes.io domain labels)
 */}}
 {{- define "nodepool.labels" -}}
-{{- with .Values.globalLabels }}
+{{- with .Values.globalLabels -}}
 {{ toYaml . }}
-{{- end }}
+{{- end -}}
 {{- end -}}
 
 {{/*
