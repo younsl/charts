@@ -37,7 +37,7 @@ This repository contains **12** Helm charts (10 active, 2 deprecated).
 | [argo-workflows-templates](../charts/argo-workflows-templates) | 0.3.0 | - | ✅ Active | A Helm chart for managing Argo Workflows Templates. |
 | [backup-utils](../charts/backup-utils) | 0.9.0 | 3.18.0 | ⚠️ Deprecated | GitHub Enterprise Backup Utilities |
 | [istio-envoyfilters](../charts/istio-envoyfilters) | 0.1.0 | 0.1.0 | ✅ Active | A Helm chart for managing Istio EnvoyFilter resources. This chart enables cus... |
-| [karpenter-nodepool](../charts/karpenter-nodepool) | 1.5.1 | 1.5.0 | ✅ Active | A Helm chart for Karpenter Node pool, it will create the NodePool and the Ec2... |
+| [karpenter-nodepool](../charts/karpenter-nodepool) | 1.6.0 | 1.5.0 | ✅ Active | A Helm chart for Karpenter Node pool, it will create the NodePool and the Ec2... |
 | [kube-green-sleepinfos](../charts/kube-green-sleepinfos) | 0.1.1 | 0.1.1 | ✅ Active | A Helm chart for managing kube-green SleepInfo resources. kube-green-sleepinf... |
 | [netbox-ipam](../charts/netbox-ipam) | 0.1.0 | 0.1.0 | ✅ Active | A Helm chart for managing NetBox Operator IPAM resources. Creates IpAddress, ... |
 | [rbac](../charts/rbac) | 0.4.0 | 0.4.0 | ✅ Active | Helm chart to define RBAC resources in the gitops way |
@@ -89,7 +89,7 @@ A Helm chart for managing Istio EnvoyFilter resources. This chart enables custom
 
 ### karpenter-nodepool
 **Status:** ✅ Active  
-**Version:** 1.5.1  
+**Version:** 1.6.0  
 **App Version:** 1.5.0  
 **Keywords:** cluster, node, autoscaling, karpenter, karpenter-crds, nodepool, ec2nodeclass  
 
@@ -152,4 +152,4 @@ For contributing to these charts, please refer to the [main repository](https://
 
 ---
 
-*Last updated: 2025-12-30*
+*Last updated: 2025-12-31*
