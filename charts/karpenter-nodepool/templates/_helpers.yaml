@@ -59,5 +59,8 @@ Common selector terms helper for subnetSelectorTerms, securityGroupSelectorTerms
   {{- with .name }}
   - name: {{ . | quote }}
   {{- end }}
+  {{- with .alias }}
+  - alias: {{ . | quote }}
+  {{- end }}
 {{- end }}
 {{- end }}
