@@ -58,9 +58,9 @@ spec:
   {{- with .instanceStorePolicy }}
   instanceStorePolicy: {{ . | quote }}
   {{- end }}
-  {{- if .userData }} 
+  {{- if .userData }}
   userData: |
-    {{- toYaml .userData | nindent 4 }}
+    {{- trim .userData | nindent 4 }}
   {{- end }}
   {{- if .detailedMonitoring }}
   detailedMonitoring: {{ default "false" .detailedMonitoring }}
