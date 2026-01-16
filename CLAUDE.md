@@ -19,7 +19,9 @@ This is a Helm charts repository that distributes charts via OCI artifacts on Gi
 
 ### Deprecated Charts
 - **actions-runner** (v0.3.0): GitHub Actions self-hosted runner for Kubernetes (deprecated - use Actions Runner Controller)
-- **backup-utils** (v0.9.0): GitHub Enterprise Server backup utilities (deprecated - use built-in backup service)
+
+### Removed Charts
+See [docs/removed-charts.md](docs/removed-charts.md) for charts that have been removed from this repository.
 
 ## Common Development Commands
 
@@ -184,7 +186,6 @@ The CI testing process:
 ### Special Considerations
 - **actions-runner**: Requires GitHub PAT for runner registration (deprecated)
 - **argo-workflows-templates**: Requires Argo Workflows controller, creates WorkflowTemplate and ClusterWorkflowTemplate resources
-- **backup-utils**: Cronjob-based backups with PVC storage (deprecated)
 - **karpenter-nodepool**: AWS-specific, requires Karpenter controller, includes overprovisioning with dummy deployments
 - **kube-green-sleepinfos**: Requires kube-green operator
 - **rbac**: Chart with full CI testing enabled (skip-test: false), supports extra-manifests for additional resources
