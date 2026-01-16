@@ -28,14 +28,13 @@ helm pull oci://ghcr.io/younsl/charts/<chart-name> --version <version> --untar
 
 ## Available Charts
 
-This repository contains **12** Helm charts (10 active, 2 deprecated).
+This repository contains **11** Helm charts (10 active, 1 deprecated).
 
 | Chart Name | Version | App Version | Status | Description |
 |------------|---------|-------------|--------|-------------|
 | [actions-runner](../charts/actions-runner) | 0.4.0 | - | ⚠️ Deprecated | A Helm chart for Kubernetes to deploy GitHub Actions runners include horizont... |
 | [admission-policies](../charts/admission-policies) | 0.1.0 | - | ✅ Active | Kubernetes-native admission policies and bindings using ValidatingAdmissionPo... |
 | [argo-workflows-templates](../charts/argo-workflows-templates) | 0.3.0 | - | ✅ Active | A Helm chart for managing Argo Workflows Templates. |
-| [backup-utils](../charts/backup-utils) | 0.9.0 | 3.18.0 | ⚠️ Deprecated | GitHub Enterprise Backup Utilities |
 | [istio-envoyfilters](../charts/istio-envoyfilters) | 0.1.0 | 0.1.0 | ✅ Active | A Helm chart for managing Istio EnvoyFilter resources. This chart enables cus... |
 | [karpenter-nodepool](../charts/karpenter-nodepool) | 1.6.0 | 1.5.0 | ✅ Active | A Helm chart for Karpenter Node pool, it will create the NodePool and the Ec2... |
 | [kube-green-sleepinfos](../charts/kube-green-sleepinfos) | 0.1.1 | 0.1.1 | ✅ Active | A Helm chart for managing kube-green SleepInfo resources. kube-green-sleepinf... |
@@ -68,16 +67,6 @@ Kubernetes-native admission policies and bindings using ValidatingAdmissionPolic
 **Keywords:** argoproj, argo-workflows, workflows, workflow-templates, gitops  
 
 A Helm chart for managing Argo Workflows Templates.
-
-### backup-utils
-**Status:** ⚠️ Deprecated  
-**Version:** 0.9.0  
-**App Version:** 3.18.0  
-**Keywords:** github-enterprise-server, github-enterprise, backup-utils, backup, disaster-recovery  
-
-GitHub Enterprise Backup Utilities
-
-> **Deprecation Notice:** GitHub Enterprise Server 3.17 introduced a Built-in Backup Service as a Preview Feature. 
 
 ### istio-envoyfilters
 **Status:** ✅ Active  
@@ -152,4 +141,4 @@ For contributing to these charts, please refer to the [main repository](https://
 
 ---
 
-*Last updated: 2025-12-31*
+*Last updated: 2026-01-16*
