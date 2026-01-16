@@ -11,3 +11,4 @@ Collection of Helm charts maintained by [@younsl](https://github.com/younsl), di
 - [Installation](docs/installation.md) - Prerequisites and usage instructions
 - [Testing Guide](docs/testing-guide.md) - Kind-based chart testing environment setup
 - [OCI Background](docs/oci-background.md) - Why we use OCI for chart distribution
+- [Removed Charts](docs/removed-charts.md) - History of charts removed from this repository
