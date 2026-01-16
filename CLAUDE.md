@@ -20,9 +20,6 @@ This is a Helm charts repository that distributes charts via OCI artifacts on Gi
 ### Deprecated Charts
 - **actions-runner** (v0.3.0): GitHub Actions self-hosted runner for Kubernetes (deprecated - use Actions Runner Controller)
 
-### Removed Charts
-See [docs/removed-charts.md](docs/removed-charts.md) for charts that have been removed from this repository.
-
 ## Common Development Commands
 
 ### Documentation
