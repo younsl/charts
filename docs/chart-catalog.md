@@ -141,4 +141,4 @@ For contributing to these charts, please refer to the [main repository](https://
 
 ---
 
-*Last updated: 2026-01-16*
+*Last updated: 2026-02-11*
