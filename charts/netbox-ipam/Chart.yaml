@@ -1,0 +1,26 @@
+apiVersion: v2
+name: netbox-ipam
+description: A Helm chart for managing NetBox Operator IPAM resources. Creates IpAddress, IpAddressClaim, Prefix, and PrefixClaim custom resources.
+deprecated: false
+type: application
+version: 0.1.0
+appVersion: "0.1.0"
+keywords:
+  - netbox
+  - netbox-operator
+  - ipam
+  - ipaddress
+  - prefix
+  - custom-resources
+maintainers:
+  - name: younsl
+    email: cysl@kakao.com
+    url: https://github.com/younsl
+home: https://github.com/netbox-community/netbox-operator
+sources:
+  - https://github.com/netbox-community/netbox-operator
+  - https://github.com/netbox-community/netbox-chart
+  - https://github.com/younsl/charts
+annotations:
+  "helm.sh/skip-test": "true"
+  "helm.sh/skip-test-reason": "Only CRD resources, requires NetBox Operator to be installed"

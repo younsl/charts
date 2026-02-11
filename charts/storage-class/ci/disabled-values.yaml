@@ -1,0 +1,26 @@
+# Test with some StorageClasses disabled
+# This tests that disabled StorageClasses are not created
+
+defaultStorageClass: gp3
+
+storageClasses:
+  # Only gp3 is enabled
+  gp3:
+    enabled: true
+    provisioner: ebs.csi.aws.com
+    reclaimPolicy: Delete
+    volumeBindingMode: WaitForFirstConsumer
+    allowVolumeExpansion: true
+    parameters:
+      type: gp3
+
+  # gp3-encrypted is explicitly disabled
+  gp3-encrypted:
+    enabled: false
+    provisioner: ebs.csi.aws.com
+    reclaimPolicy: Delete
+    volumeBindingMode: WaitForFirstConsumer
+    allowVolumeExpansion: true
+    parameters:
+      type: gp3
+      encrypted: "true"

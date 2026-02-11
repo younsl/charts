@@ -1,0 +1,20 @@
+# Test with default nameOverride and fullnameOverride (empty)
+# This tests the basic functionality with some RBAC resources
+
+clusterRoles:
+  pod-reader:
+    enabled: true
+    rules:
+    - apiGroups: [""]
+      resources: ["pods"]
+      verbs: ["get", "list", "watch"]
+
+clusterRoleBindings:
+  pod-reader:
+    enabled: true
+    roleRef:
+      kind: ClusterRole
+      name: pod-reader
+    subjects:
+      kind: Group
+      name: developers

@@ -1,0 +1,59 @@
+{{- /*
+Note: PrefixClaim custom resource requires the NetBox Operator to be installed in the cluster.
+Without the NetBox Operator, the PrefixClaim resources created by this chart will not work properly.
+*/ -}}
+
+{{- range $name, $prefixClaim := .Values.prefixClaims }}
+{{- if $prefixClaim.enabled }}
+---
+apiVersion: netbox.dev/v1
+kind: PrefixClaim
+metadata:
+  name: {{ $name }}
+  namespace: {{ $.Release.Namespace }}
+  labels:
+    {{- include "netbox-ipam.labels" $ | nindent 4 }}
+    {{- with $prefixClaim.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- if or $.Values.commonAnnotations $prefixClaim.annotations }}
+  annotations:
+    {{- with $.Values.commonAnnotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+    {{- with $prefixClaim.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- end }}
+spec:
+  {{- with $prefixClaim.parentPrefix }}
+  parentPrefix: {{ . | quote }}
+  {{- end }}
+  {{- with $prefixClaim.parentPrefixSelector }}
+  parentPrefixSelector:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with $prefixClaim.prefixLength }}
+  prefixLength: {{ . | quote }}
+  {{- end }}
+  {{- with $prefixClaim.tenant }}
+  tenant: {{ . | quote }}
+  {{- end }}
+  {{- with $prefixClaim.site }}
+  site: {{ . | quote }}
+  {{- end }}
+  {{- with $prefixClaim.description }}
+  description: {{ . | quote }}
+  {{- end }}
+  {{- with $prefixClaim.comments }}
+  comments: {{ . | quote }}
+  {{- end }}
+  {{- if $prefixClaim.preserveInNetbox }}
+  preserveInNetbox: {{ $prefixClaim.preserveInNetbox }}
+  {{- end }}
+  {{- with $prefixClaim.customFields }}
+  customFields:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+{{- end }}
+{{- end }}

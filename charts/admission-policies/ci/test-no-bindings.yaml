@@ -1,0 +1,44 @@
+# CI test values for policies chart without bindings
+# This tests that policies can be created without any bindings
+
+validatingAdmissionPolicies:
+  deny-privileged-containers:
+    enabled: true
+    name: deny-privileged-containers
+    policy:
+      enabled: true
+      failurePolicy: Fail
+      matchConstraints:
+        resourceRules:
+          - apiGroups: [""]
+            apiVersions: ["v1"]
+            operations: ["CREATE", "UPDATE"]
+            resources: ["pods"]
+      validations:
+        - expression: "!object.spec.containers.exists(c, has(c.securityContext) && has(c.securityContext.privileged) && c.securityContext.privileged)"
+          message: "Privileged containers are not allowed"
+    # bindings field omitted completely
+
+  require-resource-limits:
+    enabled: true
+    name: require-resource-limits
+    policy:
+      enabled: true
+      failurePolicy: Fail
+      matchConstraints:
+        resourceRules:
+          - apiGroups: [""]
+            apiVersions: ["v1"]
+            operations: ["CREATE"]
+            resources: ["pods"]
+      validations:
+        - expression: "object.spec.containers.all(c, has(c.resources) && has(c.resources.limits) && has(c.resources.limits.memory) && has(c.resources.limits.cpu))"
+          message: "All containers must have CPU and memory limits defined"
+    bindings: {}  # empty bindings
+
+commonLabels:
+  managed-by: helm
+  chart: policies
+
+commonAnnotations:
+  example.com/owner: platform-team

@@ -1,0 +1,70 @@
+# CI test values for policies chart
+# This file contains sample configurations for testing
+commonLabels:
+  managed-by: helm
+  chart: policies
+
+commonAnnotations:
+  example.com/owner: platform-team
+
+validatingAdmissionPolicies:
+  deny-privileged-containers:
+    enabled: true
+    name: deny-privileged-containers
+    policy:
+      enabled: true
+      failurePolicy: Fail
+      matchConstraints:
+        resourceRules:
+          - apiGroups: [""]
+            apiVersions: ["v1"]
+            operations: ["CREATE", "UPDATE"]
+            resources: ["pods"]
+      validations:
+        - expression: "!object.spec.containers.exists(c, has(c.securityContext) && has(c.securityContext.privileged) && c.securityContext.privileged)"
+          message: "Privileged containers are not allowed"
+    bindings:
+      production:
+        enabled: true
+        name: deny-privileged-containers-production
+        validationActions: ["Deny"]
+        matchResources:
+          namespaceSelector:
+            matchExpressions:
+              - key: environment
+                operator: In
+                values: ["production"]
+      staging:
+        enabled: true
+        name: deny-privileged-containers-staging
+        validationActions: ["Warn"]
+        matchResources:
+          namespaceSelector:
+            matchLabels:
+              environment: staging
+
+  require-resource-limits:
+    enabled: true
+    name: require-resource-limits
+    policy:
+      enabled: true
+      failurePolicy: Fail
+      matchConstraints:
+        resourceRules:
+          - apiGroups: [""]
+            apiVersions: ["v1"]
+            operations: ["CREATE", "UPDATE"]
+            resources: ["pods"]
+      validations:
+        - expression: "object.spec.containers.all(c, has(c.resources) && has(c.resources.limits) && has(c.resources.limits.memory) && has(c.resources.limits.cpu))"
+          message: "All containers must have CPU and memory limits defined"
+    bindings:
+      all-namespaces:
+        enabled: true
+        name: require-resource-limits-all-namespaces
+        validationActions: ["Warn"]
+        matchResources:
+          namespaceSelector:
+            matchLabels:
+              enforce-limits: "true"
+

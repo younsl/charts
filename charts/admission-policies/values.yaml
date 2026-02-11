@@ -1,0 +1,168 @@
+# -- (string) Override chart name
+# @default -- `""`
+nameOverride: ""
+
+# -- (string) Override full resource names
+# @default -- `""`
+fullnameOverride: ""
+
+# -- (object) Labels applied to all resources
+# @default -- `{}`
+commonLabels: {}
+
+# -- (object) Annotations applied to all resources
+# @default -- `{}`
+commonAnnotations: {}
+
+# -- (object) Predefined admission policies that can be easily enabled/disabled
+predefinedPolicies:
+  # -- (object) Policy to set default ndots value in dnsConfig for workloads (Mutating)
+  set-ndots-default:
+    # -- (bool) Enable the ndots mutation policy
+    enabled: false
+    # -- (string) Failure policy for the admission policy (Fail or Ignore)
+    failurePolicy: Fail
+    # -- (object) Policy parameters
+    policyParameters:
+      # -- (string) Default ndots value to set (typically "1" or "2")
+      ndotsValue: "2"
+    # -- (object) Additional match resources configuration for the policy binding. System namespaces (kube-system, kube-public, kube-node-lease) are always excluded by default.
+    # @default -- `{}`
+    matchResources: {}
+      # # Match only production namespaces (in addition to excluding system namespaces)
+      # namespaceSelector:
+      #   matchLabels:
+      #     environment: production
+      # # Match specific workloads by label
+      # objectSelector:
+      #   matchLabels:
+      #     app: my-app
+
+  # -- (object) Policy to require pods to have ndots set to 1 or 2 in dnsConfig
+  require-ndots-2:
+    # -- (bool) Enable the ndots validation policy
+    enabled: false
+    # -- (string) Failure policy for the admission policy (Fail or Ignore)
+    failurePolicy: Fail
+    # -- (list) Validation actions to take when policy is violated (Deny, Warn, Audit)
+    validationActions:
+      - Deny
+    # -- (object) Additional match resources configuration for the policy binding. System namespaces (kube-system, kube-public, kube-node-lease) are always excluded by default.
+    # @default -- `{}`
+    matchResources: {}
+      # # Match only production namespaces (in addition to excluding system namespaces)
+      # namespaceSelector:
+      #   matchLabels:
+      #     environment: production
+      # # Match specific pods by label
+      # objectSelector:
+      #   matchLabels:
+      #     app: my-app
+
+  # -- (object) Policy to require services to have trafficDistribution set to PreferClose for local AZ traffic optimization
+  require-traffic-distribution-prefer-close:
+    # -- (bool) Enable the traffic distribution validation policy
+    enabled: false
+    # -- (string) Failure policy for the admission policy (Fail or Ignore)
+    failurePolicy: Fail
+    # -- (list) Validation actions to take when policy is violated (Deny, Warn, Audit)
+    validationActions:
+      - Deny
+    # -- (object) Additional match resources configuration for the policy binding. System namespaces (kube-system, kube-public, kube-node-lease) are always excluded by default.
+    # @default -- `{}`
+    matchResources: {}
+      # # Match only production namespaces (in addition to excluding system namespaces)
+      # namespaceSelector:
+      #   matchLabels:
+      #     environment: production
+      # # Match specific services by label
+      # objectSelector:
+      #   matchLabels:
+      #     app: my-app
+
+# -- (object) ValidatingAdmissionPolicies with bindings. [Kubernetes Docs](https://kubernetes.io/docs/reference/access-authn-authz/validating-admission-policy/)
+# @default -- `{}`
+validatingAdmissionPolicies: {}
+  # deny-privileged-containers:
+  #   enabled: true
+  #   name: deny-privileged-containers
+  #   policy:
+  #     enabled: true
+  #     failurePolicy: Fail
+  #     matchConstraints:
+  #       resourceRules:
+  #         - apiGroups: [""]
+  #           apiVersions: ["v1"]
+  #           operations: ["CREATE", "UPDATE"]
+  #           resources: ["pods"]
+  #     validations:
+  #       - expression: "!object.spec.containers.exists(c, has(c.securityContext) && has(c.securityContext.privileged) && c.securityContext.privileged)"
+  #         message: "Privileged containers are not allowed"
+  #     matchConditions: []
+  #     auditAnnotations: []
+  #     variables: []
+  #     paramKind: {}
+  #   bindings:
+  #     production:
+  #       enabled: true
+  #       name: deny-privileged-containers-production
+  #       validationActions: ["Deny"]
+  #       matchResources:
+  #         namespaceSelector:
+  #           matchLabels:
+  #             environment: production
+  #       paramRef: {}
+  #     staging:
+  #       enabled: false
+  #       name: deny-privileged-containers-staging
+  #       validationActions: ["Warn"]
+  #       matchResources:
+  #         namespaceSelector:
+  #           matchLabels:
+  #             environment: staging
+
+# -- (object) MutatingAdmissionPolicies with bindings (requires Kubernetes 1.34+, beta). [Kubernetes Docs](https://kubernetes.io/docs/reference/access-authn-authz/mutating-admission-policy/)
+# @default -- `{}`
+mutatingAdmissionPolicies: {}
+  # add-default-labels:
+  #   enabled: true
+  #   name: add-default-labels
+  #   policy:
+  #     enabled: true
+  #     failurePolicy: Fail
+  #     matchConstraints:
+  #       resourceRules:
+  #         - apiGroups: [""]
+  #           apiVersions: ["v1"]
+  #           operations: ["CREATE"]
+  #           resources: ["pods"]
+  #     mutations:
+  #       - patchType: "JSONPatch"
+  #         jsonPatch:
+  #           expression: |
+  #             [
+  #               {
+  #                 "op": "add",
+  #                 "path": "/metadata/labels/managed-by",
+  #                 "value": "admission-policy"
+  #               }
+  #             ]
+  #     matchConditions: []
+  #     variables: []
+  #     paramKind: {}
+  #   bindings:
+  #     dev:
+  #       enabled: true
+  #       name: add-default-labels-dev
+  #       matchResources:
+  #         namespaceSelector:
+  #           matchLabels:
+  #             auto-label: "true"
+  #       paramRef: {}
+  #     prod:
+  #       enabled: false
+  #       name: add-default-labels-prod
+  #       matchResources:
+  #         namespaceSelector:
+  #           matchLabels:
+  #             environment: production

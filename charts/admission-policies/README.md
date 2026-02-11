@@ -1,0 +1,125 @@
+# admission-policies
+
+![Version: 0.1.0](https://img.shields.io/badge/Version-0.1.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square)
+
+Kubernetes-native admission policies and bindings using ValidatingAdmissionPolicy and MutatingAdmissionPolicy
+
+**Homepage:** <https://github.com/younsl/charts>
+
+## Requirements
+
+Kubernetes: `>=1.30.0-0`
+
+## Installation
+
+### List available versions
+
+This chart is distributed via OCI registry, so you need to use [crane](https://github.com/google/go-containerregistry/blob/main/cmd/crane/README.md) instead of `helm search repo` to discover available versions:
+
+```console
+crane ls ghcr.io/younsl/charts/admission-policies
+```
+
+If you need to install crane on macOS, you can easily install it using [Homebrew](https://brew.sh/), the package manager.
+
+```bash
+brew install crane
+```
+
+### Install the chart
+
+Install the chart with the release name `admission-policies`:
+
+```console
+helm install admission-policies oci://ghcr.io/younsl/charts/admission-policies
+```
+
+Install with custom values:
+
+```console
+helm install admission-policies oci://ghcr.io/younsl/charts/admission-policies -f values.yaml
+```
+
+Install a specific version:
+
+```console
+helm install admission-policies oci://ghcr.io/younsl/charts/admission-policies --version 0.1.0
+```
+
+### Install from local chart
+
+Download admission-policies chart and install from local directory:
+
+```console
+helm pull oci://ghcr.io/younsl/charts/admission-policies --untar --version 0.1.0
+helm install admission-policies ./admission-policies
+```
+
+The `--untar` option downloads and unpacks the chart files into a directory for easy viewing and editing.
+
+## Upgrade
+
+```console
+helm upgrade admission-policies oci://ghcr.io/younsl/charts/admission-policies
+```
+
+## Uninstall
+
+```console
+helm uninstall admission-policies
+```
+
+## Configuration
+
+The following table lists the configurable parameters and their default values.
+
+## Values
+
+| Key | Type | Default | Description |
+|-----|------|---------|-------------|
+| nameOverride | string | `""` | Override chart name |
+| fullnameOverride | string | `""` | Override full resource names |
+| commonLabels | object | `{}` | Labels applied to all resources |
+| commonAnnotations | object | `{}` | Annotations applied to all resources |
+| predefinedPolicies | object | `{"require-ndots-2":{"enabled":false,"failurePolicy":"Fail","matchResources":{},"validationActions":["Deny"]},"require-traffic-distribution-prefer-close":{"enabled":false,"failurePolicy":"Fail","matchResources":{},"validationActions":["Deny"]},"set-ndots-default":{"enabled":false,"failurePolicy":"Fail","matchResources":{},"policyParameters":{"ndotsValue":"2"}}}` | Predefined admission policies that can be easily enabled/disabled |
+| predefinedPolicies.set-ndots-default | object | `{"enabled":false,"failurePolicy":"Fail","matchResources":{},"policyParameters":{"ndotsValue":"2"}}` | Policy to set default ndots value in dnsConfig for workloads (Mutating) |
+| predefinedPolicies.set-ndots-default.enabled | bool | `false` | Enable the ndots mutation policy |
+| predefinedPolicies.set-ndots-default.failurePolicy | string | `"Fail"` | Failure policy for the admission policy (Fail or Ignore) |
+| predefinedPolicies.set-ndots-default.policyParameters | object | `{"ndotsValue":"2"}` | Policy parameters |
+| predefinedPolicies.set-ndots-default.policyParameters.ndotsValue | string | `"2"` | Default ndots value to set (typically "1" or "2") |
+| predefinedPolicies.set-ndots-default.matchResources | object | `{}` | Additional match resources configuration for the policy binding. System namespaces (kube-system, kube-public, kube-node-lease) are always excluded by default. |
+| predefinedPolicies.require-ndots-2 | object | `{"enabled":false,"failurePolicy":"Fail","matchResources":{},"validationActions":["Deny"]}` | Policy to require pods to have ndots set to 1 or 2 in dnsConfig |
+| predefinedPolicies.require-ndots-2.enabled | bool | `false` | Enable the ndots validation policy |
+| predefinedPolicies.require-ndots-2.failurePolicy | string | `"Fail"` | Failure policy for the admission policy (Fail or Ignore) |
+| predefinedPolicies.require-ndots-2.validationActions | list | `["Deny"]` | Validation actions to take when policy is violated (Deny, Warn, Audit) |
+| predefinedPolicies.require-ndots-2.matchResources | object | `{}` | Additional match resources configuration for the policy binding. System namespaces (kube-system, kube-public, kube-node-lease) are always excluded by default. |
+| predefinedPolicies.require-traffic-distribution-prefer-close | object | `{"enabled":false,"failurePolicy":"Fail","matchResources":{},"validationActions":["Deny"]}` | Policy to require services to have trafficDistribution set to PreferClose for local AZ traffic optimization |
+| predefinedPolicies.require-traffic-distribution-prefer-close.enabled | bool | `false` | Enable the traffic distribution validation policy |
+| predefinedPolicies.require-traffic-distribution-prefer-close.failurePolicy | string | `"Fail"` | Failure policy for the admission policy (Fail or Ignore) |
+| predefinedPolicies.require-traffic-distribution-prefer-close.validationActions | list | `["Deny"]` | Validation actions to take when policy is violated (Deny, Warn, Audit) |
+| predefinedPolicies.require-traffic-distribution-prefer-close.matchResources | object | `{}` | Additional match resources configuration for the policy binding. System namespaces (kube-system, kube-public, kube-node-lease) are always excluded by default. |
+| validatingAdmissionPolicies | object | `{}` | ValidatingAdmissionPolicies with bindings. [Kubernetes Docs](https://kubernetes.io/docs/reference/access-authn-authz/validating-admission-policy/) |
+| mutatingAdmissionPolicies | object | `{}` | MutatingAdmissionPolicies with bindings (requires Kubernetes 1.34+, beta). [Kubernetes Docs](https://kubernetes.io/docs/reference/access-authn-authz/mutating-admission-policy/) |
+
+## Source Code
+
+* <https://github.com/younsl/charts/tree/main/charts/admission-policies>
+* <https://kubernetes.io/docs/reference/access-authn-authz/mutating-admission-policy/>
+* <https://kubernetes.io/docs/reference/access-authn-authz/validating-admission-policy/>
+
+## Maintainers
+
+| Name | Email | Url |
+| ---- | ------ | --- |
+| younsl | <cysl@kakao.com> | <https://github.com/younsl> |
+
+## License
+
+This chart is licensed under the Apache License 2.0. See [LICENSE](https://github.com/younsl/younsl.github.io/blob/main/LICENSE) for details.
+
+## Contributing
+
+Contributions are welcome! Please feel free to submit a [Pull Request](https://github.com/younsl/younsl.github.io/pulls).
+
+----------------------------------------------
+Autogenerated from chart metadata using [helm-docs v1.14.2](https://github.com/norwoodj/helm-docs/releases/v1.14.2)

@@ -1,0 +1,42 @@
+{{/*
+Helm template for "persistentVolumeClaim" resource
+*/}}
+
+{{- range .Values.runnerDeployments }}
+{{- if .persistenceClaims }}
+{{- range $key, $claim := .persistenceClaims }}
+{{- if $claim.create }}
+---
+apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: {{ $claim.name }}
+  labels:
+    {{- include "actions-runner.labels" $ | nindent 4 }}
+  {{- if $claim.finalizers }}
+  finalizers:
+  {{- range $finalizer := $claim.finalizers }}
+  - {{ $finalizer }}
+  {{- end }}
+  {{- end }}
+spec:
+  {{- if $claim.accessModes }}
+  accessModes:
+  {{- range $accessMode := $claim.accessModes }}
+  - {{ $accessMode }}
+  {{- end }}
+  {{- end }}
+  resources:
+    requests:
+      storage: {{ $claim.size }}
+  {{- if $claim.storageClassName }}
+  storageClassName: {{ $claim.storageClassName }}
+  {{- end }}
+  {{- if $claim.volumeAttributesClassName }}
+  volumeAttributesClassName: {{ $claim.volumeAttributesClassName }}
+  {{- end }}
+  volumeMode: Filesystem
+{{- end }}
+{{- end }}
+{{- end }}
+{{- end }}

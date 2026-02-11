@@ -1,0 +1,240 @@
+# -- (string) Override the name of the chart
+nameOverride: ""
+
+# -- (object) Labels to apply to all resources
+globalLabels: {}
+
+# -- (object) Annotations to apply to all resources
+globalAnnotations: {}
+
+# -- (object) NodePool configuration for Karpenter
+nodePool:
+  # -- (object) Default NodePool configuration
+  default:
+    # -- (bool) Enable or disable this NodePool resource
+    enabled: false
+
+    # -- (object) Labels are arbitrary key-values that are applied to all nodes
+    labels: {}
+
+    # -- (object) Annotations are arbitrary key-values that are applied to all nodes
+    annotations: {}
+
+    # -- (object) References the Cloud Provider's NodeClass resource, see your cloud provider specific documentation
+    nodeClassRef: {}
+      # group: karpenter.k8s.aws
+      # kind: EC2NodeClass
+      # name: default
+
+    # -- (list) Provisioned nodes will have these taints. Taints may prevent pods from scheduling if they are not tolerated by the pod.
+    # @default -- `[]`
+    taints: []
+      # - key: example.com/special-taint
+      #   effect: NoSchedule
+
+    # -- (list) Provisioned nodes will have these taints, but pods do not need to tolerate these taints to be provisioned by this NodePool. These taints are expected to be temporary and some other entity (e.g. a DaemonSet) is responsible for removing the taint after it has finished initializing the node.
+    # @default -- `[]`
+    startupTaints: []
+      # - key: example.com/special-taint
+      #   effect: NoSchedule
+
+    # -- (string) The amount of time that a node can be draining before it's forcibly deleted. A node begins draining when a delete call is made against it, starting its finalization flow. Pods with TerminationGracePeriodSeconds will be deleted preemptively before this terminationGracePeriod ends to give as much time to cleanup as possible. Note: changing this value in the nodepool will drift the nodeclaims.
+    terminationGracePeriod: ~
+
+    # -- (list) Requirements that constrain the parameters of provisioned nodes. These requirements are combined with pod.spec.topologySpreadConstraints, pod.spec.affinity.nodeAffinity, pod.spec.affinity.podAffinity, and pod.spec.nodeSelector rules. Operators { In, NotIn, Exists, DoesNotExist, Gt, and Lt } are supported. https://kubernetes.io/docs/concepts/scheduling-eviction/assign-pod-node/#operators
+    # @default -- `[]`
+    requirements: []
+      # - key: "karpenter.k8s.aws/instance-category"
+      #   operator: In
+      #   values: ["c", "m" , "r"]
+      # - key: "karpenter.k8s.aws/instance-cpu"
+      #   operator: In
+      #   values: ["4", "8", "16", "32"]
+      # - key: "karpenter.k8s.aws/instance-hypervisor"
+      #   operator: In
+      #   values: ["nitro"]
+      # - key: "karpenter.k8s.aws/instance-generation"
+      #   operator: Gt
+      #   values: ["2"]
+      # - key: "kubernetes.io/arch"
+      #   operator: In
+      #   values: ["amd64"]
+      # - key: "karpenter.sh/capacity-type"
+      #   operator: In
+      #   values: ["spot", "on-demand"]
+
+    # -- (string) The amount of time a Node can live on the cluster before being removed. Avoiding long-running Nodes helps to reduce security vulnerabilities as well as to reduce the chance of issues that can plague Nodes with long uptimes such as file fragmentation or memory leaks from system processes. You can choose to disable expiration entirely by setting the string value 'Never' here.
+    expireAfter: 720h
+
+    # -- (object) Disruption section which describes the ways in which Karpenter can disrupt and replace Nodes. Configuration in this section constrains how aggressive Karpenter can be with performing operations like rolling Nodes due to them hitting their maximum lifetime (expiry) or scaling down nodes to reduce cluster cost.
+    disruption:
+      # -- (string) Describes which types of Nodes Karpenter should consider for consolidation. If using 'WhenUnderutilized', Karpenter will consider all nodes for consolidation and attempt to remove or replace Nodes when it discovers that the Node is underutilized and could be changed to reduce cost. If using 'WhenEmpty', Karpenter will only consider nodes for consolidation that contain no workload pods.
+      consolidationPolicy: WhenUnderutilized
+
+      # -- (string) The amount of time Karpenter should wait after discovering a consolidation decision. This value can currently only be set when the consolidationPolicy is 'WhenEmpty'. You can choose to disable consolidation entirely by setting the string value 'Never' here.
+      # consolidateAfter: 30s
+
+    # -- (object) Resource limits constrain the total size of the cluster. Limits prevent Karpenter from creating new instances once the limit is exceeded.
+    limits:
+      # -- (int) Maximum total CPU cores for the NodePool
+      cpu: 1000
+      # -- (string) Maximum total memory for the NodePool
+      memory: 1000Gi
+
+    # -- (int) Priority given to the NodePool when the scheduler considers which NodePool
+    # weight: ""
+
+    # -- (object) Overprovisioning configuration for pre-scaling nodes. This helps reduce pod startup time by keeping spare capacity available.
+    overprovisioning:
+      # -- (bool) Enable overprovisioning for this nodepool
+      enabled: false
+
+      # -- (int) Number of nodes to keep as spare capacity
+      nodes: 1
+
+      # -- (object) Resource requests for overprovisioning pods. These pods will consume resources to maintain spare capacity.
+      resources:
+        requests:
+          # -- (string) CPU request for overprovisioning pods
+          cpu: 1000m
+          # -- (string) Memory request for overprovisioning pods
+          memory: 1Gi
+
+      # -- (list) Topology spread constraints for overprovisioning pods. Ensures dummy pods are spread across different nodes.
+      topologySpreadConstraints:
+      - maxSkew: 1
+        topologyKey: kubernetes.io/hostname
+        whenUnsatisfiable: DoNotSchedule
+        labelSelector:
+          matchLabels:
+            app.kubernetes.io/component: overprovisioning
+
+      # -- (list) Tolerations for overprovisioning pods. Default tolerates all taints to ensure pods can be scheduled on any node.
+      tolerations:
+        - operator: Exists
+        # - key: example.com/special-taint
+        #   operator: Equal
+        #   value: "true"
+        #   effect: NoSchedule
+
+      # -- (object) Additional labels for overprovisioning pods
+      podLabels: {}
+        # app: overprovisioning
+        # nodepool: default
+
+      # -- (object) Additional annotations for overprovisioning pods
+      podAnnotations:
+        # -- (string) Description annotation for overprovisioning pods
+        description: "Overprovisioning pod for maintaining spare capacity"
+
+# -- (object) EC2NodeClass configuration for AWS Karpenter
+ec2NodeClass:
+  # -- (object) Default EC2NodeClass configuration
+  default:
+    # -- (bool) Enable or disable this EC2NodeClass resource
+    enabled: false
+
+    # -- (string) Dictates UserData generation and default block device mappings. May be omitted when using an `alias` amiSelectorTerm, otherwise required. Valid values: AL2, AL2023, Bottlerocket, Custom, Windows2019, Windows2022
+    amiFamily: AL2
+
+    # -- (list) Discovers subnets to attach to instances. Each term in the array of subnetSelectorTerms is ORed together. Within a single term, all conditions are ANDed.
+    # @default -- `[]`
+    subnetSelectorTerms: []
+      # - tags: {}
+      # - name: my-subnet
+      # - id: subnet-0123456789
+
+    # -- (list) Discovers security groups to attach to instances. Each term in the array of securityGroupSelectorTerms is ORed together. Within a single term, all conditions are ANDed.
+    # @default -- `[]`
+    securityGroupSelectorTerms: []
+      # - tags: {}
+      # - name: my-security-group
+      # - id: sg-0123456789
+
+    # -- (string) IAM role to use for the node identity. The "role" field is immutable after EC2NodeClass creation. Must specify one of "role" or "instanceProfile" for Karpenter to launch nodes.
+    role: ""
+
+    # -- (string) IAM instance profile to use for the node identity. Must specify one of "role" or "instanceProfile" for Karpenter to launch nodes.
+    instanceProfile: ""
+
+    # -- (list) AMI selector terms. Each term in the array of amiSelectorTerms is ORed together. Within a single term, all conditions are ANDed.
+    # @default -- `[]`
+    amiSelectorTerms: []
+      # - tags: {}
+      # - name: "amazon-eks-node-al2023-x86_64-standard-1.32-*"
+      # - id: ami-0123456789abcdef0
+      # - alias: al2023@latest
+
+    # -- (string) Overrides autogenerated userdata with a merge semantic
+    userData: ""
+
+    # -- (list) Capacity reservation selector terms. Each term in the array of capacityReservationSelectorTerms is ORed together.
+    # @default -- `[]`
+    capacityReservationSelectorTerms: []
+      # - tags:
+      #     karpenter.sh/discovery: ${CLUSTER_NAME}
+      # - id: cr-123
+
+    # -- (object) Propagates tags to underlying EC2 resources
+    tags: {}
+
+    # -- (object) Configures IMDS for the instance
+    metadataOptions: {}
+      # httpEndpoint: enabled
+      # httpProtocolIPv6: disabled
+      # httpPutResponseHopLimit: 2
+      # httpTokens: required
+
+    # -- (list) Configures storage devices for the instance
+    # @default -- `[]`
+    blockDeviceMappings: []
+      # - deviceName: /dev/xvda
+      #   ebs:
+      #     volumeSize: 100Gi
+      #     volumeType: gp3
+      #     iops: 10000
+      #     encrypted: true
+      #     kmsKeyID: "arn:aws:kms:us-west-2:111122223333:key/1234abcd-12ab-34cd-56ef-1234567890ab"
+      #     deleteOnTermination: true
+      #     throughput: 125
+      #     snapshotID: snap-0123456789
+
+    # -- (string) Use instance-store volumes for node ephemeral-storage. Valid values: RAID0
+    instanceStorePolicy: ~
+
+    # -- (bool) Configures detailed monitoring for the instance
+    detailedMonitoring: false
+
+    # -- (bool) Configures if the instance should be launched with an associated public IP address. If not specified, the default value depends on the subnet's public IP auto-assign setting.
+    associatePublicIPAddress: false
+
+    # -- (object) Karpenter provides the ability to specify a few additional Kubelet args. These are all optional and provide support for additional customization and use cases. Kubelet configuration is now managed by EC2NodeClass (moved from NodePool in Karpenter v1.0+).
+    # @default -- `{}`
+    kubelet: {}
+      # clusterDNS: ["10.0.1.100"]
+      # systemReserved:
+      #   cpu: 100m
+      #   memory: 100Mi
+      #   ephemeral-storage: 1Gi
+      # kubeReserved:
+      #   cpu: 200m
+      #   memory: 100Mi
+      #   ephemeral-storage: 3Gi
+      # evictionHard:
+      #   memory.available: 5%
+      #   nodefs.available: 10%
+      #   nodefs.inodesFree: 10%
+      # evictionSoft:
+      #   memory.available: 500Mi
+      #   nodefs.available: 15%
+      #   nodefs.inodesFree: 15%
+      # evictionSoftGracePeriod:
+      #   memory.available: 1m
+      #   nodefs.available: 1m30s
+      #   nodefs.inodesFree: 2m
+      # evictionMaxPodGracePeriod: 60
+      # imageGCHighThresholdPercent: 85
+      # imageGCLowThresholdPercent: 80
+      # cpuCFSQuota: true
+      # podsPerCore: 2
+      # maxPods: 20

@@ -1,0 +1,307 @@
+# -- Provide a name in place of `rbac` for `app:` labels
+nameOverride: ""
+
+# -- Provide a name to substitute for the full names of resources
+fullnameOverride: ""
+
+#-----------------------------------------
+# Global values
+#-----------------------------------------
+# -- Global values
+# @default -- See below
+global:
+  # -- Common labels for RBAC resources
+  # @default -- `{}`
+  commonLabels: {}
+  # commonLabels:
+  #   github.com/organization-name: funny-company
+  #   github.com/repository-name: charts
+  #   github.com/team: devops
+
+#-----------------------------------------
+# multiple "clusterRole" resource
+#-----------------------------------------
+# -- Map of ClusterRole resources to create. Each key represents a ClusterRole name.
+# @default -- `{}`
+clusterRoles: {}
+  # pod-maintainer-developer:
+  #   ## -- Whether to create this specific ClusterRole
+  #   ## @default -- `true`
+  #   enabled: true
+  #   ## -- Additional labels for the ClusterRole
+  #   ## @default -- `{}`
+  #   labels: {}
+  #   ## -- List of policy rules for the ClusterRole
+  #   ## @default -- See example
+  #   rules:
+  #   - apiGroups:
+  #     - keda.sh
+  #     resources:
+  #     - scaledobjects
+  #     verbs:
+  #     - get
+  #     - list
+  #     - watch
+  #     - update
+  #     - patch
+  #   - apiGroups:
+  #     - ""
+  #     resources:
+  #     - pods
+  #     - services
+  #     verbs:
+  #     - get
+  #     - list
+  #     - watch
+  #     - create
+  #     - update
+  #     - patch
+  #     - delete
+  #   - apiGroups:
+  #     - ""
+  #     resources:
+  #     - pods/log
+  #     - nodes
+  #     verbs:
+  #     - get
+  #     - list
+  #   - apiGroups:
+  #     - ""
+  #     resources:
+  #     - pods/exec
+  #     verbs:
+  #     - create
+  #     - get
+  #   - apiGroups:
+  #     - ""
+  #     resources:
+  #     - pods/portforward
+  #     verbs:
+  #     - create
+  #     - get
+  #   - apiGroups:
+  #     - apps
+  #     resources:
+  #     - deployments
+  #     - deployments/scale
+  #     - deployments/status
+  #     - deployments/rollback
+  #     - replicasets
+  #     - replicasets/scale
+  #     - replicasets/status
+  #     - statefulsets
+  #     - statefulsets/scale
+  #     - statefulsets/status
+  #     verbs:
+  #     - get
+  #     - list
+  #     - watch
+  #     - create
+  #     - update
+  #     - patch
+  #     - delete
+  #   - apiGroups:
+  #     - networking.k8s.io
+  #     resources:
+  #     - ingresses
+  #     verbs:
+  #     - list
+  #     - watch
+  #     - get
+  #     - patch
+  #     - update
+
+  # security-audit:
+  #   ## -- Whether to create this specific ClusterRole
+  #   ## @default -- `true`
+  #   enabled: true
+  #   ## -- Additional labels for the ClusterRole
+  #   ## @default -- See example
+  #   labels:
+  #     funny-jira.atlassian.net/issue-number: FUN-1234
+  #     funny-jira.atlassian.net/requestor: johndoe
+  #   ## -- List of policy rules for the ClusterRole
+  #   ## @default -- See example
+  #   rules:
+  #   - apiGroups:
+  #     - rbac.authorization.k8s.io
+  #     resources:
+  #     - roles
+  #     - rolebindings
+  #     verbs:
+  #     - get
+  #     - list
+  #     - watch
+  #   - apiGroups:
+  #     - rbac.authorization.k8s.io
+  #     resources:
+  #     - clusterroles
+  #     - clusterrolebindings
+  #     verbs:
+  #     - get
+  #     - list
+  #     - watch
+  #   - apiGroups:
+  #     - ""
+  #     resources:
+  #     - pods/attach
+  #     - pods/exec
+  #     verbs:
+  #     - create
+
+#-----------------------------------------
+# multiple "clusterRoleBinding" resource
+#-----------------------------------------
+# -- Map of ClusterRoleBinding resources to create. Each key represents a ClusterRoleBinding name.
+# @default -- `{}`
+clusterRoleBindings: {}
+  # pod-maintainer-developer:
+  #   ## -- Whether to create this specific ClusterRoleBinding
+  #   ## @default -- `true`
+  #   enabled: true
+  #   ## -- Additional labels for the ClusterRoleBinding
+  #   ## @default -- `{}`
+  #   labels: {}
+  #   ## -- Reference to the ClusterRole
+  #   ## @default -- See example
+  #   roleRef:
+  #     kind: ClusterRole
+  #     name: pod-maintainer-developer
+  #   ## -- Subjects to bind to the ClusterRole
+  #   ## @default -- See example
+  #   subjects:
+  #     kind: Group
+  #     name: system:developers
+
+  # security-audit:
+  #   ## -- Whether to create this specific ClusterRoleBinding
+  #   ## @default -- `true`
+  #   enabled: true
+  #   ## -- Additional labels for the ClusterRoleBinding
+  #   ## @default -- See example
+  #   labels:
+  #     funny-jira.atlassian.net/issue-number: FUN-1234
+  #     funny-jira.atlassian.net/requestor: johndoe
+  #   ## -- Reference to the ClusterRole
+  #   ## @default -- See example
+  #   roleRef:
+  #     kind: ClusterRole
+  #     name: security-audit
+  #   ## -- Subjects to bind to the ClusterRole
+  #   ## @default -- See example
+  #   subjects:
+  #     kind: Group
+  #     name: security-engineers
+
+#---------------------------------
+# multiple "role" resource
+#---------------------------------
+# -- Map of namespaced Roles to create. Each key represents a namespace.
+# @default -- `{}`
+roles: {}
+  # datadog:
+  #   # datadog-agent-maintainer:
+  #     ## -- Whether to create this specific Role
+  #     ## @default -- `true`
+  #     enabled: true
+  #     ## -- Additional labels for the Role
+  #     ## @default -- `{}`
+  #     labels: {}
+  #     ## -- List of policy rules for the Role
+  #     ## @default -- See example
+  #     rules:
+  #     - apiGroups:
+  #       - ""
+  #       resources:
+  #       - pods
+  #       - services
+  #       - configmaps
+  #       verbs:
+  #       - get
+  #       - list
+  #       - watch
+  #       - create
+  #       - update
+  #       - patch
+  #       - delete
+  #     - apiGroups:
+  #       - ""
+  #       resources:
+  #       - pods/attach
+  #       - pods/exec
+  #       verbs:
+  #       - create
+  #     - apiGroups:
+  #       - ""
+  #       resources:
+  #       - pods/log
+  #       verbs:
+  #       - get
+  #       - list
+  #     - apiGroups:
+  #       - apps
+  #       resources:
+  #       - deployments
+  #       - deployments/scale
+  #       - deployments/status
+  #       - deployments/rollback
+  #       - replicasets
+  #       - replicasets/scale
+  #       - replicasets/status
+  #       - statefulsets
+  #       - statefulsets/scale
+  #       - statefulsets/status
+  #       verbs:
+  #       - get
+  #       - list
+  #       - watch
+  #       - create
+  #       - update
+  #       - patch
+  #       - delete
+
+#---------------------------------
+# multiple "roleBinding" resource
+#---------------------------------
+# -- Map of namespaced RoleBindings to create. Each key represents a namespace.
+# @default -- `{}`
+roleBindings: {}
+  # datadog:
+  #   # datadog-agent-maintainer:
+  #     ## -- Whether to create this specific RoleBinding
+  #     ## @default -- `true`
+  #     enabled: true
+  #     ## -- Additional labels for the RoleBinding
+  #     ## @default -- `{}`
+  #     labels: {}
+  #     ## -- Reference to the Role
+  #     ## @default -- See example
+  #     roleRef:
+  #       kind: Role
+  #       name: datadog-agent-maintainer
+  #     ## -- Subjects to bind to the Role
+  #     ## @default -- See example
+  #     subjects:
+  #     - kind: Group
+  #       name: datadog-agent-maintainer
+
+#---------------------------------
+# Extra Manifests
+#---------------------------------
+# -- Extra manifests to deploy as an array. Each item can be a raw YAML manifest or use Helm templating.
+extraManifests: []
+  # - apiVersion: v1
+  #   kind: ConfigMap
+  #   metadata:
+  #     name: extra-configmap
+  #     namespace: {{ .Release.Namespace }}
+  #   data:
+  #     key: value
+  # - apiVersion: v1
+  #   kind: Secret
+  #   metadata:
+  #     name: {{ .Release.Name }}-extra-secret
+  #     namespace: {{ .Release.Namespace }}
+  #   type: Opaque
+  #   data:
+  #     password: {{ "mysecret" | b64enc }}

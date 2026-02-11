@@ -1,0 +1,56 @@
+{{- if .Values.cronWorkflows.enabled }}
+{{- range $name, $cronWorkflow := .Values.cronWorkflows.templates }}
+{{- if or (not (hasKey $cronWorkflow "enabled")) $cronWorkflow.enabled }}
+---
+apiVersion: argoproj.io/v1alpha1
+kind: CronWorkflow
+metadata:
+  name: {{ $name }}
+  namespace: {{ $.Release.Namespace | quote }}
+  labels:
+    {{- include "argo-workflows-templates.labels" $ | nindent 4 }}
+    {{- with $cronWorkflow.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- with $cronWorkflow.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  suspend: {{ $cronWorkflow.suspend | default false }}
+  {{- if and $cronWorkflow.schedule $cronWorkflow.schedules }}
+  {{- fail "Error in CronWorkflow: Only one of 'schedule' or 'schedules' can be specified, not both" }}
+  {{- end }}
+  {{- with $cronWorkflow.schedule }}
+  schedule: {{ . | quote }}
+  {{- end }}
+  {{- with $cronWorkflow.schedules }}
+  schedules:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with $cronWorkflow.timezone }}
+  timezone: {{ . | quote }}
+  {{- end }}
+  {{- with $cronWorkflow.startingDeadlineSeconds }}
+  startingDeadlineSeconds: {{ . }}
+  {{- end }}
+  {{- with $cronWorkflow.concurrencyPolicy }}
+  concurrencyPolicy: {{ . }}
+  {{- end }}
+  {{- with $cronWorkflow.successfulJobsHistoryLimit }}
+  successfulJobsHistoryLimit: {{ . }}
+  {{- end }}
+  {{- with $cronWorkflow.failedJobsHistoryLimit }}
+  failedJobsHistoryLimit: {{ . }}
+  {{- end }}
+  {{- with $cronWorkflow.workflowSpec }}
+  workflowSpec:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with $cronWorkflow.workflowMetadata }}
+  workflowMetadata:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+{{- end }}
+{{- end }}
+{{- end }}

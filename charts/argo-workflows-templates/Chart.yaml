@@ -1,0 +1,28 @@
+apiVersion: v2
+name: argo-workflows-templates
+description: |
+  A Helm chart for managing Argo Workflows Templates.
+
+  This chart creates WorkflowTemplate and ClusterWorkflowTemplate custom resources.
+  IMPORTANT: Requires Argo Workflows controller to be installed first to manage these custom resources.
+deprecated: false
+type: application
+version: 0.3.0
+keywords:
+  - argoproj
+  - argo-workflows
+  - workflows
+  - workflow-templates
+  - gitops
+home: https://argoproj.github.io/workflows/
+icon: https://raw.githubusercontent.com/argoproj/argo-workflows/main/docs/assets/logo.png
+maintainers:
+  - name: younsl
+    email: cysl@kakao.com
+    url: https://github.com/younsl
+sources:
+  - https://github.com/argoproj/argo-workflows
+  - https://github.com/younsl/charts
+annotations:
+  "helm.sh/skip-test": "true"
+  "helm.sh/skip-test-reason": "Requires Argo Workflows controller to be installed"

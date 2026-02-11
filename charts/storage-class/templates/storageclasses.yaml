@@ -1,0 +1,54 @@
+{{- range $name, $sc := .Values.storageClasses }}
+{{- if $sc.enabled }}
+---
+apiVersion: storage.k8s.io/v1
+kind: StorageClass
+metadata:
+  name: {{ $name }}
+  {{- if or $sc.annotations $.Values.globalAnnotations (eq $name $.Values.defaultStorageClass) }}
+  annotations:
+    {{- if eq $name $.Values.defaultStorageClass }}
+    storageclass.kubernetes.io/is-default-class: "true"
+    {{- end }}
+    {{- with $.Values.globalAnnotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+    {{- with $sc.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- end }}
+  {{- if or $sc.labels $.Values.globalLabels }}
+  labels:
+    {{- include "storage-class.labels" $ | nindent 4 }}
+    {{- with $.Values.globalLabels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+    {{- with $sc.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- end }}
+provisioner: {{ $sc.provisioner }}
+reclaimPolicy: {{ $sc.reclaimPolicy }}
+volumeBindingMode: {{ $sc.volumeBindingMode }}
+{{- if hasKey $sc "allowVolumeExpansion" }}
+allowVolumeExpansion: {{ $sc.allowVolumeExpansion }}
+{{- end }}
+{{- if or $sc.parameters $sc.volumeTags }}
+parameters:
+  {{- with $sc.parameters }}
+  {{- toYaml . | nindent 2 }}
+  {{- end }}
+  {{- range $tagKey, $tagValue := $sc.volumeTags }}
+  tagSpecification_{{ $tagKey }}: {{ printf "%s=%s" $tagKey $tagValue | quote }}
+  {{- end }}
+{{- end }}
+{{- with $sc.allowedTopologies }}
+allowedTopologies:
+  {{- toYaml . | nindent 2 }}
+{{- end }}
+{{- with $sc.mountOptions }}
+mountOptions:
+  {{- toYaml . | nindent 2 }}
+{{- end }}
+{{- end }}
+{{- end }}

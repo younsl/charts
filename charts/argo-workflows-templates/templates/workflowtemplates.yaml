@@ -1,0 +1,76 @@
+{{- if .Values.workflowTemplates.enabled }}
+{{- range $name, $template := .Values.workflowTemplates.templates }}
+{{- if or (not (hasKey $template "enabled")) $template.enabled }}
+---
+apiVersion: argoproj.io/v1alpha1
+kind: WorkflowTemplate
+metadata:
+  name: {{ $name }}
+  namespace: {{ $.Release.Namespace | quote }}
+  labels:
+    {{- include "argo-workflows-templates.labels" $ | nindent 4 }}
+    {{- with $template.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- with $template.annotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  {{- with $template.arguments }}
+  arguments:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with $template.entrypoint }}
+  entrypoint: {{ . }}
+  {{- end }}
+  {{- with $template.imagePullSecrets }}
+  imagePullSecrets:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with $template.podGC }}
+  podGC:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with $template.templates }}
+  templates:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with $template.ttlStrategy }}
+  ttlStrategy:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with $template.workflowMetadata }}
+  workflowMetadata:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with $template.serviceAccountName }}
+  serviceAccountName: {{ . }}
+  {{- end }}
+  {{- with $template.volumes }}
+  volumes:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with $template.securityContext }}
+  securityContext:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with $template.nodeSelector }}
+  nodeSelector:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with $template.tolerations }}
+  tolerations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with $template.affinity }}
+  affinity:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with $template.synchronization }}
+  synchronization:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+{{- end }}
+{{- end }}
+{{- end }}

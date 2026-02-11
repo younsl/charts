@@ -1,0 +1,8 @@
+# Patterns to ignore when building packages.
+# This supports shell glob matching, relative path matching, and negation.
+
+.github/
+.gitignore
+notes.txt
+values*.yaml
+values*.yaml.example

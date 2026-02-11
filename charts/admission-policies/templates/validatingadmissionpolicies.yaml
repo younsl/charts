@@ -1,0 +1,43 @@
+{{- range $key, $value := .Values.validatingAdmissionPolicies }}
+{{- if and $value.enabled $value.policy.enabled }}
+---
+apiVersion: admissionregistration.k8s.io/v1
+kind: ValidatingAdmissionPolicy
+metadata:
+  name: {{ $value.name }}
+  labels:
+    {{- include "admission-policies.labels" $ | nindent 4 }}
+  {{- with $.Values.commonAnnotations }}
+  annotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+spec:
+  {{- with $value.policy.failurePolicy }}
+  failurePolicy: {{ . }}
+  {{- end }}
+  {{- with $value.policy.matchConstraints }}
+  matchConstraints:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with $value.policy.validations }}
+  validations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with $value.policy.matchConditions }}
+  matchConditions:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with $value.policy.auditAnnotations }}
+  auditAnnotations:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with $value.policy.variables }}
+  variables:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with $value.policy.paramKind }}
+  paramKind:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+{{- end }}
+{{- end }}

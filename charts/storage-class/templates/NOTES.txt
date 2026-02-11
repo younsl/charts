@@ -1,0 +1,41 @@
+Thank you for installing {{ .Chart.Name }}!
+
+The following StorageClasses have been created:
+
+{{- range $name, $sc := .Values.storageClasses }}
+{{- if $sc.enabled }}
+  - {{ $name }}{{ if eq $name $.Values.defaultStorageClass }} (default){{ end }}
+{{- end }}
+{{- end }}
+
+{{- if .Values.defaultStorageClass }}
+
+Default StorageClass: {{ .Values.defaultStorageClass }}
+{{- end }}
+
+To view the created StorageClasses:
+
+  kubectl get storageclass
+
+To describe a specific StorageClass:
+
+  kubectl describe storageclass <storageclass-name>
+
+To create a PersistentVolumeClaim using one of these StorageClasses:
+
+  cat <<EOF | kubectl apply -f -
+  apiVersion: v1
+  kind: PersistentVolumeClaim
+  metadata:
+    name: my-pvc
+  spec:
+    accessModes:
+      - ReadWriteOnce
+    storageClassName: {{ .Values.defaultStorageClass }}
+    resources:
+      requests:
+        storage: 10Gi
+  EOF
+
+For more information about AWS EBS CSI driver and StorageClass configuration:
+  https://github.com/kubernetes-sigs/aws-ebs-csi-driver

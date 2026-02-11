@@ -1,0 +1,89 @@
+# CI test values for testing enabled/disabled flags
+# This tests selective enabling/disabling of policies and bindings
+
+validatingAdmissionPolicies:
+  deny-privileged-containers:
+    enabled: true
+    name: deny-privileged-containers
+    policy:
+      enabled: false  # Policy disabled - should not be created
+      failurePolicy: Fail
+      matchConstraints:
+        resourceRules:
+          - apiGroups: [""]
+            apiVersions: ["v1"]
+            operations: ["CREATE", "UPDATE"]
+            resources: ["pods"]
+      validations:
+        - expression: "true"
+          message: "test"
+    bindings:
+      production:
+        enabled: true
+        name: deny-privileged-containers-production
+        validationActions: ["Deny"]
+        matchResources:
+          namespaceSelector:
+            matchLabels:
+              environment: production
+
+  require-resource-limits:
+    enabled: true
+    name: require-resource-limits
+    policy:
+      enabled: true  # Policy enabled - should be created
+      failurePolicy: Fail
+      matchConstraints:
+        resourceRules:
+          - apiGroups: [""]
+            apiVersions: ["v1"]
+            operations: ["CREATE"]
+            resources: ["pods"]
+      validations:
+        - expression: "true"
+          message: "test"
+    bindings:
+      production:
+        enabled: false  # Binding disabled - should not be created
+        name: require-resource-limits-production
+        validationActions: ["Deny"]
+        matchResources:
+          namespaceSelector:
+            matchLabels:
+              environment: production
+      staging:
+        enabled: true  # Binding enabled - should be created
+        name: require-resource-limits-staging
+        validationActions: ["Warn"]
+        matchResources:
+          namespaceSelector:
+            matchLabels:
+              environment: staging
+
+  fully-disabled:
+    enabled: false  # Entire policy disabled - nothing should be created
+    name: fully-disabled
+    policy:
+      enabled: true
+      failurePolicy: Fail
+      matchConstraints:
+        resourceRules:
+          - apiGroups: ["apps"]
+            apiVersions: ["v1"]
+            operations: ["CREATE"]
+            resources: ["deployments"]
+      validations:
+        - expression: "true"
+          message: "test"
+    bindings:
+      production:
+        enabled: true
+        name: fully-disabled-production
+        validationActions: ["Deny"]
+
+commonLabels:
+  managed-by: helm
+  test-type: disabled-flags
+
+commonAnnotations:
+  example.com/test: disabled-flags

@@ -1,0 +1,13 @@
+# Test values for uptime-kuma chart
+# This file is used for CI testing with minikube
+# Volume is disabled to avoid PVC issues in test environment
+
+volume:
+  enabled: false
+
+service:
+  type: ClusterIP
+  port: 3001
+
+serviceAccount:
+  automountServiceAccountToken: true

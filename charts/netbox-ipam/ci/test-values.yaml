@@ -1,0 +1,68 @@
+# CI test values for netbox-ipam chart
+# These values are used to validate chart rendering during CI testing
+
+commonLabels:
+  ci-test: "true"
+
+commonAnnotations:
+  ci.test/managed-by: "helm-ci"
+
+ipAddresses:
+  test-static-ip:
+    enabled: true
+    ipAddress: "10.0.1.100/32"
+    tenant: "platform-team"
+    description: "CI test static IP address"
+    comments: "Created for CI testing purposes"
+    preserveInNetbox: false
+    labels:
+      app: ci-test
+      tier: test
+    annotations:
+      ci.test/resource-type: "ipaddress"
+    customFields:
+      environment: ci
+
+ipAddressClaims:
+  test-ip-claim:
+    enabled: true
+    parentPrefix: "10.0.0.0/24"
+    tenant: "web-team"
+    description: "CI test IP address claim"
+    comments: "Dynamic IP allocation test"
+    preserveInNetbox: false
+    labels:
+      app: ci-test
+    annotations:
+      ci.test/resource-type: "ipaddressclaim"
+
+prefixes:
+  test-network-prefix:
+    enabled: true
+    prefix: "10.244.0.0/16"
+    tenant: "platform-team"
+    site: "dc1-test"
+    description: "CI test network prefix"
+    comments: "Test prefix for CI validation"
+    preserveInNetbox: false
+    labels:
+      network-type: test
+    annotations:
+      ci.test/resource-type: "prefix"
+    customFields:
+      purpose: ci-testing
+
+prefixClaims:
+  test-prefix-claim:
+    enabled: true
+    parentPrefix: "10.0.0.0/16"
+    prefixLength: "/24"
+    tenant: "dev-team"
+    site: "dc1-test"
+    description: "CI test prefix claim"
+    comments: "Dynamic subnet allocation test"
+    preserveInNetbox: false
+    labels:
+      environment: ci
+    annotations:
+      ci.test/resource-type: "prefixclaim"

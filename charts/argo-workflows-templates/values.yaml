@@ -1,0 +1,98 @@
+# -- Configuration for Argo WorkflowTemplate resources
+workflowTemplates:
+  # -- (bool) Enable or disable all WorkflowTemplate resources globally
+  enabled: true
+  # -- (object) WorkflowTemplate resource definitions
+  templates: {}
+    ## Example workflow template configuration
+    ## See: https://argoproj.github.io/argo-workflows/workflow-templates/
+    # delightful-whale:
+    #   enabled: true
+    #   labels:
+    #     example: "true"
+    #     workflows.argoproj.io/creator: system-serviceaccount-argo-workflows-argo-workflows-server
+    #   arguments:
+    #     parameters:
+    #     - name: message
+    #       value: hello argo
+    #   entrypoint: argosay
+    #   imagePullSecrets:
+    #   - name: dockerhub-regcred
+    #   podGC:
+    #     strategy: OnPodCompletion
+    #   templates:
+    #   - name: argosay
+    #     container:
+    #       image: argoproj/argosay:v2
+    #       name: main
+    #       command:
+    #       - /argosay
+    #       args:
+    #       - echo
+    #       - '{{inputs.parameters.message}}'
+    #       resources: {}
+    #     inputs:
+    #       parameters:
+    #       - name: message
+    #         value: '{{workflow.parameters.message}}'
+    #     metadata: {}
+    #     outputs: {}
+    #   ttlStrategy:
+    #     secondsAfterCompletion: 300
+    #   workflowMetadata:
+    #     labels:
+    #       example: "true"
+
+# -- Configuration for Argo CronWorkflow resources
+cronWorkflows:
+  # -- (bool) Enable or disable all CronWorkflow resources globally
+  enabled: true
+  # -- (object) CronWorkflow resource definitions
+  templates: {}
+    ## Example value for cronWorkflow resources with single schedule
+    # my-cron-workflow:
+    #   enabled: true
+    #   suspend: false
+    #   schedule: '*/5 * * * *'
+    #   concurrencyPolicy: Forbid
+    #   timezone: Asia/Seoul
+    #   successfulJobsHistoryLimit: 20
+    #   failedJobsHistoryLimit: 5
+    #   workflowSpec:
+    #     workflowTemplateRef:
+    #       name: delightful-whale
+    #
+    ## Example value for cronWorkflow with multiple schedules (Argo Workflows v3.6+)
+    ## Note: Only one of 'schedule' or 'schedules' can be used, not both
+    # my-multi-schedule-workflow:
+    #   enabled: true
+    #   suspend: false
+    #   schedules:
+    #     - '5 4 * * *'   # Run at 4:05 AM daily
+    #     - '0 1 * * *'   # Run at 1:00 AM daily
+    #   concurrencyPolicy: Forbid
+    #   timezone: Asia/Seoul
+    #   successfulJobsHistoryLimit: 20
+    #   failedJobsHistoryLimit: 5
+    #   workflowSpec:
+    #     workflowTemplateRef:
+    #       name: delightful-whale
+    #
+    ## Example value for disabled cronWorkflow
+    # disabled-old-workflow:
+    #   enabled: false
+
+# -- Configuration for ServiceAccount resources
+serviceAccounts:
+  # -- (bool) Enable or disable all ServiceAccount resources globally
+  enabled: true
+  # -- (object) ServiceAccount resource definitions
+  accounts: {}
+    ## Example ServiceAccount configuration for IRSA
+    # coinone-scope-batch-airdrop:
+    #   enabled: true
+    #   labels:
+    #     app: coinone-scope-batch-airdrop
+    #   annotations:
+    #     eks.amazonaws.com/role-arn: arn:aws:iam::111122223333:role/ROLE-NAME
+    #   automountServiceAccountToken: true

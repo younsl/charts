@@ -1,0 +1,53 @@
+{{- /*
+Note: IpAddressClaim custom resource requires the NetBox Operator to be installed in the cluster.
+Without the NetBox Operator, the IpAddressClaim resources created by this chart will not work properly.
+*/ -}}
+
+{{- range $name, $ipAddressClaim := .Values.ipAddressClaims }}
+{{- if $ipAddressClaim.enabled }}
+---
+apiVersion: netbox.dev/v1
+kind: IpAddressClaim
+metadata:
+  name: {{ $name }}
+  namespace: {{ $.Release.Namespace }}
+  labels:
+    {{- include "netbox-ipam.labels" $ | nindent 4 }}
+    {{- with $ipAddressClaim.labels }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- if or $.Values.commonAnnotations $ipAddressClaim.annotations }}
+  annotations:
+    {{- with $.Values.commonAnnotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+    {{- with $ipAddressClaim.annotations }}
+    {{- toYaml . | nindent 4 }}
+    {{- end }}
+  {{- end }}
+spec:
+  {{- with $ipAddressClaim.parentPrefix }}
+  parentPrefix: {{ . | quote }}
+  {{- end }}
+  {{- with $ipAddressClaim.parentPrefixSelector }}
+  parentPrefixSelector:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+  {{- with $ipAddressClaim.tenant }}
+  tenant: {{ . | quote }}
+  {{- end }}
+  {{- with $ipAddressClaim.description }}
+  description: {{ . | quote }}
+  {{- end }}
+  {{- with $ipAddressClaim.comments }}
+  comments: {{ . | quote }}
+  {{- end }}
+  {{- if $ipAddressClaim.preserveInNetbox }}
+  preserveInNetbox: {{ $ipAddressClaim.preserveInNetbox }}
+  {{- end }}
+  {{- with $ipAddressClaim.customFields }}
+  customFields:
+    {{- toYaml . | nindent 4 }}
+  {{- end }}
+{{- end }}
+{{- end }}

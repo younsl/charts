@@ -1,0 +1,181 @@
+# Default values for github-actions-runners.
+# This is a YAML-formatted file.
+# Declare variables to be passed into your templates.
+
+# -- (string) Override the name of the chart
+nameOverride: ~
+
+# -- (string) Override the expanded name of the chart
+fullnameOverride: ~
+
+# -- (list) Multiple runnerDeployments can be declared.
+runnerDeployments:
+  # -- (string) The name of the runnerDeployment.
+  - runnerName: doge-basic-runner
+
+    # -- (string) The name of the enterprise in the Github Enterprise Server.
+    enterprise: "doge-company"
+
+    # -- (string) The name of the Runner Group.
+    group: ""
+
+    # -- (object) Labels for the runner pod.
+    podLabels: {}
+      # app: actions-runner
+
+    # -- (object) Annotations to be added to the pod
+    # This can be used to add metadata to pods, such as for configuration or tool integrations
+    podAnnotations: {}
+      # linkerd.io/inject: enabled
+      # config.linkerd.io/proxy-await: enabled
+
+    # -- (list) Labels assigned to the runner.
+    # In Actions Workflow, this label specifies which runner to run on, such as runs-on: [self-hosted, linux, build].
+    labels:
+      - DOGE-EKS-CLUSTER
+      - m6i.xlarge
+      - ubuntu-22.04
+      - v2.311.0
+      - build
+
+    # -- (object) DNS configuration for the runner pod.
+    # This setting allows you to customize the DNS resolution behavior of the runner pod.
+    # By default, the runner pod will use the DNS configuration defined in the Kubernetes cluster.
+    # You can override this configuration by specifying a custom DNS configuration.
+    dnsConfig: {}
+      # options:
+      #   - name: ndots
+      #     value: "2"
+
+    # -- (object) Security context for the runner pod.
+    securityContext:
+      fsGroup: 1001
+
+    # -- (list) VolumeMounts settings for the dind container in the runner pod.
+    dockerVolumeMounts:
+      - mountPath: /tmp
+        name: tmp
+
+    # -- (list) VolumeMounts settings for the runner container in the runner pod.
+    volumeMounts:
+      - mountPath: /tmp
+        name: tmp
+
+    # -- (list) Volumes settings for the runner container in the runner pod.
+    volumes:
+      - name: tmp
+        emptyDir: {}
+
+    # -- (object) Resource limit, request settings for the runner pod.
+    resources:
+      limits:
+        cpu: "1.5"
+        memory: "6Gi"
+      requests:
+        cpu: "0.5"
+        memory: "1Gi"
+
+    # -- (object) Node selector for the runner pod.
+    nodeSelector:
+      node.kubernetes.io/name: basic
+    
+    # -- (object) HRA (horizontal runner autoscaler) settings connected to the runner deployment.
+    autoscaling:
+      # -- (bool) Whether to enable the horizontalRunnerAutoscaler.
+      enabled: true
+
+      # -- (int) Scale down delay in seconds after scale out.
+      scaleDownDelaySecondsAfterScaleOut: 300
+
+      # -- (int) Minimum number of runner pods for the horizontalRunnerAutoscaler.
+      minReplicas: 2
+
+      # -- (int) Maximum number of runner pods for the horizontalRunnerAutoscaler.
+      maxReplicas: 16
+
+      # -- (list) Scheduled overrides for runner autoscaling. Allows you to set custom scaling rules for specific time periods.
+      # Useful for adjusting the number of replicas during known peak or low usage times, such as weekends or holidays.
+      # Each override specifies a time range and recurrence pattern for applying the custom scaling settings.
+      # Reference: https://docs.github.com/en/actions/hosting-your-own-runners/managing-self-hosted-runners/autoscaling-with-self-hosted-runners
+      scheduledOverrides:
+      - startTime: "2023-07-15T00:00:00+09:00"
+        endTime: "2023-07-17T00:00:00+09:00"
+        recurrenceRule:
+          frequency: Weekly
+        minReplicas: 1
+
+      # -- (list) Metrics for autoscaling decisions. This section specifies the metrics used by the Horizontal Runner Autoscaler (HRA) to make
+      # scaling decisions. The metrics define how the autoscaler should react to the current state of the runners to adjust the
+      # number of replicas accordingly. These metrics are crucial for ensuring that the number of runner pods scales appropriately
+      # based on the actual workload and utilization.
+      metrics:
+      - type: PercentageRunnersBusy
+        # -- (string) Increase the number of runners when the percentage of busy runners exceeds this threshold. This helps to handle
+        # increased load by adding more runner pods to manage the workload effectively.
+        scaleUpThreshold: '0.75'
+
+        # -- (string) Decrease the number of runners when the percentage of busy runners falls below this threshold. This helps to reduce
+        # resource usage by scaling down the number of runner pods when the load decreases.
+        scaleDownThreshold: '0.25'
+
+        # -- (string) When scaling up, the number of runners will be multiplied by this factor. For example, a factor of '2' means the number
+        # of runners will double when scaling up.
+        scaleUpFactor: '2'
+
+        # -- (string) When scaling down, the number of runners will be multiplied by this factor. For example, a factor of '0.5' means the
+        # number of runners will be halved when scaling down.
+        scaleDownFactor: '0.5'
+
+    # -- (object) Kubernetes service account configuration.
+    # A service account provides authentication information used by pods to interact with the Kubernetes API server within the cluster.
+    # This configuration allows the runner pod to access necessary cluster resources by assigning appropriate permissions.
+    # Using a service account enhances cluster security and allows for the association with specific IAM roles to access AWS resources.
+    serviceAccount:
+      # -- (bool) Determines whether to create a new service account. Setting this to 'true' will create a new service account.
+      create: true
+
+      # -- (bool) Automatically mount service account token.
+      automountServiceAccountToken: true
+
+      # -- (list) Image pull secrets for the service account. This allows the service account to pull images from private container registries.
+      imagePullSecrets: []
+        # - name: my-registry-secret
+
+      # -- (object) Annotations for the service account.
+      # Supports AWS IAM integration via IRSA or EKS Pod Identity for secure access to AWS resources.
+      annotations: {}
+        # eks.amazonaws.com/role-arn: arn:aws:iam::111122223333:role/doge-eks-cluster-actions-build-runner-s3-access-irsa-role
+
+    # -- (object) Topology Spread Constraints for the runner. This setting defines how pods should be spread across different topology domains,
+    # such as nodes or availability zones, to ensure high availability and fault tolerance. It helps to distribute the pods evenly
+    # across the specified topology domains to avoid overloading a single domain and to improve resiliency.
+    # Reference: https://kubernetes.io/docs/concepts/scheduling-eviction/topology-spread-constraints/
+    topologySpreadConstraints: {}
+      # - maxSkew: 1
+      #   topologyKey: topology.kubernetes.io/zone
+      #   whenUnsatisfiable: ScheduleAnyway
+
+    # -- (object) Persistent Volume Claims for the runner. This setting allows you to define persistent storage for the runner pods.
+    # Multiple PVCs can be defined and will be mounted into the runner pods. Each claim can be configured to be created
+    # by this chart or reference an existing PVC. This is useful for caching dependencies, build artifacts, or other
+    # data that needs to persist across runner pod restarts.
+    persistenceClaims: {}
+      # cache:
+      #   # -- (bool) Whether to create the PVC. Set to false to use an existing PVC.
+      #   create: true
+      #   # -- (string) Name of the PVC.
+      #   name: runner-cache-pvc
+      #   # -- (string) Size of the persistent volume.
+      #   size: 10Gi
+      #   # -- (list) Access modes for the PVC.
+      #   # Valid values: ReadWriteOnce, ReadOnlyMany, ReadWriteMany, ReadWriteOncePod
+      #   accessModes:
+      #     - ReadWriteOnce
+      #   # -- (string) Storage class name for the PVC.
+      #   storageClassName: gp3
+      #   # -- (string) Volume attributes class name for modifying volume attributes.
+      #   # Requires Kubernetes 1.29+ with VolumeAttributesClass feature gate enabled.
+      #   volumeAttributesClassName: ""
+      #   # -- (list) Finalizers for the PVC to control deletion behavior.
+      #   finalizers:
+      #     - kubernetes.io/pvc-protection
