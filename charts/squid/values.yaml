@@ -189,6 +189,28 @@ ingress:
   # -- (list) TLS configuration for HTTPS termination
   tls: []
 
+# -- (object) HTTPRoute configuration for Gateway API based routing
+# @default -- See below values
+httpRoute:
+  # -- (bool) Enable or disable HTTPRoute resource creation
+  enabled: false
+  # -- (object) Resource-specific annotations for HTTPRoute
+  annotations: {}
+  # -- (list) Gateway references that this HTTPRoute attaches to
+  parentRefs: []
+    # - name: my-gateway
+    #   namespace: default
+    #   sectionName: https
+  # -- (list) Hostnames for HTTPRoute matching
+  hostnames:
+    - squid.local
+  # -- (list) HTTPRoute routing rules (backendRefs always points to squid service)
+  rules: []
+    # - matches:
+    #     - path:
+    #         type: PathPrefix
+    #         value: /
+
 # -- (object) Resource limits and requests for squid container
 # @default -- See below values
 resources:

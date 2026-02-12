@@ -1,6 +1,6 @@
 # squid
 
-![Version: 0.8.0](https://img.shields.io/badge/Version-0.8.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 6.13](https://img.shields.io/badge/AppVersion-6.13-informational?style=flat-square)
+![Version: 0.9.0](https://img.shields.io/badge/Version-0.9.0-informational?style=flat-square) ![Type: application](https://img.shields.io/badge/Type-application-informational?style=flat-square) ![AppVersion: 6.13](https://img.shields.io/badge/AppVersion-6.13-informational?style=flat-square)
 
 A Helm chart for Squid caching proxy
 
@@ -43,7 +43,7 @@ helm install squid oci://ghcr.io/younsl/charts/squid -f values.yaml
 Install a specific version:
 
 ```console
-helm install squid oci://ghcr.io/younsl/charts/squid --version 0.8.0
+helm install squid oci://ghcr.io/younsl/charts/squid --version 0.9.0
 ```
 
 ### Install from local chart
@@ -51,7 +51,7 @@ helm install squid oci://ghcr.io/younsl/charts/squid --version 0.8.0
 Download squid chart and install from local directory:
 
 ```console
-helm pull oci://ghcr.io/younsl/charts/squid --untar --version 0.8.0
+helm pull oci://ghcr.io/younsl/charts/squid --untar --version 0.9.0
 helm install squid ./squid
 ```
 
@@ -128,6 +128,12 @@ The following table lists the configurable parameters and their default values.
 | ingress.annotations | object | `{}` | A resource-specific annotations for Ingress |
 | ingress.hosts | list | `[{"host":"squid.local","paths":[{"path":"/","pathType":"Prefix"}]}]` | List of hostnames and paths for Ingress routing |
 | ingress.tls | list | `[]` | TLS configuration for HTTPS termination |
+| httpRoute | object | See below values | HTTPRoute configuration for Gateway API based routing |
+| httpRoute.enabled | bool | `false` | Enable or disable HTTPRoute resource creation |
+| httpRoute.annotations | object | `{}` | Resource-specific annotations for HTTPRoute |
+| httpRoute.parentRefs | list | `[]` | Gateway references that this HTTPRoute attaches to |
+| httpRoute.hostnames | list | `["squid.local"]` | Hostnames for HTTPRoute matching |
+| httpRoute.rules | list | `[]` | HTTPRoute routing rules (backendRefs always points to squid service) |
 | resources | object | See below values | Resource limits and requests for squid container |
 | resources.limits | object | `{"memory":"256Mi"}` | Maximum resource limits (CPU and memory) |
 | resources.requests | object | `{"cpu":"50m","memory":"128Mi"}` | Minimum resource requests (CPU and memory) |
