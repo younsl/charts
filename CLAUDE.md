@@ -15,7 +15,7 @@ This is a Helm charts repository that distributes charts via OCI artifacts on Gi
 - **rbac** (v0.4.0): Kubernetes RBAC resources (ServiceAccount, ClusterRole, ClusterRoleBinding, Role, RoleBinding) with CI tests enabled
 - **squid** (v0.7.0): Squid caching proxy with Grafana dashboard integration and extra manifests support
 - **storage-class** (v0.3.0): StorageClass and VolumeAttributesClass resources for AWS EBS CSI driver with encryption and multiple storage tiers support, includes CI tests
-- **uptime-kuma** (v2.24.1): Self-hosted monitoring tool similar to Uptime Robot with MariaDB database dependency
+
 
 ### Deprecated Charts
 - **actions-runner** (v0.3.0): GitHub Actions self-hosted runner for Kubernetes (deprecated - use Actions Runner Controller)
@@ -29,9 +29,6 @@ make docs
 
 # Generate docs for specific chart (uses .github/templates/README.md.gotmpl template)
 helm-docs --chart-search-root charts/<chart-name> --template-files=../../.github/templates/README.md.gotmpl --sort-values-order file --log-level info
-
-# Update chart catalog documentation
-.github/scripts/update-chart-catalog.sh
 ```
 
 ### Linting and Validation
@@ -94,9 +91,6 @@ helm install <release-name> oci://ghcr.io/younsl/charts/<chart-name> \
 
 # Run chart release process
 .github/scripts/release-charts.sh
-
-# Update chart catalog documentation
-.github/scripts/update-chart-catalog.sh
 ```
 
 ## Architecture and Structure
@@ -106,7 +100,7 @@ helm install <release-name> oci://ghcr.io/younsl/charts/<chart-name> \
 - `.github/workflows/`: CI/CD pipelines for automated testing and releases
 - `.github/scripts/`: Automation scripts for testing, releasing, and documentation
 - `.github/templates/`: Shared templates for documentation generation (helm-docs)
-- `docs/`: Repository documentation including chart catalog and OCI background
+- `docs/`: Repository documentation including OCI background
 - Each chart follows standard Helm structure:
   - `Chart.yaml`: Chart metadata and dependencies
   - `values.yaml`: Default configuration values
@@ -116,12 +110,7 @@ helm install <release-name> oci://ghcr.io/younsl/charts/<chart-name> \
 
 ### CI/CD Pipeline
 The repository uses GitHub Actions for:
-1. **Pull Request Validation**: 
-   - PR title format enforcement (`[charts/<chart-name>] description`)
-   - Automated commenting on invalid PR titles
-   - Regex validation: `^\\[charts\\/[a-z0-9-]+\\]`
-
-2. **Release Process**: Triggered by Chart.yaml changes or manual dispatch
+1. **Release Process**: Triggered by Chart.yaml changes or manual dispatch
    - Multi-version testing on Kubernetes 1.32.8, 1.33.4, 1.34.0
    - Packages and pushes charts to OCI registry (ghcr.io/younsl/charts)
    - Smart change detection via `.github/scripts/detect-changed-charts.sh`
@@ -129,14 +118,12 @@ The repository uses GitHub Actions for:
    - GitHub Actions step summaries for release tracking
    - Atomic installations with automatic rollback on failure
 
-3. **Documentation**: 
-   - Auto-generates chart catalog and README files using helm-docs
-   - Chart catalog workflow runs on push to main branch
+2. **Documentation**:
+   - Auto-generates README files using helm-docs
    - Uses shared gotmpl template (.github/templates/README.md.gotmpl) for consistent documentation
 
-4. **Maintenance**:
+3. **Maintenance**:
    - Automated workflow run cleanup (daily at 1 AM UTC)
-   - Dependabot for dependency updates with automatic reviewer assignment
 
 ### Chart Development Guidelines
 - All charts require Helm 3.8.0+ and Kubernetes 1.21.0+
@@ -158,7 +145,7 @@ Charts are published to `ghcr.io/younsl/charts` as OCI artifacts. This provides:
 ### Testing Strategy
 - Unit tests: Template rendering validation
 - Integration tests: Installation in Kind clusters with custom API server tuning
-- CI tests: Automated validation on pull requests
+- CI tests: Automated validation on push to main
 - Charts with full CI tests enabled: `rbac`, `storage-class` (other charts require external dependencies)
 
 ### Chart Testing and CI Behavior
@@ -188,7 +175,6 @@ The CI testing process:
 - **rbac**: Chart with full CI testing enabled (skip-test: false), supports extra-manifests for additional resources
 - **squid**: Includes Grafana dashboard ConfigMap and extra-manifests.yaml template for additional resources
 - **storage-class**: Chart with full CI testing enabled (skip-test: false), manages StorageClass and VolumeAttributesClass resources, supports AWS EBS CSI driver configurations
-- **uptime-kuma**: Includes MariaDB dependency chart, requires persistent storage for database
 
 ## Best Practice References
 
@@ -211,9 +197,8 @@ When working with this repository:
 3. Run `make docs` after modifying chart values or templates
 4. Test installation with dry-run before actual deployment
 5. Use OCI registry commands for distribution, not traditional repo commands
-6. For PRs, ensure title follows format: `[charts/<chart-name>] description`
-7. CI will automatically test on Kubernetes 1.32.8, 1.33.4, 1.34.0
-8. Check for version duplicates in OCI registry before releasing
+6. CI will automatically test on Kubernetes 1.32.8, 1.33.4, 1.34.0
+7. Check for version duplicates in OCI registry before releasing
 
 ## Troubleshooting
 
@@ -221,7 +206,6 @@ When working with this repository:
 - **Chart testing fails**: Check if chart has skip-test annotation or requires external dependencies
 - **Documentation not updating**: Ensure `make docs` was run and .github/templates/README.md.gotmpl template is correct
 - **Release pipeline fails**: Verify Chart.yaml version bump and OCI registry authentication
-- **PR validation fails**: Check PR title format matches `[charts/<chart-name>] description`
 - **Version already exists**: Chart version already published to OCI registry, bump version in Chart.yaml
 
 ### Debugging Commands
@@ -243,8 +227,6 @@ crane ls ghcr.io/younsl/charts/<chart-name> | grep <version>
 
 ### Automated Processes
 - **Workflow cleanup**: Runs daily at 1 AM UTC to clean old workflow runs
-- **Dependabot updates**: Automatic dependency updates for GitHub Actions
-- **Chart catalog generation**: Auto-updates on push to main branch
 
 ### Manual Maintenance
 - **Chart deprecation**: Update Chart.yaml with deprecated: true and update documentation

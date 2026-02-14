@@ -8,3 +8,11 @@ repos:
           - --template-files=../.github/templates/README.md.gotmpl
           - --sort-values-order=file
           - --log-level=debug
+  - repo: local
+    hooks:
+      - id: update-readme-charts
+        name: Update README.md charts table
+        entry: .github/scripts/update-readme-charts.sh
+        language: script
+        files: charts/.*/Chart\.yaml
+        pass_filenames: false
