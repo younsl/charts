@@ -8,7 +8,7 @@ Collection of Helm charts maintained by [@younsl](https://github.com/younsl), di
 <!-- CHARTS_TABLE_START -->
 ## Available Charts
 
-This repository contains **10** Helm charts (9 active, 1 deprecated).
+This repository contains **9** Helm charts (8 active, 1 deprecated).
 
 | Chart | Version | App Version | Status | Description |
 |-------|---------|-------------|--------|-------------|
@@ -21,7 +21,6 @@ This repository contains **10** Helm charts (9 active, 1 deprecated).
 | [netbox-ipam](charts/netbox-ipam) | 0.1.0 | 0.1.0 | Active | A Helm chart for managing NetBox Operator IPAM resources. Creates IpAddress, ... |
 | [rbac](charts/rbac) | 0.4.0 | 0.4.0 | Active | Helm chart to define RBAC resources in the gitops way |
 | [squid](charts/squid) | 0.9.0 | 6.13 | Active | A Helm chart for Squid caching proxy |
-| [storage-class](charts/storage-class) | 0.4.0 | - | Active | Declarative management of Kubernetes StorageClass and VolumeAttributesClass r... |
 <!-- CHARTS_TABLE_END -->
 
 ## Documentation
