@@ -54,7 +54,7 @@ generate_charts_section() {
             description="${description:0:77}..."
         fi
 
-        echo "| [\`${chart_name}\`](charts/${chart_name}) | ${version} | ${app_version} | ${status} | ${description} |"
+        echo "| [${chart_name}](charts/${chart_name}) | ${version} | ${app_version} | ${status} | ${description} |"
     done
 
     echo "$MARKER_END"
