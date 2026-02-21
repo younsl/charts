@@ -8,11 +8,10 @@ Collection of Helm charts maintained by [@younsl](https://github.com/younsl), di
 <!-- CHARTS_TABLE_START -->
 ## Available Charts
 
-This repository contains **9** Helm charts (8 active, 1 deprecated).
+This repository contains **8** Helm charts.
 
 | Chart | Version | App Version | Status | Description |
 |-------|---------|-------------|--------|-------------|
-| [actions-runner](charts/actions-runner) | 0.4.0 | - | Deprecated | A Helm chart for Kubernetes to deploy GitHub Actions runners include horizont... |
 | [admission-policies](charts/admission-policies) | 0.1.0 | - | Active | Kubernetes-native admission policies and bindings using ValidatingAdmissionPo... |
 | [argo-workflows-templates](charts/argo-workflows-templates) | 0.3.0 | - | Active | A Helm chart for managing Argo Workflows Templates. |
 | [istio-envoyfilters](charts/istio-envoyfilters) | 0.1.0 | 0.1.0 | Active | A Helm chart for managing Istio EnvoyFilter resources. This chart enables cus... |
