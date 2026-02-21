@@ -15,11 +15,6 @@ This is a Helm charts repository that distributes charts via OCI artifacts on Gi
 - **rbac** (v0.4.0): Kubernetes RBAC resources (ServiceAccount, ClusterRole, ClusterRoleBinding, Role, RoleBinding) with CI tests enabled
 - **squid** (v0.7.0): Squid caching proxy with Grafana dashboard integration and extra manifests support
 
-
-
-### Deprecated Charts
-- **actions-runner** (v0.3.0): GitHub Actions self-hosted runner for Kubernetes (deprecated - use Actions Runner Controller)
-
 ## Common Development Commands
 
 ### Documentation
@@ -168,7 +163,6 @@ The CI testing process:
 9. Cleans up test resources
 
 ### Special Considerations
-- **actions-runner**: Requires GitHub PAT for runner registration (deprecated)
 - **argo-workflows-templates**: Requires Argo Workflows controller, creates WorkflowTemplate and ClusterWorkflowTemplate resources
 - **karpenter-nodepool**: AWS-specific, requires Karpenter controller, includes overprovisioning with dummy deployments
 - **kube-green-sleepinfos**: Requires kube-green operator
